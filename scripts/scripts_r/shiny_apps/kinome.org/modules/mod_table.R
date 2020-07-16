@@ -14,9 +14,9 @@ mod_table_ui <- function(id){
       
       # Sidebar with a slider input
       sidebarPanel(
-        h3("--- Filters ---"),
-        mod_filters_ui(ns("filters_ui_1")),
-        mod_tablevars_ui(ns("tablevars_ui_1"))
+        h3("Filters"),
+        mod_filters_ui("filters_ui_1", open = TRUE),
+        mod_tablevars_ui("tablevars_ui_1")
       ),
       
       # Show a plot of the generated distribution
@@ -31,20 +31,39 @@ mod_table_ui <- function(id){
 #' table Server Function
 #'
 #' @noRd 
-mod_table_server <- function(input, output, session){
+mod_table_server <- function(input, output, session, r){
   ns <- session$ns
- 
+
   req(kinomedat)
+  .data <- kinomedat
   
-  kinomedat_lim <- kinomedat[,START_COLUMNS]
+  observeEvent(r$proteinfold, {
   
-  
-  output$kinometable <- DT::renderDT(
-    kinomedat_lim,
-    options = list(
-      columnDefs = list(list(className = 'dt-center', targets = 2))
+    .data <- .data %>% dplyr::filter(Fold_Annotation %in% r$proteinfold)
+    .data <- .data %>% dplyr::select(gene_id, Fold_Annotation, `HGNC ID`)
+    output$kinometable <- DT::renderDT(
+      .data,
+      options = list(
+        columnDefs = list(list(className = 'dt-center', targets = 2))
+      )
     )
-    ) 
+    })
+
+  
+
+  # data_filtered <- reactive({
+  # 
+  #   kinomedat %>% 
+  #     dplyr::filter(
+  #       Fold_Annotation %in% proteinfold
+  #     ) %>% 
+  #     select(
+  #       Fold_Annotation
+  #     )
+  # })
+
+  
+
   
 }
     

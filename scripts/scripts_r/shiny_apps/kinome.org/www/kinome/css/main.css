@@ -5,6 +5,17 @@ html {
   font-family: 'Lato', sans-serif;
 }
 
+h3,
+h3 > a,
+.panel-title,
+.h3 {
+  font-family: NeutralRegular, Helvetica, Arial, sans-serif;
+  font-weight: 100;
+  font-size: 24px !important;
+  line-height: 1.2;
+  color: #c90016 !important;
+}
+
 .harvard--crimson {
   color: #c90016 !important;
 }
@@ -148,5 +159,4 @@ table.dataTable thead th {
   -o-transition: all 0.5s;
   transition: all 0.5s;
 }
-
 

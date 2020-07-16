@@ -12,19 +12,10 @@ mod_tablevars_ui <- function(id){
   tagList(
     h3("Select table variables"),
     chipInput(
-      id = ns("columns"),
+      id = "tablevars",
       inline = TRUE,
       placeholder = "Make a selection",
-      choices = c(
-        "Setting", "Year", "Indicator name", "Dimension", "Subgroup",
-        "Estimate", "Population share",
-        "Source", "Indicator abbreviation",
-        "95% CI lower bound","95% CI upper bound", "Flag", "Setting average"
-      ),
-      selected = c(
-        "Setting", "Year", "Indicator name", "Dimension", "Subgroup",
-        "Estimate", "Population share"
-      )
+      choices = COLUMNS
     ) %>%
       active("grey") %>%
       shadow()
@@ -34,8 +25,14 @@ mod_tablevars_ui <- function(id){
 #' tablevars Server Function
 #'
 #' @noRd 
-mod_tablevars_server <- function(input, output, session){
+mod_tablevars_server <- function(input, output, session, r){
   ns <- session$ns
+  
+  
+  observeEvent(input$tablevars, {
+    print("in filter server")
+
+  }, ignoreNULL = FALSE)
  
 }
     

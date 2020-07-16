@@ -1,6 +1,7 @@
 function(input, output, session) {
   
   
+
   navToPage <- function(name, session = NULL) {
     if (is.null(session))
       session <- getDefaultReactiveDomain()
@@ -23,7 +24,13 @@ function(input, output, session) {
   })
 
 
-  callModule(mod_table_server, "table_ui_1")
+  r <- reactiveValues()
+  callModule(mod_table_server, "table_ui_1", r)
+  callModule(mod_filters_server, "filters_ui_1", r)
+  callModule(mod_tablevars_server, "tablevars_ui_1", r)
+  
+
+
   
   # .modal_funding <- modal(
   #   id = NULL,
