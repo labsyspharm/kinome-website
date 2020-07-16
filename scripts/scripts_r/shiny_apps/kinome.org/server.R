@@ -32,15 +32,16 @@ function(input, output, session) {
 
 
   
-  # .modal_funding <- modal(
-  #   id = NULL,
-  #   size = "md",
-  #   header = h5("Funding"),
-  #   p("This open-access webtool is funded by NIH grants U54-HL127365, U24-DK116204 and U54-HL127624.")
-  # )
-  # observeEvent(c(input$funding, input$funding2), {
-  #   showModal(.modal_funding)
-  # })
+  .modal_funding <- modal(
+    id = NULL,
+    size = "md",
+    header = h5("Funding"),
+    p("This work was supported by NIH grant U24-DK116204, U54-HL127624 and U54-CA225088.")
+  )
+  observeEvent(c(input$funding, input$funding2), {
+    showModal(.modal_funding)
+  })
+  
   # 
   # observeEvent(c(input$link_selectivity, input$goto_selectivity_1), {
   #   navToPage("selectivity")

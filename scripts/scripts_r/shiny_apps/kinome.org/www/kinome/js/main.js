@@ -20,4 +20,10 @@ $(function() {
       logifySlider(this, base=10, precision=null);
     });
   });
+  
+
+  
+  
 });
+
+

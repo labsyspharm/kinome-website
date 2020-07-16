@@ -14,14 +14,15 @@ mod_table_ui <- function(id){
       
       # Sidebar with a slider input
       sidebarPanel(
-        h3("Filters"),
+        h2("Filters"),
         mod_filters_ui("filters_ui_1", open = TRUE),
+        h2("Select table variables") %>% 
+          margin(top = 5),
         mod_tablevars_ui("tablevars_ui_1")
       ),
       
       # Show a plot of the generated distribution
       mainPanel(
-        h1("Table goes here"),
         DT::DTOutput(ns("kinometable"))
       )
     )
@@ -50,9 +51,7 @@ mod_table_server <- function(input, output, session, r){
     )
     })
 
-  
 
-  
 
   
 }

@@ -17,6 +17,7 @@ library(DT)
 
 source("constants.R", local = TRUE)
 source("utils.R", local = TRUE)
+source("utils-ui.R", local = TRUE)
 # source("awspass.config")
 
 # Components used in multiple apps

@@ -10,7 +10,7 @@ function(req) {
       tags$link(href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap", rel="stylesheet"),
       tags$link(rel = "stylesheet", type = "text/css", href = "kinome/css/slider.css"),
       tags$link(rel = "stylesheet", type = "text/css", href = "kinome/css/main.css"),
-      tags$script(src = "sms/js/main.js"),
+      tags$script(src = "kinome/js/main.js"),
       tags$link(rel = "icon", type = "image/png", href = "kinome/assets/img/favicon.png")
     ),
     webpage(
@@ -25,7 +25,7 @@ function(req) {
           id = "nav",
           choices = list(
             list(icon("home"), "Home"),
-            list(icon("circle", class = "selectivity--pink"), "Setting"),
+            list( "Setting"),
             # list(icon("circle", class = "similarity--green"), "Similarity"),
             # list(icon("circle", class = "library--orange"), "Library"),
             "Download"
@@ -52,14 +52,14 @@ function(req) {
         ) %>%
           background("black") %>%
           font("white"),
-        tags$a(
-          href = "https://forms.gle/dSpCJSsbaavTbCkP6",
-          target = "_blank",
-          icon("comments", class = "fa-lg"),
-          " Feedback"
-        ) %>%
-          font(color = "white") %>%
-          margin(l = 2),
+        # tags$a(
+        #   href = "https://forms.gle/dSpCJSsbaavTbCkP6",
+        #   target = "_blank",
+        #   icon("comments", class = "fa-lg"),
+        #   " Feedback"
+        # ) %>%
+        #   font(color = "white") %>%
+        #   margin(l = 2),
         tags$a(
           href = "https://github.com/labsyspharm/sms-website",
           target = "_blank",
@@ -82,25 +82,38 @@ function(req) {
             class = "active",
             columns(
               column(
+                tags$a(
+                  #class = "navbar-brand",
+                  #href="http://sorger.med.harvard.edu/",
+                  tags$img(class = 'kinome-tree', src = "kinome/assets/img/kinome_tree.png")
+                ),
+              ),
+              column(
                 d3("Kinome.org") %>%
-                  font(align = "center"),
-                p(
-                  "Welcome to Kinome.org!",
-                  "Kinome.org is designed by the Laboratory of Systems Pharmacology to help researchers",
-                  "understand which proteins are members of the kinome under varying criteria",
-                  
-                  style = "max-width: 50em;"
-                ) %>%
-                  font(align = "justify") %>%
-                  margin(l = "auto", r = "auto", b = 5),
-                columns( # ├ use cases ----
-                  
-                ) %>%
-                  margin(bottom = 5),
-                columns( # ├ applications ----
-                  
+                  font(align = "left"),
+                p("Welcome to Kinome.org!"),
+                p("Kinome.org is designed by the Laboratory of Systems Pharmacology to help researchers",
+                  "understand which proteins are members of the kinome under varying criteria."
+                ), #%>%
+                  #font(align = "justify") %>%
+                  #margin(l = "auto", r = "auto", b = 5)
+                div(
+                  tags$a(
+                    id = "explore",
+                    href = "#page_selectivity",
+                    #onclick = "'$( \"#tabs\" ).tabs({ active: 2 });'",
+                    # $('#explore').click(function () {
+                    #   $('#page_home').removeClass('active');
+                    #   //$('input[type="button"][value="home"]').removeClass('active');
+                    #   //$('input[type="button"][value="selectivity"]').addClass('active');
+                    #   $('#page_selectivity').addClass('active show');
+                    # });
+                    "Start exploring the human kinome",
+                    icon("arrow-circle-right", class = "fa-lg"),
+                  ) %>%
+                    font(color = "black")
                 )
-
+      
               )
             )
           ),
