@@ -140,15 +140,13 @@ function(req) {
           navPane(
             id = "page_download",
             card(
-              header = h4("Download Small Molecule Suite data"),
+              header = h4("Download Kinome.org data"),
               p(
-                "The entire Small Molecule Suite dataset is available for download.", tags$br(),
-                "The data are organized in separate normalized tables. Documentation",
-                "for each table and their relationship is available."
+                "Some text needed"
               ),
               a(
                 h4("Table documentation", class = "btn btn-default btn-grey"),
-                href = "https://dbdocs.io/clemenshug/sms_db",
+                href = "XYZZZZZZZZZZZZZZZ",
                 target = "_blank"
               )
             ) %>%

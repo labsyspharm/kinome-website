@@ -10,7 +10,6 @@
 mod_tablevars_ui <- function(id){
   ns <- NS(id)
   tagList(
-    h3("Select table variables"),
     chipInput(
       id = ns("tablevars"),
       inline = TRUE,

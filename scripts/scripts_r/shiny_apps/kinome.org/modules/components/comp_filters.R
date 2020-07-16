@@ -14,7 +14,7 @@ mod_filters_ui <- function(id, open = FALSE) {
     class = "panel-group",
     
     
-    get_collapse(
+    get_check_collapse(
       open = "false",
       ns("proteinfold_collapse"),
       "Protein fold",
@@ -34,16 +34,16 @@ mod_filters_ui <- function(id, open = FALSE) {
       choices2 = c("Unrelated to Protein Kinase Like", "Unknown"),
       selected2 = c("Unrelated to Protein Kinase Like", "Unknown")
     ),
-    get_collapse(
+    get_check_collapse(
       open = "false",
       ns("compounds_collapse"),
       "Compounds",
       "Compounds",
-      ns("flt_knowledge"),
+      ns("flt_compounds"),
       c("With at least [1] most selective/semi-selective compounds"),
       c("A")
     ),
-    get_collapse(
+    get_check_collapse(
       open = "false",
       ns("knowledge_collapse"),
       "Knowledge",
@@ -52,25 +52,25 @@ mod_filters_ui <- function(id, open = FALSE) {
       c("IDG dark kinase", "Statistically defined dark kinase", "Both", "Either"),
       c("IDG dark kinase", "Statistically defined dark kinase", "Both", "Either")
     ),
-    get_collapse(
+    get_check_collapse(
       open = "false",
       ns("biological_relevance"),
       "Biological Relevance",
       NULL,
-      ns("flt_cancer"),
+      ns("flt_biolrel"),
       c("Cancer", "Alzheimer's disease", "Chronic obstructive pulmonary disease", "Essential in at least [1] cell lines"),
       c("Cancer", "Alzheimer's disease", "Chronic obstructive pulmonary disease", "Essential in at least [1] cell lines")
     ),
-    get_collapse(
+    get_check_collapse(
       open = "false",
       ns("resources"),
       "Resources",
       NULL,
-      ns("flt_cancer"),
+      ns("flt_resources"),
       c("Structures", "Commercial assays"),
       c("Structures", "Commercial assays")
     ),
-    get_collapse(
+    get_check_collapse(
       open = "false",
       ns("conventional_classification"),
       "Conventional Classification",
@@ -97,10 +97,17 @@ mod_filters_server <- function(input, output, session, r) {
   
   observeEvent(c(input$flt_kinaselike, input$flt_nokinaselike),
                {
-                 print("in filter server")
                  proteinfold <-
                    c(input$flt_kinaselike, input$flt_nokinaselike)
                  r$proteinfold <- convert_filter_vars(proteinfold)
+               },
+               ignoreNULL = FALSE)
+  
+  observeEvent(input$flt_knowledge,
+               {
+                 print("in filter server")
+                 r$knowledge_collapse <-input$flt_knowledge
+
                },
                ignoreNULL = FALSE)
   
