@@ -64,7 +64,7 @@ mod_filters_server <- function(input, output, session, r){
   ns <- session$ns
   
   observeEvent(c(input$flt_kinaselike, input$flt_nokinaselike), {
-
+    print("in filter server")
     proteinfold <- c(input$flt_kinaselike, input$flt_nokinaselike)
     r$proteinfold <- convert_filter_vars(proteinfold)
   }, ignoreNULL = FALSE)

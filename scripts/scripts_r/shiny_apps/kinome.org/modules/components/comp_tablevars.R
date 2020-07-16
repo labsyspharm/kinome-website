@@ -12,10 +12,11 @@ mod_tablevars_ui <- function(id){
   tagList(
     h3("Select table variables"),
     chipInput(
-      id = "tablevars",
+      id = ns("tablevars"),
       inline = TRUE,
       placeholder = "Make a selection",
-      choices = COLUMNS
+      choices = COLUMNS,
+      selected = DEFAULT_COLUMNS
     ) %>%
       active("grey") %>%
       shadow()
@@ -30,8 +31,12 @@ mod_tablevars_server <- function(input, output, session, r){
   
   
   observeEvent(input$tablevars, {
-    print("in filter server")
+    print("in tablevar server")
 
+    if(is.null(input$tablevars)) r$tablevars <- DEFAULT_COLUMNS
+    if(!is.null(input$tablevars)){
+      r$tablevars <- COLUMNS[COLUMNS%in%input$tablevars] %>% names()
+    }
   }, ignoreNULL = FALSE)
  
 }

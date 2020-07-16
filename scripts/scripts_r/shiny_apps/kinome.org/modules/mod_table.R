@@ -37,10 +37,11 @@ mod_table_server <- function(input, output, session, r){
   req(kinomedat)
   .data <- kinomedat
   
-  observeEvent(r$proteinfold, {
+  observeEvent(c(r$proteinfold, r$tablevars), {
   
     .data <- .data %>% dplyr::filter(Fold_Annotation %in% r$proteinfold)
-    .data <- .data %>% dplyr::select(gene_id, Fold_Annotation, `HGNC ID`)
+
+    .data <- .data %>% dplyr::select(r$tablevars)
     output$kinometable <- DT::renderDT(
       .data,
       options = list(
@@ -50,17 +51,6 @@ mod_table_server <- function(input, output, session, r){
     })
 
   
-
-  # data_filtered <- reactive({
-  # 
-  #   kinomedat %>% 
-  #     dplyr::filter(
-  #       Fold_Annotation %in% proteinfold
-  #     ) %>% 
-  #     select(
-  #       Fold_Annotation
-  #     )
-  # })
 
   
 

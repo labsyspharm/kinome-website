@@ -1,11 +1,16 @@
-START_COLUMNS <- c("HGNC_Symbol", "Approved name", "Fold_Annotation", "Group")
+
 
 
 KINOME_COLORS <- c(`crimson` = "#c90016", `2` = "#ef8a62", `3` = "#fddbc7", `10` = "#d9d9d9")
 DT_DOM <- '<"row justify-content-between"<"col-sm-12 col-md-auto"B><"col-sm-12 col-md-auto"l><"col-sm-12 col-md-auto ml-md-auto"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>'
 
+
+
+
 # Right side is in table, left is display
-COLUMNS <- list(
+# careful -- the one that says "TWO_COLUMNS", one user selected
+# var leads to two columns added
+COLUMNS <- c(
   "HGNC_Symbol" = "HGNC symbol",
   "Approved name" = "Approved name",
   "INDRA_network" = "INDRA network",
@@ -34,6 +39,12 @@ COLUMNS <- list(
   "Uniprot Entry" = "Uniprot entry",
   "Uniprot Entry name" = "Uniprot entry name", 
   "Gene names" = "Gene names"
-) %>% sort()
+)
 
+# Use display name
+DEFAULT_COLUMNS <- c(
+  "HGNC symbol", 
+  "Approved name", 
+  "Fold annotation", 
+  "Group")
 TWO_COLUMNS <- c("kinaseform_in_ReactionBiology", "kinaseform_in_DiscoverX")
