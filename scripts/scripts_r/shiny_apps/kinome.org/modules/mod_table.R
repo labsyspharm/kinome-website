@@ -33,21 +33,19 @@ mod_table_server <- function(input, output, session, r) {
   req(kinomedat)
   .data <- kinomedat
   
-  observeEvent(c(r$proteinfold, r$tablevars, r$knowledge_collapse), {
+  observeEvent(c(r$proteinfold, r$tablevars, r$knowledge_collapse, r$resources), {
     
-    if(!is.null(r$proteinfold)){
-      .data <- .data %>% dplyr::filter(Fold_Annotation %in% r$proteinfold)
-    }
+    if(!is.null(r$proteinfold))
+      .data <- filter_proteinfold(.data, r$proteinfold)
 
-    if(!is.null(r$knowledge_collapse)){
-      
-      idg <- ifelse("IDG dark kinase" %in% r$knowledge_collapse, 1, 0)
-      statdef <- ifelse("Statistically defined dark kinase" %in% r$knowledge_collapse, 1, 0)
-      .data <- .data %>% 
-        dplyr::filter(`IDG dark kinase` == idg) %>% 
-        dplyr::filter(`Statistically defined dark kinase` == statdef)
-    }
     
+    if(!is.null(r$knowledge_collapse))
+      .data <- filter_knowledge_collapse(.data, r$knowledge_collapse)
+
+    if(!is.null(r$resources))
+      .data <- filter_resources(.data, r$resources)
+    
+
     .data <- .data %>% dplyr::select(r$tablevars)
     output$kinometable <- DT::renderDT(.data,
                                        options = list(columnDefs = list(

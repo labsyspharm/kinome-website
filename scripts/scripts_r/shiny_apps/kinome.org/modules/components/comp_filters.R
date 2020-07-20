@@ -14,7 +14,7 @@ mod_filters_ui <- function(id, open = FALSE) {
     class = "panel-group",
     
     
-    get_check_collapse(
+    get_collapse(
       open = "false",
       ns("proteinfold_collapse"),
       "Protein fold",
@@ -34,7 +34,7 @@ mod_filters_ui <- function(id, open = FALSE) {
       choices2 = c("Unrelated to Protein Kinase Like", "Unknown"),
       selected2 = c("Unrelated to Protein Kinase Like", "Unknown")
     ),
-    get_check_collapse(
+    get_collapse(
       open = "false",
       ns("compounds_collapse"),
       "Compounds",
@@ -43,16 +43,17 @@ mod_filters_ui <- function(id, open = FALSE) {
       c("With at least [1] most selective/semi-selective compounds"),
       c("A")
     ),
-    get_check_collapse(
+    get_collapse(
       open = "false",
       ns("knowledge_collapse"),
       "Knowledge",
       NULL,
       ns("flt_knowledge"),
-      c("IDG dark kinase", "Statistically defined dark kinase", "Both", "Either"),
-      c("IDG dark kinase", "Statistically defined dark kinase", "Both", "Either")
+      c("IDG dark kinase", "Statistically defined dark kinase", "Both", "Neither", "No filter"),
+      c("No filter"),
+      radio = TRUE
     ),
-    get_check_collapse(
+    get_collapse(
       open = "false",
       ns("biological_relevance"),
       "Biological Relevance",
@@ -61,16 +62,16 @@ mod_filters_ui <- function(id, open = FALSE) {
       c("Cancer", "Alzheimer's disease", "Chronic obstructive pulmonary disease", "Essential in at least [1] cell lines"),
       c("Cancer", "Alzheimer's disease", "Chronic obstructive pulmonary disease", "Essential in at least [1] cell lines")
     ),
-    get_check_collapse(
+    get_collapse(
       open = "false",
       ns("resources"),
       "Resources",
       NULL,
       ns("flt_resources"),
       c("Structures", "Commercial assays"),
-      c("Structures", "Commercial assays")
+      NULL
     ),
-    get_check_collapse(
+    get_collapse(
       open = "false",
       ns("conventional_classification"),
       "Conventional Classification",
@@ -105,9 +106,15 @@ mod_filters_server <- function(input, output, session, r) {
   
   observeEvent(input$flt_knowledge,
                {
-                 print("in filter server")
                  r$knowledge_collapse <-input$flt_knowledge
 
+               },
+               ignoreNULL = FALSE)
+  
+  observeEvent(input$flt_resources,
+               {
+                 r$resources <-input$flt_resources
+                 
                },
                ignoreNULL = FALSE)
   

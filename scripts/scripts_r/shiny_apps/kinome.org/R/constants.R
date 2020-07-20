@@ -38,7 +38,9 @@ COLUMNS <- c(
   "gene_id" = "Gene ID",
   "Uniprot Entry" = "Uniprot entry",
   "Uniprot Entry name" = "Uniprot entry name", 
-  "Gene names" = "Gene names"
+  "Gene names" = "Gene names"#,
+  #"num_pdb" = "num_pdb",
+  #"commercial_assay"="commercial_assay"
 )
 
 # Use display name
