@@ -35,6 +35,12 @@ mod_tablevars_server <- function(input, output, session, r){
     if(is.null(input$tablevars)) r$tablevars <- DEFAULT_COLUMNS
     if(!is.null(input$tablevars)){
       r$tablevars <- COLUMNS[COLUMNS%in%input$tablevars] %>% names()
+      if("Commercial assays available" %in% input$tablevars){
+        r$tablevars <- c(r$tablevars, TWO_COLUMNS)
+        r$tablevars <- r$tablevars[r$tablevars!="TWO_COLUMNS"]
+      }
+        
+      
     }
   }, ignoreNULL = FALSE)
  
