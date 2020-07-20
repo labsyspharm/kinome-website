@@ -55,3 +55,30 @@ filter_conv_class <- function(.data, fltinfo){
   
   .data
 }
+
+filter_pseudokinase <- function(.data, fltinfo){
+  .data %>% dplyr::filter(Pseudokinase == 1)
+}
+
+
+filter_biological_relevance <- function(.data, fltinfo){
+  
+  cancer <- c(0,1)
+  alzheimers <- c(0,1)
+  copd <- c(0, 1)
+  nessential <- max(.data$`Number of Essential cell lines`)
+  
+  if("Cancer" %in% fltinfo) cancer <- 1
+  if("Alzheimer's disease" %in% fltinfo) alzheimers <- 1
+  if("Chronic obstructive pulmonary disease" %in% fltinfo) copd <- 1
+  if("Essential in at least [100] cell lines" %in% fltinfo) nessential <- 100
+  
+  .data %>% 
+    dplyr::filter(Cancer %in% cancer) %>% 
+    dplyr::filter(`Alzeheimer’s disease` %in% alzheimers) %>% 
+    dplyr::filter(`Chronic obstructive pulmonary disease` %in% copd) %>% 
+    dplyr::filter(`Number of Essential cell lines` <= nessential)
+  
+  
+  
+}

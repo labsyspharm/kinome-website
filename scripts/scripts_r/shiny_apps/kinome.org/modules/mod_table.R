@@ -48,23 +48,20 @@ mod_table_server <- function(input, output, session, r) {
     
     if(!is.null(r$conventional_classification))
       .data <- filter_conv_class(.data, r$conventional_classification)
+    
+    if(!is.null(r$pseudokinase))
+      .data <- filter_pseudokinase(.data, r$pseudokinase)
+    
+    if(!is.null(r$biological_relevance))
+      .data <- filter_biological_relevance(.data, r$biological_relevance)
+    
+    .data
   })
   
-  #observeEvent(c(r$proteinfold, r$tablevars, r$knowledge_collapse, r$resources), {
-    
-# 
-#   final_data <- reactive({
-#     filtered_data() %>% dplyr::select(r$tablevars)
-#   })
-#     
-    
-
-    #.data <- .data %>% dplyr::select(r$tablevars)
     output$kinometable <- DT::renderDT(filtered_data() %>% dplyr::select(r$tablevars),
                                        options = list(columnDefs = list(
                                          list(className = 'dt-center', targets = 2)
                                        )))
-  #})
   
   
   

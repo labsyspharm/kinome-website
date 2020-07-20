@@ -58,9 +58,9 @@ mod_filters_ui <- function(id, open = FALSE) {
       ns("biological_relevance"),
       "Biological Relevance",
       NULL,
-      ns("flt_biolrel"),
-      c("Cancer", "Alzheimer's disease", "Chronic obstructive pulmonary disease", "Essential in at least [1] cell lines"),
-      c("Cancer", "Alzheimer's disease", "Chronic obstructive pulmonary disease", "Essential in at least [1] cell lines")
+      ns("flt_biorel"),
+      c("Cancer", "Alzheimer's disease", "Chronic obstructive pulmonary disease", "Essential in at least [100] cell lines"),
+      NULL
     ),
     get_collapse(
       open = "false",
@@ -149,6 +149,20 @@ mod_filters_server <- function(input, output, session, r) {
   observeEvent(input$flt_conv_class,
                {
                  r$conventional_classification <-input$flt_conv_class
+                 
+               },
+               ignoreNULL = FALSE)
+  
+  observeEvent(input$flt_pseudokinase,
+               {
+                 r$pseudokinase <-input$flt_pseudokinase
+                 
+               },
+               ignoreNULL = FALSE)
+  
+  observeEvent(input$flt_biorel,
+               {
+                 r$biological_relevance <-input$flt_biorel
                  
                },
                ignoreNULL = FALSE)
