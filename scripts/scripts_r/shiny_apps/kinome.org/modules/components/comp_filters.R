@@ -76,11 +76,39 @@ mod_filters_ui <- function(id, open = FALSE) {
       ns("conventional_classification"),
       "Conventional Classification",
       NULL,
-      ns("flt_convclass"),
-      c("Manning kinases", "KinHub kinases", "Both", "Either"),
-      c("Manning kinases", "KinHub kinases", "Both", "Either")
+      ns("flt_conv_class"),
+      c("Manning kinases", "KinHub kinases", "Both", "Neither", "No filter"),
+      c("No filter"),
+      radio = TRUE
+    ),
+    get_collapse(
+      open = "false",
+      ns("pseudokinase"),
+      "Pseudokinase",
+      NULL,
+      ns("flt_pseudokinase"),
+      c("Pseudokinase"),
+      NULL
+    ),
+    get_collapse(
+      open = "false",
+      ns("customlist"),
+      "Custom list",
+      NULL,
+      ns("flt_customlist"),
+      c("Custom list"),
+      NULL
     )
     
+    # id,
+    # title,
+    # label,
+    # flt_id1,
+    # choices1,
+    # selected1,
+    # flt_id2 = NULL,
+    # choices2 = NULL,
+    # selected2 = NULL,
     
     
     
@@ -114,6 +142,13 @@ mod_filters_server <- function(input, output, session, r) {
   observeEvent(input$flt_resources,
                {
                  r$resources <-input$flt_resources
+                 
+               },
+               ignoreNULL = FALSE)
+  
+  observeEvent(input$flt_conv_class,
+               {
+                 r$conventional_classification <-input$flt_conv_class
                  
                },
                ignoreNULL = FALSE)
