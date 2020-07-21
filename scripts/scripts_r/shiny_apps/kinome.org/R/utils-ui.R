@@ -1,5 +1,6 @@
 collapse_wrapper <- function(internal_html, open, ns, collapseid, title) {
 
+ 
   div(class = "panel-group",
       div(class = "panel-heading",
           h3(
@@ -19,13 +20,14 @@ collapse_wrapper <- function(internal_html, open, ns, collapseid, title) {
       ))
 }
 
-na_checkbox <- function(id, ns){
-  
+na_checkbox <- function(ns){
+ 
+ 
 checkboxInput(
   inline = FALSE,
-  id = id,
+  id = ns("nacheck"),
   choices = "Include missing values",
-  selected = "Include missing values"
+  selected = NULL
 ) %>%
   active("red")
 }
@@ -51,7 +53,7 @@ get_radio_collapse <- function(open = "false",
   )
   
   if(addNAcheck)
-    frm <- frm %>% na_checkbox()
+    frm <- list(frm, na_checkbox(ns))
   
   
     frm %>% 
@@ -107,7 +109,7 @@ get_check_collapse <- function(open = "false",
   items <- list(items, addl_html)
   
   if (addNAcheck)
-    items <- items %>% na_checkbox()
+    items <- list(items, na_checkbox(ns = ns))
   
   
   items %>%

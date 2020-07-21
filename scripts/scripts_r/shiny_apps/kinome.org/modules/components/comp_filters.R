@@ -35,16 +35,21 @@ mod_filters_ui <- function(id, open = FALSE) {
       choices2 = c("Unrelated to Protein Kinase Like", "Unknown"),
       selected2 = c("Unrelated to Protein Kinase Like", "Unknown")
     ),
-    # collapse_wrapper(
-    #   stuff= list(sliderInput(ns("compounds"), "Maximum number of most-selective/semi-selective compounds:",
-    #                 min = 0, 
-    #                 value = 9,
-    #                 max = 10),
-    #               ),
-    #   open = "false",
-    #   "compounds_collapse",
-    #   "Compounds"
-    # ),
+    collapse_wrapper(internal_html = list(
+      sliderInput(
+        ns("compounds"),
+        "Maximum number of most-selective/semi-selective compounds:",
+        min = 0,
+        value = 9,
+        max = 10
+      ),
+      na_checkbox(ns)
+    ), 
+      ns = ns,
+      open = "false",
+      "compounds_collapse",
+      "Compounds"
+    ),
     get_radio_collapse(
       open = "false",
       ns = ns,
@@ -67,7 +72,8 @@ mod_filters_ui <- function(id, open = FALSE) {
       addl_html = sliderInput(ns("essentialcelllines"), "Essential in at least how many cell lines:",
                               min = 0, 
                               value = max(kinomedat$`Number of Essential cell lines`, na.rm = TRUE),
-                              max = max(kinomedat$`Number of Essential cell lines`, na.rm = TRUE))
+                              max = max(kinomedat$`Number of Essential cell lines`, na.rm = TRUE)),
+      addNAcheck = TRUE
       
     ),
     get_check_collapse(
@@ -78,7 +84,8 @@ mod_filters_ui <- function(id, open = FALSE) {
       NULL,
       "flt_resources",
       c("Structures", "Commercial assays"),
-      NULL
+      NULL,
+      addNAcheck = TRUE
     ),
     get_check_collapse(
       open = "false",
