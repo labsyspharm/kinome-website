@@ -35,11 +35,14 @@ mod_table_server <- function(input, output, session, r) {
   
   
   filtered_data <- reactive({
-    if(!is.null(r$proteinfold))
+    
+
+    #if(!is.null(r$proteinfold))
       .data <- filter_proteinfold(.data, r$proteinfold)
     
+        .data <- filter_compounds(.data, r$compounds, r$na_compounds)
     
-    if(!is.null(r$knowledge_collapse))
+    if(!is.null(r$knowledge_collapse) && !r$knowledge_collapse == "No filter")
       .data <- filter_knowledge_collapse(.data, r$knowledge_collapse)
     
     if(!is.null(r$resources))
@@ -56,7 +59,7 @@ mod_table_server <- function(input, output, session, r) {
       .data <- filter_biological_relevance(.data, r$biological_relevance)
     
     if(!is.null(r$essential_cell_lines))
-      .data <- filter_essential_cell_lines(.data, r$essential_cell_lines)
+      .data <- filter_essential_cell_lines(.data, r$essential_cell_lines, r$na_essential_cell_lines)
     
     
     

@@ -1,9 +1,26 @@
 filter_proteinfold <- function(.data, fltinfo){
+
+  fltinfo[fltinfo == "Unrelated to Protein Kinase Like"] <- "Unrelated to Protein Kinase"
   .data %>% dplyr::filter(Fold_Annotation %in% fltinfo)
 }
 
-filter_knowledge_collapse <- function(.data, fltinfo){
+filter_compounds <- function(.data, fltinfo, na_info){
+  #browser()
   
+  if(is.null(na_info)){
+    .data <- .data %>% 
+      dplyr::filter(`Number of MS/SS cmpds` <= fltinfo)
+  } else {
+    .data <- .data %>% 
+      dplyr::filter(`Number of MS/SS cmpds` <= fltinfo | is.na(`Number of MS/SS cmpds`))
+  }
+    
+  .data
+}
+
+
+filter_knowledge_collapse <- function(.data, fltinfo){
+  #browser()
   idg <- c(0,1)
   statdef <- c(0,1)
   idg_or_statdef<-c(0,1,2)
@@ -59,26 +76,43 @@ filter_resources <- function(.data, fltinfo){
 
 filter_conv_class <- function(.data, fltinfo){
   
-
-
-  mk <- c(0,1)
-  kk <- c(0,1)
-
-  if(fltinfo == "Manning kinases") mk <- 1
-  if(fltinfo == "KinHub kinases") kk <- 1
-  if(fltinfo == "Both") {mk <- 1; kk <- 1}
-  if(fltinfo == "Neither") {mk <- 0; kk <- 0}
+  if(fltinfo == "No filter") return(.data)
+  # mk <- c(0,1)
+  # kk <- c(0,1)
+  # 
+  # if(fltinfo == "Manning kinases") mk <- 1
+  # if(fltinfo == "KinHub kinases") kk <- 1
+  # if(fltinfo == "Both") {mk <- 1; kk <- 1}
+  # if(fltinfo == "Neither") {mk <- 0; kk <- 0}
+  # 
+  # 
+  # .data <- .data %>%
+  #   dplyr::filter(`Manning Kinase` %in% mk) %>%
+  #   dplyr::filter(`Kinhub Kinase` %in% kk)
+  
+  
+  mk <- c(0,1)#idg
+  kk <- c(0,1)#statdef
+  mk_or_kk<-c(0,1,2)
+  
+  if(fltinfo == "Manning kinases") {mk <- 1;kk<-0;mk_or_kk <-1}
+  if(fltinfo == "KinHub kinases") {mk<-0;kk <- 1;mk_or_kk <-1}
+  if(fltinfo == "Both") {mk <- 1; kk <- 1;mk_or_kk <-2}
+  if(fltinfo == "Either") {mk<-c(0,1);kk<-c(0,1);mk_or_kk <-c(1,2)}
+  if(fltinfo == "Neither") {mk <- 0; kk <- 0;mk_or_kk <-0}
+  #if(fltinfo == "No filter") {mk<-c(0,1);kk<-c(0,1);mk_or_kk <-c(0,1,2)}
   
 
-  .data <- .data %>%
+  .data %>%
+    dplyr::mutate(sum_mk_kk= `Manning Kinase` + `Kinhub Kinase`)%>%
     dplyr::filter(`Manning Kinase` %in% mk) %>%
-    dplyr::filter(`Kinhub Kinase` %in% kk)
+    dplyr::filter(`Kinhub Kinase` %in% kk) %>%
+    dplyr::filter(sum_mk_kk %in% mk_or_kk)
   
-  .data
 }
 
-filter_pseudokinase <- function(.data, fltinfo){
-  .data %>% dplyr::filter(Pseudokinase == 1)
+filter_pseudokinase <- function(.data, fltinfo, includeNA = TRUE){
+  #.data %>% dplyr::filter(Pseudokinase == 1 | )
 }
 
 
@@ -101,12 +135,22 @@ filter_biological_relevance <- function(.data, fltinfo){
   
 }
 
-filter_essential_cell_lines <- function(.data, essential_cell){
+
   
-  .data %>% 
-    dplyr::filter(`Number of Essential cell lines` <= essential_cell)
+filter_essential_cell_lines <- function(.data, fltinfo, na_info){
+
+  if(is.null(na_info)){
+    .data <- .data %>% 
+      dplyr::filter(`Number of Essential cell lines` <= fltinfo)
+  } else {
+    .data <- .data %>% 
+      dplyr::filter(`Number of Essential cell lines` <= fltinfo | is.na(`Number of Essential cell lines`))
+  }
   
+  .data
 }
-  
+
+
+
 
 

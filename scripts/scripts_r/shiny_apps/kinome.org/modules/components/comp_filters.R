@@ -16,11 +16,10 @@ mod_filters_ui <- function(id, open = FALSE) {
     
     get_check_collapse(
       open = "false",
-      ns = ns,
-      "proteinfold_collapse",
+      ns("proteinfold_collapse"),
       "Protein Fold",
       "Protein Kinase Like",
-      "flt_kinaselike",
+      ns("flt_kinaselike"),
       c(
         "Eukaryotic Protein Kinase (ePK)",
         "Eukaryotic Like Kinase (eLK)",
@@ -31,39 +30,36 @@ mod_filters_ui <- function(id, open = FALSE) {
         "Eukaryotic Like Kinase (eLK)",
         "Atypical"
       ),
-      "flt_nokinaselike",
+      ns("flt_nokinaselike"),
       choices2 = c("Unrelated to Protein Kinase Like", "Unknown"),
       selected2 = c("Unrelated to Protein Kinase Like", "Unknown")
     ),
     collapse_wrapper(internal_html = list(
       sliderInput(
-        ns("compounds"),
+        ns("flt_compounds"),
         "Maximum number of most-selective/semi-selective compounds:",
-        min = 0,
-        value = 9,
-        max = 10
+        min = min(kinomedat$`Number of MS/SS cmpds`, na.rm=TRUE),
+        value = max(kinomedat$`Number of MS/SS cmpds`, na.rm=TRUE),
+        max = max(kinomedat$`Number of MS/SS cmpds`, na.rm=TRUE)
       ),
-      na_checkbox(ns)
+      na_checkbox(ns("na_compounds"), includeNA = TRUE)
     ), 
-      ns = ns,
       open = "false",
-      "compounds_collapse",
+      ns("compounds_collapse"),
       "Compounds"
     ),
     get_radio_collapse(
       open = "false",
-      ns = ns,
-      collapseid = "knowledge_collapse",
+      collapseid = ns("knowledge_collapse"),
       title = "Knowledge",
       label = NULL,
-      flt_id1 = "flt_knowledge",
+      flt_id1 = ns("flt_knowledge"),
       choices = c("IDG dark kinase", "Statistically defined dark kinase", "Both", "Either", "Neither", "No filter"),
       selected = c("No filter")
     ),
     get_check_collapse(
       open = "false",
-      ns = ns,
-      "biological_relevance",
+      ns("biological_relevance"),
       "Biological Relevance",
       NULL,
       "flt_biorel",
@@ -73,47 +69,45 @@ mod_filters_ui <- function(id, open = FALSE) {
                               min = 0, 
                               value = max(kinomedat$`Number of Essential cell lines`, na.rm = TRUE),
                               max = max(kinomedat$`Number of Essential cell lines`, na.rm = TRUE)),
-      addNAcheck = TRUE
+      addNAcheck = TRUE,
+      na_checkid = ns("na_essentialcelllines")
       
     ),
     get_check_collapse(
       open = "false",
-      ns = ns,
-      "resources",
+      ns("resources"),
       "Resources",
       NULL,
-      "flt_resources",
+      ns("flt_resources"),
       c("Structures", "Commercial assays"),
       NULL,
-      addNAcheck = TRUE
+      addNAcheck = TRUE,
+      na_checkid = ns("na_resources")
     ),
-    get_check_collapse(
+    get_radio_collapse(
       open = "false",
-      ns = ns,
-      "conventional_classification",
+      ns("conventional_classification"),
       "Conventional Classification",
       NULL,
-      "flt_conv_class",
-      c("Manning kinases", "KinHub kinases", "Both", "Neither", "No filter"),
+      ns("flt_conv_class"),
+      c("Manning kinases", "KinHub kinases", "Both", "Either", "Neither", "No filter"),
       c("No filter")
     ),
     get_check_collapse(
       open = "false",
-      ns = ns,
-      collapseid = "pseudokinase",
+      collapseid = ns("pseudokinase"),
       title = "Pseudokinase",
       label = NULL,
-      flt_id1 = "flt_pseudokinase",
+      flt_id1 = ns("flt_pseudokinase"),
       choices1 = c("Pseudokinase"),
       selected1 = NULL
     ),
     get_check_collapse(
       open = "false",
-      ns = ns,
-      collapseid = "customlist",
+      collapseid = ns("customlist"),
       title = "Custom list",
       label = NULL,
-      flt_id1 = "flt_customlist",
+      flt_id1 = ns("flt_customlist"),
       choices1 = c("Custom list"),
       selected1 = NULL
     )
@@ -150,9 +144,24 @@ mod_filters_server <- function(input, output, session, r) {
                {
                  proteinfold <-
                    c(input$flt_kinaselike, input$flt_nokinaselike)
-                 r$proteinfold <- convert_filter_vars(proteinfold)
+                 r$proteinfold <- proteinfold#convert_filter_vars(proteinfold)
                },
                ignoreNULL = FALSE)
+  
+  observeEvent(input$flt_compounds,
+               {
+                 r$compounds <-input$flt_compounds
+                 
+               },
+               ignoreNULL = FALSE)
+  
+  observeEvent(input$na_compounds,
+               {
+                 r$na_compounds <-input$na_compounds
+                 
+               },
+               ignoreNULL = FALSE)
+  
   
   observeEvent(input$flt_knowledge,
                {
@@ -192,6 +201,13 @@ mod_filters_server <- function(input, output, session, r) {
   observeEvent(input$essentialcelllines,
                {
                  r$essential_cell_lines <-input$essentialcelllines
+                 
+               },
+               ignoreNULL = FALSE)
+  
+  observeEvent(input$na_essentialcelllines,
+               {
+                 r$na_essential_cell_lines <-input$na_essentialcelllines
                  
                },
                ignoreNULL = FALSE)
