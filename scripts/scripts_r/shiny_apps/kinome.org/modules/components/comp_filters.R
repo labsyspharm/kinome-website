@@ -14,12 +14,13 @@ mod_filters_ui <- function(id, open = FALSE) {
     class = "panel-group",
     
     
-    get_collapse(
+    get_check_collapse(
       open = "false",
-      ns("proteinfold_collapse"),
-      "Protein fold",
+      ns = ns,
+      "proteinfold_collapse",
+      "Protein Fold",
       "Protein Kinase Like",
-      ns("flt_kinaselike"),
+      "flt_kinaselike",
       c(
         "Eukaryotic Protein Kinase (ePK)",
         "Eukaryotic Like Kinase (eLK)",
@@ -30,77 +31,89 @@ mod_filters_ui <- function(id, open = FALSE) {
         "Eukaryotic Like Kinase (eLK)",
         "Atypical"
       ),
-      ns("flt_nokinaselike"),
+      "flt_nokinaselike",
       choices2 = c("Unrelated to Protein Kinase Like", "Unknown"),
       selected2 = c("Unrelated to Protein Kinase Like", "Unknown")
     ),
-    get_collapse(
+    # collapse_wrapper(
+    #   stuff= list(sliderInput(ns("compounds"), "Maximum number of most-selective/semi-selective compounds:",
+    #                 min = 0, 
+    #                 value = 9,
+    #                 max = 10),
+    #               ),
+    #   open = "false",
+    #   "compounds_collapse",
+    #   "Compounds"
+    # ),
+    get_radio_collapse(
       open = "false",
-      ns("compounds_collapse"),
-      "Compounds",
-      "Compounds",
-      ns("flt_compounds"),
-      c("With at least [1] most selective/semi-selective compounds"),
-      c("A")
+      ns = ns,
+      collapseid = "knowledge_collapse",
+      title = "Knowledge",
+      label = NULL,
+      flt_id1 = "flt_knowledge",
+      choices = c("IDG dark kinase", "Statistically defined dark kinase", "Both", "Either", "Neither", "No filter"),
+      selected = c("No filter")
     ),
-    get_collapse(
+    get_check_collapse(
       open = "false",
-      ns("knowledge_collapse"),
-      "Knowledge",
-      NULL,
-      ns("flt_knowledge"),
-      c("IDG dark kinase", "Statistically defined dark kinase", "Both", "Neither", "No filter"),
-      c("No filter"),
-      radio = TRUE
-    ),
-    get_collapse(
-      open = "false",
-      ns("biological_relevance"),
+      ns = ns,
+      "biological_relevance",
       "Biological Relevance",
       NULL,
-      ns("flt_biorel"),
-      c("Cancer", "Alzheimer's disease", "Chronic obstructive pulmonary disease", "Essential in at least [100] cell lines"),
-      NULL
+      "flt_biorel",
+      c("Cancer", "Alzheimer's disease", "Chronic obstructive pulmonary disease"),
+      NULL,
+      addl_html = sliderInput(ns("essentialcelllines"), "Essential in at least how many cell lines:",
+                              min = 0, 
+                              value = max(kinomedat$`Number of Essential cell lines`, na.rm = TRUE),
+                              max = max(kinomedat$`Number of Essential cell lines`, na.rm = TRUE))
+      
     ),
-    get_collapse(
+    get_check_collapse(
       open = "false",
-      ns("resources"),
+      ns = ns,
+      "resources",
       "Resources",
       NULL,
-      ns("flt_resources"),
+      "flt_resources",
       c("Structures", "Commercial assays"),
       NULL
     ),
-    get_collapse(
+    get_check_collapse(
       open = "false",
-      ns("conventional_classification"),
+      ns = ns,
+      "conventional_classification",
       "Conventional Classification",
       NULL,
-      ns("flt_conv_class"),
+      "flt_conv_class",
       c("Manning kinases", "KinHub kinases", "Both", "Neither", "No filter"),
-      c("No filter"),
-      radio = TRUE
+      c("No filter")
     ),
-    get_collapse(
+    get_check_collapse(
       open = "false",
-      ns("pseudokinase"),
-      "Pseudokinase",
-      NULL,
-      ns("flt_pseudokinase"),
-      c("Pseudokinase"),
-      NULL
+      ns = ns,
+      collapseid = "pseudokinase",
+      title = "Pseudokinase",
+      label = NULL,
+      flt_id1 = "flt_pseudokinase",
+      choices1 = c("Pseudokinase"),
+      selected1 = NULL
     ),
-    get_collapse(
+    get_check_collapse(
       open = "false",
-      ns("customlist"),
-      "Custom list",
-      NULL,
-      ns("flt_customlist"),
-      c("Custom list"),
-      NULL
+      ns = ns,
+      collapseid = "customlist",
+      title = "Custom list",
+      label = NULL,
+      flt_id1 = "flt_customlist",
+      choices1 = c("Custom list"),
+      selected1 = NULL
     )
     
-    # id,
+    # open = "false",
+    # ns,
+    # collapseid,
     # title,
     # label,
     # flt_id1,
@@ -109,6 +122,8 @@ mod_filters_ui <- function(id, open = FALSE) {
     # flt_id2 = NULL,
     # choices2 = NULL,
     # selected2 = NULL,
+    # addl_html = NULL,
+    # addNAcheck = FALSE
     
     
     
@@ -167,6 +182,12 @@ mod_filters_server <- function(input, output, session, r) {
                },
                ignoreNULL = FALSE)
   
+  observeEvent(input$essentialcelllines,
+               {
+                 r$essential_cell_lines <-input$essentialcelllines
+                 
+               },
+               ignoreNULL = FALSE)
   
 }
 

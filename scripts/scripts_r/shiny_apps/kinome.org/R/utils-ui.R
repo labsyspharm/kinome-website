@@ -1,4 +1,5 @@
-collapse_piece <- function(stuff, open, id, title) {
+collapse_wrapper <- function(internal_html, open, ns, collapseid, title) {
+
   div(class = "panel-group",
       div(class = "panel-heading",
           h3(
@@ -6,22 +7,65 @@ collapse_piece <- function(stuff, open, id, title) {
             tags$a(
               `data-toggle` = "collapse",
               `aria-expanded` = ifelse(open, "true", "false"),
-              href = paste0("#", id),
+              href = paste0("#", ns(collapseid)),
               paste(title),
               icon("chevron-right")
             )
           )),
       div(
-        id = id,
+        id = ns(collapseid),
         class = glue::glue("panel-collapse collapse {ifelse(open, 'in', '')}"),
-        stuff
+        internal_html
       ))
+}
+
+na_checkbox <- function(id, ns){
+  
+checkboxInput(
+  inline = FALSE,
+  id = id,
+  choices = "Include missing values",
+  selected = "Include missing values"
+) %>%
+  active("red")
+}
+
+get_radio_collapse <- function(open = "false",
+                               ns,
+                               collapseid,
+                               title,
+                               label,
+                               flt_id1,
+                               choices1,
+                               selected1, 
+                               addNAcheck = FALSE){
+  
+  frm <- formGroup(
+    label = tags$h6(label) %>% margin(b = 0),
+    input = radioInput(
+      id = ns(flt_id1),
+      choices = choices1,
+      selected = selected1
+    ) %>%
+      active("red")
+  )
+  
+  if(addNAcheck)
+    frm <- frm %>% na_checkbox()
+  
+  
+    frm %>% 
+      collapse_wrapper(open, ns = ns, collapseid, title)
+  
 }
 
 
 
-get_collapse <- function(open = "false",
-                               id,
+
+
+get_check_collapse <- function(open = "false",
+                               ns,
+                               collapseid,
                                title,
                                label,
                                flt_id1,
@@ -30,17 +74,15 @@ get_collapse <- function(open = "false",
                                flt_id2 = NULL,
                                choices2 = NULL,
                                selected2 = NULL,
-                               radio = FALSE) {
-  
-
-  
+                               addl_html = NULL,
+                               addNAcheck = FALSE) {
   second <- div()
   if (!is.null(flt_id2)) {
     second <- formGroup(
       label = NULL,
       input = checkboxInput(
         inline = FALSE,
-        id = flt_id2,
+        id = ns(flt_id2),
         choices = choices2,
         selected = selected2
       ) %>%
@@ -49,33 +91,27 @@ get_collapse <- function(open = "false",
   }
   
   
-  if (!radio) {
-    items <- list(formGroup(
-      label = tags$h6(label) %>% margin(b = 0),
-      input = checkboxInput(
-        inline = FALSE,
-        id = flt_id1,
-        choices = choices1,
-        selected = selected1
-      ) %>%
-        active("red")
-    ),
-    second)
-  } else{
-    items <- formGroup(
-      label = tags$h6(label) %>% margin(b = 0),
-      input = radioInput(
-        id = flt_id1,
-        choices = choices1,
-        selected = selected1
-      ) %>%
-        active("red")
-    )
-  }
+  
+  items <- list(formGroup(
+    label = tags$h6(label) %>% margin(b = 0),
+    input = checkboxInput(
+      inline = FALSE,
+      id = ns(flt_id1),
+      choices = choices1,
+      selected = selected1
+    ) %>%
+      active("red")
+  ),
+  second)
+  
+  items <- list(items, addl_html)
+  
+  if (addNAcheck)
+    items <- items %>% na_checkbox()
+  
   
   items %>%
-    collapse_piece(open, id, title)
-  
+    collapse_wrapper(open, ns, collapseid, title)
   
   
 }

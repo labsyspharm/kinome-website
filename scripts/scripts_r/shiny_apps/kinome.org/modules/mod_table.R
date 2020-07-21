@@ -55,6 +55,11 @@ mod_table_server <- function(input, output, session, r) {
     if(!is.null(r$biological_relevance))
       .data <- filter_biological_relevance(.data, r$biological_relevance)
     
+    if(!is.null(r$essential_cell_lines))
+      .data <- filter_essential_cell_lines(.data, r$essential_cell_lines)
+    
+    
+    
     .data
   })
   
