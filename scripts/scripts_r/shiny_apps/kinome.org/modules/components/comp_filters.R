@@ -62,12 +62,12 @@ mod_filters_ui <- function(id, open = FALSE) {
       ns("biological_relevance"),
       "Biological Relevance",
       NULL,
-      "flt_biorel",
+      ns("flt_biorel"),
       c("Cancer", "Alzheimer's disease", "Chronic obstructive pulmonary disease"),
       NULL,
       addl_html = sliderInput(ns("essentialcelllines"), "Essential in at least how many cell lines:",
                               min = 0, 
-                              value = max(kinomedat$`Number of Essential cell lines`, na.rm = TRUE),
+                              value = 0,
                               max = max(kinomedat$`Number of Essential cell lines`, na.rm = TRUE)),
       addNAcheck = TRUE,
       na_checkid = ns("na_essentialcelllines")
@@ -170,9 +170,23 @@ mod_filters_server <- function(input, output, session, r) {
                },
                ignoreNULL = FALSE)
   
+  observeEvent(input$flt_biorel,
+               {
+                 r$biological_relevance <-input$flt_biorel
+                 
+               },
+               ignoreNULL = FALSE)
+  
   observeEvent(input$flt_resources,
                {
                  r$resources <-input$flt_resources
+                 
+               },
+               ignoreNULL = FALSE)
+  
+  observeEvent(input$na_resources,
+               {
+                 r$na_resources <-input$na_resources
                  
                },
                ignoreNULL = FALSE)
@@ -191,12 +205,7 @@ mod_filters_server <- function(input, output, session, r) {
                },
                ignoreNULL = FALSE)
   
-  observeEvent(input$flt_biorel,
-               {
-                 r$biological_relevance <-input$flt_biorel
-                 
-               },
-               ignoreNULL = FALSE)
+
   
   observeEvent(input$essentialcelllines,
                {

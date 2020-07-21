@@ -25,17 +25,17 @@ function(req) {
           id = "nav",
           choices = list(
             list(icon("home"), "Home"),
-            list( "Setting"),
+            list( "Data")
             # list(icon("circle", class = "similarity--green"), "Similarity"),
             # list(icon("circle", class = "library--orange"), "Library"),
-            "Download"
+            #"Download"
           ),
           values = c(
             "home",
-            "selectivity",
+            "selectivity"
             #"similarity",
             #"library",
-            "download"
+            #"download"
           )
         ) %>%
           margin(left = "auto"),

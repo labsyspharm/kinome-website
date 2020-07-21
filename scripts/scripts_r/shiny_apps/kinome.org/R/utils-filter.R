@@ -21,6 +21,10 @@ filter_compounds <- function(.data, fltinfo, na_info){
 
 filter_knowledge_collapse <- function(.data, fltinfo){
   #browser()
+  
+
+  if(fltinfo == "No filter") return(.data)
+  
   idg <- c(0,1)
   statdef <- c(0,1)
   idg_or_statdef<-c(0,1,2)
@@ -30,7 +34,7 @@ filter_knowledge_collapse <- function(.data, fltinfo){
   if(fltinfo == "Both") {idg <- 1; statdef <- 1;idg_or_statdef <-2}
   if(fltinfo == "Either") {idg<-c(0,1);statdef<-c(0,1);idg_or_statdef <-c(1,2)}
   if(fltinfo == "Neither") {idg <- 0; statdef <- 0;idg_or_statdef <-0}
-  if(fltinfo == "No filter") {idg<-c(0,1);statdef<-c(0,1);idg_or_statdef <-c(0,1,2)}
+  #if(fltinfo == "No filter") {idg<-c(0,1);statdef<-c(0,1);idg_or_statdef <-c(0,1,2)}
   
   .data %>%
     dplyr::mutate(sum_idg_statdef= `IDG dark kinase` + `Statistically defined dark kinase`)%>%
@@ -42,31 +46,32 @@ filter_knowledge_collapse <- function(.data, fltinfo){
   # data=data.frame("IDG dark kinase"=c(1,0,1,0),
   #                 "Statistically defined dark kinase"=c(0,1,1,0))
   
-  # idg <- c(0,1)
-  # statdef <- c(0,1)
-  # 
-  # if(fltinfo == "IDG dark kinase") idg <- 1
-  # if(fltinfo == "Statistically defined dark kinase") statdef <- 1
-  # if(fltinfo == "Both") {idg <- 1; statdef <- 1}
-  # if(fltinfo == "Neither") {idg <- 0; statdef <- 0}
-  # 
-  # 
-  # .data <- .data %>%
-  #   dplyr::filter(`IDG dark kinase` %in% idg) %>%
-  #   dplyr::filter(`Statistically defined dark kinase` %in% statdef)
-  
-  .data
+
 }
 
 
-filter_resources <- function(.data, fltinfo){
+filter_resources <- function(.data, fltinfo, na_info){
   
+  # Note that this requires that the NA vals in num_pdb
+  # and commercial_assay are the same which seems to be
+  # true
   
-  if("Structures" %in% fltinfo)
-    .data <- .data %>% dplyr::filter(num_pdb > 0)
+  if(is.null(fltinfo)){
+    if(is.null(na_info)) .data <- .data %>% dplyr::filter(!is.na(num_pdb))
+  }
   
-  if("Commercial assays" %in% fltinfo)
-    .data <- .data %>% dplyr::filter(commercial_assay == 1)
+  if("Structures" %in% fltinfo){
+    if(is.null(na_info)) .data <- .data %>% dplyr::filter(num_pdb > 0)
+    .data <- .data %>% dplyr::filter(num_pdb > 0 | is.na(num_pdb))
+  }
+    
+    
+  
+  if("Commercial assays" %in% fltinfo){
+    if(is.null(na_info)) .data <- .data %>% dplyr::filter(commercial_assay == 1)
+    .data <- .data %>% dplyr::filter(commercial_assay == 1 | is.na(commercial_assay))
+  }
+
   
   .data
 }
@@ -111,13 +116,20 @@ filter_conv_class <- function(.data, fltinfo){
   
 }
 
-filter_pseudokinase <- function(.data, fltinfo, includeNA = TRUE){
-  #.data %>% dplyr::filter(Pseudokinase == 1 | )
+filter_pseudokinase <- function(.data, fltinfo){
+  
+  if(is.null(fltinfo)) return(.data)
+  
+  .data <- .data %>% 
+    dplyr::filter(`Pseudokinase` == 1)
+  
+
 }
 
 
 filter_biological_relevance <- function(.data, fltinfo){
   
+  if(is.null(fltinfo)) return(.data)
   cancer <- c(0,1)
   alzheimers <- c(0,1)
   copd <- c(0, 1)
@@ -141,10 +153,10 @@ filter_essential_cell_lines <- function(.data, fltinfo, na_info){
 
   if(is.null(na_info)){
     .data <- .data %>% 
-      dplyr::filter(`Number of Essential cell lines` <= fltinfo)
+      dplyr::filter(`Number of Essential cell lines` >= fltinfo)
   } else {
     .data <- .data %>% 
-      dplyr::filter(`Number of Essential cell lines` <= fltinfo | is.na(`Number of Essential cell lines`))
+      dplyr::filter(`Number of Essential cell lines` >= fltinfo | is.na(`Number of Essential cell lines`))
   }
   
   .data
@@ -152,5 +164,43 @@ filter_essential_cell_lines <- function(.data, fltinfo, na_info){
 
 
 
+# count(kinomedat, Fold_Annotation)
+# # A tibble: 5 x 2
+# Fold_Annotation                     n
+# <chr>                           <int>
+#   1 Atypical                           44
+# 2 Eukaryotic Like Kinase (eLK)       18
+# 3 Eukaryotic Protein Kinase (ePK)   494
+# 4 Unknown                            13
+# 5 Unrelated to Protein Kinase       141
+
+#filter(kinomedat, `Number of MS/SS cmpds` <= 35) %>% nrow() # 554 (not including missings)
+#filter(kinomedat, `Number of MS/SS cmpds` <= 35 | is.na(`Number of MS/SS cmpds`)) %>% nrow() #707
 
 
+# `IDG dark kinase` `Statistically defined dark …     n
+# <dbl>                         <dbl> <int>
+# 1                 0                             0   332
+# 2                 0                             1    63
+# 3                 0                            NA   152
+# 4                 1                             0    43
+# 5                 1                             1   119
+# 6                 1                            NA     1
+
+# Cancer 0=275, 1 = 282
+# table(kinomedat$`Alzeheimer’s disease`)
+# Alzheimer's 0 = 519, 1 = 38
+# copd  0 = 537   1 = 20
+
+# filter(kinomedat, Cancer == 1, `Number of Essential cell lines`>=50) %>% nrow() # 30
+# filter(kinomedat, num_pdb > 0) %>% nrow() #297
+# commercial assay 0 = 105, 1 = 452, NA 153
+
+# `Manning Kinase` `Kinhub Kinase`     n
+# <dbl>           <dbl> <int>
+#   1                0               0   174
+# 2                0               1    10
+# 3                1               0     2
+# 4                1               1   524
+
+# Pseudokinase 0 = 655, 1 = 55
