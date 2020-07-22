@@ -30,7 +30,6 @@ mod_tablevars_server <- function(input, output, session, r){
   
   
   observeEvent(input$tablevars, {
-    print("in tablevar server")
 
     if(is.null(input$tablevars)) r$tablevars <- DEFAULT_COLUMNS
     if(!is.null(input$tablevars)){

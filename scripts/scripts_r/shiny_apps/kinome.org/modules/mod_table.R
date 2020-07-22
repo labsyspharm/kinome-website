@@ -37,33 +37,34 @@ mod_table_server <- function(input, output, session, r) {
   filtered_data <- reactive({
     
 
-      print(paste("start:", nrow(.data)))
+      #print(paste("start:", nrow(.data)))
       .data <- filter_proteinfold(.data, r$proteinfold)
-      print(paste("protein:", nrow(.data)))
+      #print(paste("protein:", nrow(.data)))
         .data <- filter_compounds(.data, r$compounds, r$na_compounds)
-        print(paste("compounds:", nrow(.data)))
+        #print(paste("compounds:", nrow(.data)))
     #if(!is.null(r$knowledge_collapse) && !r$knowledge_collapse == "No filter")
       .data <- filter_knowledge_collapse(.data, r$knowledge_collapse)
-      print(paste("knowledge:", nrow(.data)))
+      #print(paste("knowledge:", nrow(.data)))
       
       .data <- filter_biological_relevance(.data, r$biological_relevance)
-      print(paste("biological:", nrow(.data)))
+      #print(paste("biological:", nrow(.data)))
       
       .data <- filter_essential_cell_lines(.data, r$essential_cell_lines, r$na_essential_cell_lines)
-      print(paste("essential:", nrow(.data)))
+      #print(paste("essential:", nrow(.data)))
     #if(!is.null(r$resources))
       .data <- filter_resources(.data, r$resources, r$na_resources)
-      print(paste("resources:", nrow(.data)))
+      #print(paste("resources:", nrow(.data)))
       
 
     #if(!is.null(r$conventional_classification))
       .data <- filter_conv_class(.data, r$conventional_classification)
-      print(paste("conventional:", nrow(.data)))
+      #print(paste("conventional:", nrow(.data)))
 
       .data <- filter_pseudokinase(.data, r$pseudokinase)
-      print(paste("pseudokinase:", nrow(.data)))
+      #print(paste("pseudokinase:", nrow(.data)))
     #if(!is.null(r$biological_relevance))
 
+      .data <- filter_custom_HGNC(.data, r$custom)
     #if(!is.null(r$essential_cell_lines))
 
     

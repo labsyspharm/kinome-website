@@ -102,15 +102,16 @@ mod_filters_ui <- function(id, open = FALSE) {
       choices1 = c("Pseudokinase"),
       selected1 = NULL
     ),
-    get_check_collapse(
-      open = "false",
-      collapseid = ns("customlist"),
-      title = "Custom list",
-      label = NULL,
-      flt_id1 = ns("flt_customlist"),
-      choices1 = c("Custom list"),
-      selected1 = NULL
-    )
+    collapse_wrapper(internal_html = 
+      formGroup(
+        label = NULL,
+        input = textInput(ns("flt_custom"), placeholder = "AAK1, PRKAA1"),
+        help = "Add HGNC symbols separated by commas"
+      ),
+    open = "false",
+    ns("custom_collapse"),
+    "Custom"
+    ),
     
     # open = "false",
     # ns,
@@ -217,6 +218,13 @@ mod_filters_server <- function(input, output, session, r) {
   observeEvent(input$na_essentialcelllines,
                {
                  r$na_essential_cell_lines <-input$na_essentialcelllines
+                 
+               },
+               ignoreNULL = FALSE)
+  
+  observeEvent(input$flt_custom,
+               {
+                 r$custom <-input$flt_custom
                  
                },
                ignoreNULL = FALSE)

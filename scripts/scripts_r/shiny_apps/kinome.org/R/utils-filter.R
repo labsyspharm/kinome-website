@@ -163,6 +163,16 @@ filter_essential_cell_lines <- function(.data, fltinfo, na_info){
 }
 
 
+filter_custom_HGNC <- function(.data, fltinfo){
+  if(is.null(fltinfo)) return(.data)
+  
+  vals <- trimws(strsplit(fltinfo, ",")[[1]])
+  
+  .data %>% 
+    dplyr::filter(HGNC_Symbol %in% vals)
+}
+
+
 
 # count(kinomedat, Fold_Annotation)
 # # A tibble: 5 x 2
@@ -198,9 +208,12 @@ filter_essential_cell_lines <- function(.data, fltinfo, na_info){
 
 # `Manning Kinase` `Kinhub Kinase`     n
 # <dbl>           <dbl> <int>
-#   1                0               0   174
+# 1                0               0   174
 # 2                0               1    10
 # 3                1               0     2
 # 4                1               1   524
 
 # Pseudokinase 0 = 655, 1 = 55
+
+# EIF2AK4 has 2
+# ACVR1C has 1
