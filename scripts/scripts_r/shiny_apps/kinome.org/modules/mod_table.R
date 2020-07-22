@@ -20,7 +20,11 @@ mod_table_ui <- function(id) {
     ),
     
     # Show a plot of the generated distribution
-    mainPanel(DT::DTOutput(ns("kinometable")))
+    mainPanel(
+      DT::DTOutput(ns("kinometable")),
+      mod_ui_download_button(ns("output_table_csv_dl"), "Download CSV"),
+      mod_ui_download_button(ns("output_table_xlsx_dl"), "Download Excel")
+      )
   ))
 }
 
@@ -31,45 +35,21 @@ mod_table_server <- function(input, output, session, r) {
   ns <- session$ns
   
   req(kinomedat)
-  .data <- kinomedat
+  data <- kinomedat
   
   
   filtered_data <- reactive({
-    
-
-      #print(paste("start:", nrow(.data)))
-      .data <- filter_proteinfold(.data, r$proteinfold)
-      #print(paste("protein:", nrow(.data)))
-        .data <- filter_compounds(.data, r$compounds, r$na_compounds)
-        #print(paste("compounds:", nrow(.data)))
-    #if(!is.null(r$knowledge_collapse) && !r$knowledge_collapse == "No filter")
-      .data <- filter_knowledge_collapse(.data, r$knowledge_collapse)
-      #print(paste("knowledge:", nrow(.data)))
+      data <- filter_proteinfold(data, r$proteinfold)
+      data <- filter_compounds(data, r$compounds, r$na_compounds)
+      data <- filter_knowledge_collapse(data, r$knowledge_collapse)
+      data <- filter_biological_relevance(data, r$biological_relevance)
+      data <- filter_essential_cell_lines(data, r$essential_cell_lines, r$na_essential_cell_lines)
+      data <- filter_resources(data, r$resources, r$na_resources)
+      data <- filter_conv_class(data, r$conventional_classification)
+      data <- filter_pseudokinase(data, r$pseudokinase)
+      data <- filter_custom_HGNC(data, r$custom)
       
-      .data <- filter_biological_relevance(.data, r$biological_relevance)
-      #print(paste("biological:", nrow(.data)))
-      
-      .data <- filter_essential_cell_lines(.data, r$essential_cell_lines, r$na_essential_cell_lines)
-      #print(paste("essential:", nrow(.data)))
-    #if(!is.null(r$resources))
-      .data <- filter_resources(.data, r$resources, r$na_resources)
-      #print(paste("resources:", nrow(.data)))
-      
-
-    #if(!is.null(r$conventional_classification))
-      .data <- filter_conv_class(.data, r$conventional_classification)
-      #print(paste("conventional:", nrow(.data)))
-
-      .data <- filter_pseudokinase(.data, r$pseudokinase)
-      #print(paste("pseudokinase:", nrow(.data)))
-    #if(!is.null(r$biological_relevance))
-
-      .data <- filter_custom_HGNC(.data, r$custom)
-    #if(!is.null(r$essential_cell_lines))
-
-    
-    
-    .data
+      data
   })
   
     output$kinometable <- DT::renderDT(filtered_data() %>% dplyr::select(r$tablevars),
@@ -78,12 +58,8 @@ mod_table_server <- function(input, output, session, r) {
                                        )))
   
   
-  
+    callModule(mod_server_download_button, "output_table_xlsx_dl", filtered_data, "excel", "kinase_data")
+    callModule(mod_server_download_button, "output_table_csv_dl", filtered_data, "csv", "kinase_data")
   
 }
 
-## To be copied in the UI
-# mod_table_ui("table_ui_1")
-
-## To be copied in the server
-# callModule(mod_table_server, "table_ui_1")
