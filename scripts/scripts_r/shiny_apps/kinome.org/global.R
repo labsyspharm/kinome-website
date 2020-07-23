@@ -16,6 +16,8 @@ library(DT)
 library(writexl)
 #requireNamespace("DT")
 
+
+source("data/load.R", local = TRUE)
 source("R/constants.R", local = TRUE)
 source("R/utils.R", local = TRUE)
 source("R/utils-ui.R", local = TRUE)
@@ -34,7 +36,7 @@ source("modules/mod_table.R", local = TRUE)
 # source("modules/library.R", local = TRUE)
 # source("modules/binding.R", local = TRUE)
 # 
-source("data/load.R", local = TRUE)
+
 # 
 # source("utils.R", local = TRUE)
 

@@ -20,26 +20,18 @@ mod_filters_ui <- function(id, open = FALSE) {
       "Protein Fold",
       "Protein Kinase Like",
       ns("flt_kinaselike"),
-      c(
-        "Eukaryotic Protein Kinase (ePK)",
-        "Eukaryotic Like Kinase (eLK)",
-        "Atypical"
-      ),
-      c(
-        "Eukaryotic Protein Kinase (ePK)",
-        "Eukaryotic Like Kinase (eLK)",
-        "Atypical"
-      ),
+      INIT$flt_kinaselike,
+      INIT$flt_kinaselike,
       ns("flt_nokinaselike"),
-      choices2 = c("Unrelated to Protein Kinase Like", "Unknown"),
-      selected2 = c("Unrelated to Protein Kinase Like", "Unknown")
+      choices2 = INIT$flt_nokinaselike,
+      selected2 = INIT$flt_nokinaselike
     ),
     collapse_wrapper(internal_html = list(
       sliderInput(
         ns("flt_compounds"),
         "Maximum number of most-selective/semi-selective compounds:",
         min = min(kinomedat$`Number of MS/SS cmpds`, na.rm=TRUE),
-        value = min(kinomedat$`Number of MS/SS cmpds`, na.rm=TRUE),
+        value = INIT$flt_compounds,
         max = max(kinomedat$`Number of MS/SS cmpds`, na.rm=TRUE)
       ),
       na_checkbox(ns("na_compounds"), includeNA = TRUE)
@@ -55,7 +47,7 @@ mod_filters_ui <- function(id, open = FALSE) {
       label = NULL,
       flt_id1 = ns("flt_knowledge"),
       choices = c("IDG dark kinase", "Statistically defined dark kinase", "Both", "Either", "Neither", "No filter"),
-      selected = c("No filter")
+      selected = INIT$flt_knowledge
     ),
     get_check_collapse(
       open = "false",
@@ -112,23 +104,7 @@ mod_filters_ui <- function(id, open = FALSE) {
     ns("custom_collapse"),
     "Custom"
     ),
-    
-    # open = "false",
-    # ns,
-    # collapseid,
-    # title,
-    # label,
-    # flt_id1,
-    # choices1,
-    # selected1,
-    # flt_id2 = NULL,
-    # choices2 = NULL,
-    # selected2 = NULL,
-    # addl_html = NULL,
-    # addNAcheck = FALSE
-    
-    
-    
+    buttonInput(ns('reset_all'), label = "Reset all filters")
     
   ))
   
@@ -157,6 +133,32 @@ mod_filters_server <- function(input, output, session, r) {
   observe(r$essential_cell_lines <-input$essentialcellline)
   observe(r$na_essential_cell_lines <-input$na_essentialcelllines)
   observe(r$custom <-input$flt_custom)
+  
+  
+  observeEvent(input$reset_all, {
+    
+    # don't need session for yonder
+    updateCheckboxInput("flt_kinaselike", selected = INIT$flt_kinaselike)
+    updateCheckboxInput("flt_nokinaselike", selected = INIT$flt_nokinaselike)
+    
+    updateSliderInput(session, "flt_compounds",  value = INIT$flt_compounds)
+    updateCheckboxInput("na_compounds", selected = INIT$na_compounds)
+    updateRadioInput("flt_knowledge", selected = INIT$flt_knowledge)
+    yonder::updateCheckboxInput("flt_biorel", selected = "NULL")
+    updateSliderInput(session, "essentialcelllines",  value = INIT$essentialcelllines)
+    
+    updateCheckboxInput("na_essentialcelllines", selected = INIT$na_essentialcelllines)
+    
+    updateCheckboxInput("flt_resources", selected = INIT$flt_resources)
+    updateCheckboxInput("na_resources", selected = INIT$na_resources)
+    
+    updateCheckboxInput("flt_conv_class", selected = INIT$flt_conv_class)
+    updateCheckboxInput("flt_pseudokinase", selected = INIT$flt_pseudokinase)
+    
+    
+    updateTextInput("flt_custom", value = INIT$flt_custom)
+
+  })
   
 }
 
