@@ -155,7 +155,7 @@ filter_custom_HGNC <- function(.data, fltinfo){
   vals <- trimws(strsplit(fltinfo, ",")[[1]])
   
   .data %>% 
-    dplyr::filter(HGNC_Symbol %in% vals)
+    dplyr::filter(HGNC_Symbol %in% toupper(vals))
 }
 
 

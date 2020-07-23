@@ -13,11 +13,11 @@ h3 > a,
   font-weight: 100;
   font-size: 24px !important;
   line-height: 1.2;
-  color: #c90016 !important;
+  color: #A41034 !important;
 }
 
 .harvard--crimson {
-  color: #c90016 !important;
+  color: #A41034 !important;
 }
 
 .selectivity--pink {
@@ -73,7 +73,7 @@ h3 > a,
 }
 
 .navbar .active {
-  background-color: #c90016 !important;
+  background-color: #A41034 !important;
 }
 
 .navbar .active i {
@@ -191,8 +191,8 @@ table.dataTable thead th {
   .well > h2.mt-5, h2.my-5 {
     margin-top: 2rem !important;
   }#filters_ui_1-reset_all {
-  background-color: #c90016;
-  border: 1px solid #c90016;
+  background-color: #A41034;
+  border: 1px solid #A41034;
   color: #fff;
   transition: .05s;
   margin-top: 15px;
@@ -202,3 +202,85 @@ table.dataTable thead th {
 #filters_ui_1-reset_all:hover{
   filter: brightness(75%);
 }
+
+.btn-group-toggle.active-crimson .btn:not(:disabled):not(.disabled).active,
+.btn-group-toggle.active-crimson .btn:not(:disabled):not(.disabled):active,
+.show > .btn-group-toggle.active-crimson .btn.dropdown-toggle {
+  color: #fff;
+  background-color: #A41034;
+  border-color: #ea1c0d;
+}
+.btn-group-toggle.active-crimson .btn:not(:disabled):not(.disabled).active.focus,
+.btn-group-toggle.active-crimson .btn:not(:disabled):not(.disabled).active:focus,
+.btn-group-toggle.active-crimson .btn:not(:disabled):not(.disabled):active.focus,
+.btn-group-toggle.active-crimson .btn:not(:disabled):not(.disabled):active:focus,
+.show > .btn-group-toggle.active-crimson .btn.dropdown-toggle.focus,
+.show > .btn-group-toggle.active-crimson .btn.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(246, 95, 84, 0.5);
+}
+
+.active-crimson
+  .custom-checkbox
+  .custom-control-input:checked
+  ~ .custom-control-label::before,
+.active-crimson
+  .custom-radio
+  .custom-control-input:checked
+  ~ .custom-control-label::before {
+  background-color: #A41034;
+  border-color: #A41034;
+  box-shadow: inset 0 1px 1px rgba(244, 67, 54, 0.75);
+}
+.active-crimson
+  .custom-switch
+  .custom-control-input:checked
+  ~ .custom-control-label::before {
+  background-color: #A41034;
+  border-color: #A41034;
+}
+
+.nav-tabs.active-crimson .active {
+  color: #fff;
+  background-color: #A41034;
+  border-color: #A41034 #A41034 #212529;
+}
+
+.nav-pills.active-crimson .active {
+  color: #fff;
+  background-color: #A41034;
+}
+
+.list-group.active-crimson .active {
+  color: #fff;
+  background-color: #A41034;
+  border-color: #A41034;
+}
+
+.active-crimson .chip {
+  color: #fff;
+  background-color: #A41034;
+}
+.active-crimson .chip:focus,
+.active-crimson .chip:hover {
+  color: #fff;
+  background-color: #ea1c0d;
+}
+.active-crimson .chip.focus,
+.active-crimson .chip:focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(244, 67, 54, 0.5);
+}
+.active-crimson .chip.disabled,
+.active-crimson .chip:disabled {
+  color: #fff;
+  background-color: #A41034;
+}
+
+.js-irs-0 .irs-min, .js-irs-0 .irs-max, .js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar {background: #A41034}
+
+.js-irs-0 .irs-min, .js-irs-0 .irs-single, .js-irs-0 .irs-max{color: white}
+
+.js-irs-1 .irs-min, .js-irs-1 .irs-max, .js-irs-1 .irs-single, .js-irs-1 .irs-bar-edge, .js-irs-1 .irs-bar {background: #A41034}
+
+.js-irs-1 .irs-min, .js-irs-1 .irs-single, .js-irs-1 .irs-max{color: white}
+

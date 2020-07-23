@@ -30,7 +30,7 @@ checkboxInput(
   choices = "Include missing values",
   selected = ifelse(includeNA,"Include missing values", NULL)
 ) %>%
-  active("red")
+  active("crimson")
 }
 
 get_radio_collapse <- function(open = "false",
@@ -50,7 +50,7 @@ get_radio_collapse <- function(open = "false",
       choices = choices1,
       selected = selected1
     ) %>%
-      active("red")
+      active("crimson")
   )
   
   if(addNAcheck)
@@ -90,7 +90,7 @@ get_check_collapse <- function(open = "false",
         choices = choices2,
         selected = selected2
       ) %>%
-        active("red")
+        active("crimson")
     )
   }
   
@@ -104,7 +104,7 @@ get_check_collapse <- function(open = "false",
       choices = choices1,
       selected = selected1
     ) %>%
-      active("red")
+      active("crimson")
   ),
   second)
   
@@ -164,4 +164,11 @@ formGroup <- function (label, input, ..., help = NULL, width = NULL)
       
  
   })
+}
+
+active <- function (tag, color) 
+{
+  #assert_possible(color, possible_colors)
+  tag <- yonder:::tag_class_add(tag, paste0("active-", color))
+  tag
 }

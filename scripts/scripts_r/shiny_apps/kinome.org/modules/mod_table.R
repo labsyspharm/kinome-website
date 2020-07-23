@@ -54,7 +54,9 @@ mod_table_server <- function(input, output, session, r) {
   })
   
     output$kinometable <- DT::renderDT(filtered_data() %>% dplyr::select(r$tablevars),
-                                       options = list(columnDefs = list(
+                                       options = list(
+                                         scrollX = TRUE,
+                                         columnDefs = list(
                                          list(className = 'dt-center', targets = 2)
                                        )))
   
