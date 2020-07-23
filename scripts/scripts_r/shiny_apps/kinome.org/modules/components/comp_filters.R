@@ -93,14 +93,14 @@ mod_filters_ui <- function(id, open = FALSE) {
       c("Manning kinases", "KinHub kinases", "Both", "Either", "Neither", "No filter"),
       c("No filter")
     ),
-    get_check_collapse(
+    get_radio_collapse(
       open = "false",
       collapseid = ns("pseudokinase"),
       title = "Pseudokinase",
       label = NULL,
       flt_id1 = ns("flt_pseudokinase"),
-      choices1 = c("Pseudokinase"),
-      selected1 = NULL
+      choices1 = c("Exclude pseudokinases", "Show only pseudokinases", "No filter"),
+      selected1 = "No filter"
     ),
     collapse_wrapper(internal_html = 
       formGroup(
