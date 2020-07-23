@@ -33,6 +33,9 @@ h3 > a,
   border-color: #ec4353 !important;
 }
 
+.irs {
+  max-width: 450px;
+}
 .similarity--green {
   color: #00AC9F !important;
 }
@@ -165,3 +168,22 @@ table.dataTable thead th {
   margin-top: 50px;
   width: 700px;
 }
+
+.include-missing-checkbox {
+  margin-bottom: 1rem;
+}
+
+ h3,
+  h3 > a,
+  .panel-title,
+  .h3 {
+    white-space: nowrap;
+  }
+  
+ .well > h2 {
+    color: dimgray;
+  }
+  
+  .well > h2.mt-5, h2.my-5 {
+    margin-top: 2rem !important;
+  }
