@@ -178,10 +178,14 @@ table.dataTable thead th {
   .panel-title,
   .h3 {
     white-space: nowrap;
+    font-size: 21px !important;
+    margin-bottom: 1rem;
   }
+
   
  .well > h2 {
-    color: dimgray;
+    margin-bottom: 1.2rem !important;
+    font-weight: bold;
   }
   
   .well > h2.mt-5, h2.my-5 {
