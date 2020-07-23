@@ -119,3 +119,49 @@ get_check_collapse <- function(open = "false",
   
   
 }
+
+
+formGroup <- function (label, input, ..., help = NULL, width = NULL) 
+{
+
+  label_start <- label
+  yonder:::assert_found(label)
+  yonder:::assert_found(input)
+
+  if (!yonder:::is_tag(input) && !yonder:::is_strictly_list(input)) {
+    stop("invalid argument in `formGroup()`, `input` must be a tag element or list", 
+         call. = FALSE)
+  }
+  col_classes <- if (!is.null(width)) 
+    column(width = width)$attribs$class
+  yonder:::dep_attach({
+    if (yonder:::is_tag(label) && yonder:::tag_name_is(label, "label")) {
+    }
+    else {
+      
+      label <- tags$label(yonder:::coerce_content(label))
+    }
+    if (is.character(help)) {
+      help <- yonder:::coerce_content(help)
+    }
+    
+   
+
+    if(!is.null(label_start) && !is.null(label_start$children[[1]])){
+      res <- tags$div(class = yonder:::str_collate("form-group", col_classes),
+               ..., label, input, if (!is.null(help)) {
+                 tags$small(class = "form-text text-muted", help)
+               })
+      
+    } else {
+      res <- tags$div(class = yonder:::str_collate("form-group", col_classes),
+                      ...,  input, if (!is.null(help)) {
+                        tags$small(class = "form-text text-muted", help)
+                      })
+    }
+
+    res
+      
+ 
+  })
+}
