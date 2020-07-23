@@ -179,11 +179,3 @@ table.dataTable thead th {
   .h3 {
     white-space: nowrap;
   }
-  
-  .well > h2 {
-    color: dimgray;
-  }
-  
-  .well > h2.mt-5, h2.my-5 {
-    margin-top: 2rem !important;
-  }
