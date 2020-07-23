@@ -39,7 +39,7 @@ mod_filters_ui <- function(id, open = FALSE) {
         ns("flt_compounds"),
         "Maximum number of most-selective/semi-selective compounds:",
         min = min(kinomedat$`Number of MS/SS cmpds`, na.rm=TRUE),
-        value = max(kinomedat$`Number of MS/SS cmpds`, na.rm=TRUE),
+        value = min(kinomedat$`Number of MS/SS cmpds`, na.rm=TRUE),
         max = max(kinomedat$`Number of MS/SS cmpds`, na.rm=TRUE)
       ),
       na_checkbox(ns("na_compounds"), includeNA = TRUE)

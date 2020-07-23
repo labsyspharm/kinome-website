@@ -9,10 +9,10 @@ filter_compounds <- function(.data, fltinfo, na_info){
   
   if(is.null(na_info)){
     .data <- .data %>% 
-      dplyr::filter(`Number of MS/SS cmpds` <= fltinfo)
+      dplyr::filter(`Number of MS/SS cmpds` >= fltinfo)
   } else {
     .data <- .data %>% 
-      dplyr::filter(`Number of MS/SS cmpds` <= fltinfo | is.na(`Number of MS/SS cmpds`))
+      dplyr::filter(`Number of MS/SS cmpds` >= fltinfo | is.na(`Number of MS/SS cmpds`))
   }
     
   .data
