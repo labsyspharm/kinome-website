@@ -33,6 +33,9 @@ h3 > a,
   border-color: #ec4353 !important;
 }
 
+.irs {
+  max-width: 450px;
+}
 .similarity--green {
   color: #00AC9F !important;
 }
