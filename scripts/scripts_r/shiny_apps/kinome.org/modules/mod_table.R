@@ -12,6 +12,7 @@ mod_table_ui <- function(id) {
   tagList(sidebarLayout(
     # Sidebar with a slider input
     sidebarPanel(
+      width = 3,
       h2("Filters"),
       mod_filters_ui("filters_ui_1", open = TRUE),
       h2("Add information on") %>%
@@ -21,6 +22,7 @@ mod_table_ui <- function(id) {
     
     # Show a plot of the generated distribution
     mainPanel(
+      width = 9,
       DT::DTOutput(ns("kinometable"), width = "90%"),
       mod_ui_download_button(ns("output_table_csv_dl"), "Download CSV"),
       mod_ui_download_button(ns("output_table_xlsx_dl"), "Download Excel")
