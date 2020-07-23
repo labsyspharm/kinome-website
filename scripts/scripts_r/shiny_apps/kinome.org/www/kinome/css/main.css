@@ -165,3 +165,7 @@ table.dataTable thead th {
   margin-top: 50px;
   width: 700px;
 }
+
+.include-missing-checkbox {
+  margin-bottom: 1rem;
+}

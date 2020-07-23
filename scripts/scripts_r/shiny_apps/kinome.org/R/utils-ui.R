@@ -26,6 +26,7 @@ na_checkbox <- function(id, includeNA = TRUE){
 checkboxInput(
   inline = FALSE,
   id = id,
+  class="include-missing-checkbox",
   choices = "Include missing values",
   selected = ifelse(includeNA,"Include missing values", NULL)
 ) %>%
