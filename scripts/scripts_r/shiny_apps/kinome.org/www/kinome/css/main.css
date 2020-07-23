@@ -172,3 +172,10 @@ table.dataTable thead th {
 .include-missing-checkbox {
   margin-bottom: 1rem;
 }
+
+ h3,
+  h3 > a,
+  .panel-title,
+  .h3 {
+    white-space: nowrap;
+  }
