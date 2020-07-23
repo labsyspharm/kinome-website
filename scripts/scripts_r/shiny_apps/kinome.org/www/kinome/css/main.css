@@ -34,7 +34,7 @@ h3 > a,
 }
 
 .irs {
-  max-width: 450px;
+  max-width: 350px;
 }
 .similarity--green {
   color: #00AC9F !important;
@@ -178,12 +178,27 @@ table.dataTable thead th {
   .panel-title,
   .h3 {
     white-space: nowrap;
+    font-size: 21px !important;
+    margin-bottom: 1rem;
   }
+
   
  .well > h2 {
-    color: dimgray;
+    margin-bottom: 1.2rem !important;
+    font-weight: bold;
   }
   
   .well > h2.mt-5, h2.my-5 {
     margin-top: 2rem !important;
-  }
+  }#filters_ui_1-reset_all {
+  background-color: #c90016;
+  border: 1px solid #c90016;
+  color: #fff;
+  transition: .05s;
+  margin-top: 15px;
+  
+}
+
+#filters_ui_1-reset_all:hover{
+  filter: brightness(75%);
+}
