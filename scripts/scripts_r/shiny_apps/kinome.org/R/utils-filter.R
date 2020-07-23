@@ -34,17 +34,13 @@ filter_knowledge_collapse <- function(.data, fltinfo){
   if(fltinfo == "Both") {idg <- 1; statdef <- 1;idg_or_statdef <-2}
   if(fltinfo == "Either") {idg<-c(0,1);statdef<-c(0,1);idg_or_statdef <-c(1,2)}
   if(fltinfo == "Neither") {idg <- 0; statdef <- 0;idg_or_statdef <-0}
-  #if(fltinfo == "No filter") {idg<-c(0,1);statdef<-c(0,1);idg_or_statdef <-c(0,1,2)}
-  
+
   .data %>%
     dplyr::mutate(sum_idg_statdef= `IDG dark kinase` + `Statistically defined dark kinase`)%>%
     dplyr::filter(`IDG dark kinase` %in% idg) %>%
     dplyr::filter(`Statistically defined dark kinase` %in% statdef)%>%
     dplyr::filter(sum_idg_statdef %in% idg_or_statdef)
   
-  # I tested it on the demo data 
-  # data=data.frame("IDG dark kinase"=c(1,0,1,0),
-  #                 "Statistically defined dark kinase"=c(0,1,1,0))
   
 
 }
@@ -82,22 +78,10 @@ filter_resources <- function(.data, fltinfo, na_info){
 filter_conv_class <- function(.data, fltinfo){
   
   if(fltinfo == "No filter") return(.data)
-  # mk <- c(0,1)
-  # kk <- c(0,1)
-  # 
-  # if(fltinfo == "Manning kinases") mk <- 1
-  # if(fltinfo == "KinHub kinases") kk <- 1
-  # if(fltinfo == "Both") {mk <- 1; kk <- 1}
-  # if(fltinfo == "Neither") {mk <- 0; kk <- 0}
-  # 
-  # 
-  # .data <- .data %>%
-  #   dplyr::filter(`Manning Kinase` %in% mk) %>%
-  #   dplyr::filter(`Kinhub Kinase` %in% kk)
+
   
-  
-  mk <- c(0,1)#idg
-  kk <- c(0,1)#statdef
+  mk <- c(0,1)
+  kk <- c(0,1)
   mk_or_kk<-c(0,1,2)
   
   if(fltinfo == "Manning kinases") {mk <- 1;kk<-0;mk_or_kk <-1}
@@ -118,12 +102,14 @@ filter_conv_class <- function(.data, fltinfo){
 
 filter_pseudokinase <- function(.data, fltinfo){
   
-  if(is.null(fltinfo)) return(.data)
+  if(fltinfo == "No filter") return(.data)
   
-  .data <- .data %>% 
-    dplyr::filter(`Pseudokinase` == 1)
+  val <- 1
+  if(fltinfo == "Exclude pseudokinases") val <- 0
   
-
+  .data %>% 
+    dplyr::filter(`Pseudokinase` == val)
+  
 }
 
 

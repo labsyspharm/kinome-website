@@ -14,7 +14,7 @@ mod_table_ui <- function(id) {
     sidebarPanel(
       h2("Filters"),
       mod_filters_ui("filters_ui_1", open = TRUE),
-      h2("Select table variables") %>%
+      h2("Add information on") %>%
         margin(top = 5),
       mod_tablevars_ui("tablevars_ui_1")
     ),
