@@ -39,6 +39,7 @@ mod_table_server <- function(input, output, session, r) {
   
   
   filtered_data <- reactive({
+
       data <- filter_proteinfold(data, r$proteinfold)
       data <- filter_compounds(data, r$compounds, r$na_compounds)
       data <- filter_knowledge_collapse(data, r$knowledge_collapse)

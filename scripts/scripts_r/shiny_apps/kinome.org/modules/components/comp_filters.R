@@ -141,98 +141,22 @@ mod_filters_ui <- function(id, open = FALSE) {
 mod_filters_server <- function(input, output, session, r) {
   ns <- session$ns
   
-  observeEvent(c(input$flt_kinaselike, input$flt_nokinaselike),
-               {
-                 proteinfold <-
-                   c(input$flt_kinaselike, input$flt_nokinaselike)
-                 r$proteinfold <- proteinfold#convert_filter_vars(proteinfold)
-               },
-               ignoreNULL = FALSE)
+  observe({ 
+    proteinfold <- c(input$flt_kinaselike, input$flt_nokinaselike)
+    r$proteinfold <- proteinfold
+    })
   
-  observeEvent(input$flt_compounds,
-               {
-                 r$compounds <-input$flt_compounds
-                 
-               },
-               ignoreNULL = FALSE)
-  
-  observeEvent(input$na_compounds,
-               {
-                 r$na_compounds <-input$na_compounds
-                 
-               },
-               ignoreNULL = FALSE)
-  
-  
-  observeEvent(input$flt_knowledge,
-               {
-                 r$knowledge_collapse <-input$flt_knowledge
-
-               },
-               ignoreNULL = FALSE)
-  
-  observeEvent(input$flt_biorel,
-               {
-                 r$biological_relevance <-input$flt_biorel
-                 
-               },
-               ignoreNULL = FALSE)
-  
-  observeEvent(input$flt_resources,
-               {
-                 r$resources <-input$flt_resources
-                 
-               },
-               ignoreNULL = FALSE)
-  
-  observeEvent(input$na_resources,
-               {
-                 r$na_resources <-input$na_resources
-                 
-               },
-               ignoreNULL = FALSE)
-  
-  observeEvent(input$flt_conv_class,
-               {
-                 r$conventional_classification <-input$flt_conv_class
-                 
-               },
-               ignoreNULL = FALSE)
-  
-  observeEvent(input$flt_pseudokinase,
-               {
-                 r$pseudokinase <-input$flt_pseudokinase
-                 
-               },
-               ignoreNULL = FALSE)
-  
-
-  
-  observeEvent(input$essentialcelllines,
-               {
-                 r$essential_cell_lines <-input$essentialcelllines
-                 
-               },
-               ignoreNULL = FALSE)
-  
-  observeEvent(input$na_essentialcelllines,
-               {
-                 r$na_essential_cell_lines <-input$na_essentialcelllines
-                 
-               },
-               ignoreNULL = FALSE)
-  
-  observeEvent(input$flt_custom,
-               {
-                 r$custom <-input$flt_custom
-                 
-               },
-               ignoreNULL = FALSE)
+  observe(r$compounds <-input$flt_compounds)
+  observe(r$na_compounds <-input$na_compounds)
+  observe(r$knowledge_collapse <-input$flt_knowledge)
+  observe(r$biological_relevance <-input$flt_biorel)
+  observe(r$resources <-input$flt_resources)
+  observe(r$na_resources <-input$na_resources)
+  observe(r$conventional_classification <-input$flt_conv_class)
+  observe(r$pseudokinase <-input$flt_pseudokinase)
+  observe(r$essential_cell_lines <-input$essentialcellline)
+  observe(r$na_essential_cell_lines <-input$na_essentialcelllines)
+  observe(r$custom <-input$flt_custom)
   
 }
 
-## To be copied in the UI
-# mod_filters_ui("filters_ui_1")
-
-## To be copied in the server
-# callModule(mod_filters_server, "filters_ui_1")

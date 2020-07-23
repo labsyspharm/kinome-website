@@ -1,11 +1,11 @@
 filter_proteinfold <- function(.data, fltinfo){
-
+  if(is.null(fltinfo)) return(.data)
   fltinfo[fltinfo == "Unrelated to Protein Kinase Like"] <- "Unrelated to Protein Kinase"
   .data %>% dplyr::filter(Fold_Annotation %in% fltinfo)
 }
 
 filter_compounds <- function(.data, fltinfo, na_info){
-  #browser()
+  if(is.null(fltinfo)) return(.data)
   
   if(is.null(na_info)){
     .data <- .data %>% 
@@ -20,10 +20,8 @@ filter_compounds <- function(.data, fltinfo, na_info){
 
 
 filter_knowledge_collapse <- function(.data, fltinfo){
-  #browser()
-  
+  if(is.null(fltinfo) || fltinfo == "No filter") return(.data)
 
-  if(fltinfo == "No filter") return(.data)
   
   idg <- c(0,1)
   statdef <- c(0,1)
@@ -116,6 +114,7 @@ filter_pseudokinase <- function(.data, fltinfo){
 filter_biological_relevance <- function(.data, fltinfo){
   
   if(is.null(fltinfo)) return(.data)
+  
   cancer <- c(0,1)
   alzheimers <- c(0,1)
   copd <- c(0, 1)
@@ -136,7 +135,8 @@ filter_biological_relevance <- function(.data, fltinfo){
 
   
 filter_essential_cell_lines <- function(.data, fltinfo, na_info){
-
+  if(is.null(fltinfo)) return(.data)
+  
   if(is.null(na_info)){
     .data <- .data %>% 
       dplyr::filter(`Number of Essential cell lines` >= fltinfo)
