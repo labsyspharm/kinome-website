@@ -21,7 +21,7 @@ mod_table_ui <- function(id) {
     
     # Show a plot of the generated distribution
     mainPanel(
-      DT::DTOutput(ns("kinometable")),
+      DT::DTOutput(ns("kinometable"), width = "90%"),
       mod_ui_download_button(ns("output_table_csv_dl"), "Download CSV"),
       mod_ui_download_button(ns("output_table_xlsx_dl"), "Download Excel")
       )
