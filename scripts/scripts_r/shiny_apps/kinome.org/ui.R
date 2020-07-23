@@ -98,16 +98,11 @@ function(req) {
                   #font(align = "justify") %>%
                   #margin(l = "auto", r = "auto", b = 5)
                 div(
+                  onclick = "$('.navbar-nav > li:eq(1)').click()",
                   tags$a(
                     id = "explore",
-                    href = "#page_selectivity",
-                    #onclick = "'$( \"#tabs\" ).tabs({ active: 2 });'",
-                    # $('#explore').click(function () {
-                    #   $('#page_home').removeClass('active');
-                    #   //$('input[type="button"][value="home"]').removeClass('active');
-                    #   //$('input[type="button"][value="selectivity"]').addClass('active');
-                    #   $('#page_selectivity').addClass('active show');
-                    # });
+                    href = "JavaScript:void(0)",
+                    onclick = '$(".navbar-nav > li:eq(1) > button").click()',
                     "Start exploring the human kinome",
                     icon("arrow-circle-right", class = "fa-lg"),
                   ) %>%

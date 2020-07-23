@@ -21,8 +21,9 @@ $(function() {
     });
   });
   
+  //$("#explore").click(function(){ $(".navbar-nav > li:eq(1) > button").click() });
 
-  
+
   
 });
 
