@@ -50,3 +50,24 @@ DEFAULT_COLUMNS <- c(
   "Fold annotation", 
   "Group")
 TWO_COLUMNS <- c("kinaseform_in_ReactionBiology", "kinaseform_in_DiscoverX")
+
+INIT <- list(
+  flt_kinaselike = c(
+    "Eukaryotic Protein Kinase (ePK)",
+    "Eukaryotic Like Kinase (eLK)",
+    "Atypical"),
+  flt_nokinaselike = c("Unrelated to Protein Kinase Like", "Unknown"),
+  flt_compounds = 0,
+  na_compounds = "Include missing values",
+  flt_knowledge = "No filter",
+  flt_biorel = "NULL",
+  essentialcelllines = 0,
+  na_essentialcelllines = "Include missing values",
+  flt_resources = "NULL",
+  na_resources = "Include missing values",
+  flt_conv_class = "No filter",
+  flt_pseudokinase = "No filter",
+  flt_custom = ""
+  
+  
+)

@@ -98,16 +98,11 @@ function(req) {
                   #font(align = "justify") %>%
                   #margin(l = "auto", r = "auto", b = 5)
                 div(
+                  onclick = "$('.navbar-nav > li:eq(1)').click()",
                   tags$a(
                     id = "explore",
-                    href = "#page_selectivity",
-                    #onclick = "'$( \"#tabs\" ).tabs({ active: 2 });'",
-                    # $('#explore').click(function () {
-                    #   $('#page_home').removeClass('active');
-                    #   //$('input[type="button"][value="home"]').removeClass('active');
-                    #   //$('input[type="button"][value="selectivity"]').addClass('active');
-                    #   $('#page_selectivity').addClass('active show');
-                    # });
+                    href = "JavaScript:void(0)",
+                    onclick = '$(".navbar-nav > li:eq(1) > button").click()',
                     "Start exploring the human kinome",
                     icon("arrow-circle-right", class = "fa-lg"),
                   ) %>%
@@ -117,26 +112,10 @@ function(req) {
               )
             )
           ),
-          # selectivity ----
           navPane(
             id = "page_selectivity",
                 mod_table_ui("table_ui_1")
           ),
-          # similarity ----
-          # navPane(
-          #   id = "page_similarity"#,
-          #   # similarityUI(
-          #   #   id = "sim"
-          #   # )
-          # ),
-          # library ----
-          # navPane(
-          #   id = "page_library"#,
-          #   # libraryUI(
-          #   #   id = "lib"
-          #   # )
-          # ),
-          # downloads ----
           navPane(
             id = "page_download",
             card(
@@ -150,39 +129,7 @@ function(req) {
                 target = "_blank"
               )
             ) %>%
-              margin(bottom = 3)#,
-            # columns(
-            #   column(
-            #     width = 6,
-            #     card(
-            #       header = h4("SQL download"),
-            #       p(
-            #         "Gzip compressed SQL dump of the Small Molecule Suite database",
-            #         "in PostgreSQL format."
-            #       ),
-            #       p("Based on ChEMBL v25, size 799.9 MB"),
-            #       a(
-            #         h4("SQL database", class = "btn btn-default btn-grey"),
-            #         href = "sms/assets/downloads/sms_db_chembl_v25.sql.gz",
-            #         target = "_blank"
-            #       )
-            #     )
-            #   ),
-            #   column(
-            #     width = 6,
-            #     card(
-            #       header = h4("CSV download"),
-            #       p(
-            #         "Tarball of gzip compressed CSV files."
-            #       ),
-            #       p("Based on ChEMBL v25, size 782.7 MB"),
-            #       a(
-            #         h4("CSV files", class = "btn btn-default btn-grey"),
-            #         href = "sms/assets/downloads/sms_tables_chembl_v25.tar"
-            #       )
-            #     )
-            #   )
-            # )
+              margin(bottom = 3)
           )
         )
       )
