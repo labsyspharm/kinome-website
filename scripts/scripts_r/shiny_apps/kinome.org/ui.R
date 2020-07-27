@@ -26,16 +26,10 @@ function(req) {
           choices = list(
             list(icon("home"), "Home"),
             list( "Data")
-            # list(icon("circle", class = "similarity--green"), "Similarity"),
-            # list(icon("circle", class = "library--orange"), "Library"),
-            #"Download"
           ),
           values = c(
             "home",
             "selectivity"
-            #"similarity",
-            #"library",
-            #"download"
           )
         ) %>%
           margin(left = "auto"),
@@ -52,14 +46,6 @@ function(req) {
         ) %>%
           background("black") %>%
           font("white"),
-        # tags$a(
-        #   href = "https://forms.gle/dSpCJSsbaavTbCkP6",
-        #   target = "_blank",
-        #   icon("comments", class = "fa-lg"),
-        #   " Feedback"
-        # ) %>%
-        #   font(color = "white") %>%
-        #   margin(l = 2),
         tags$a(
           href = "https://github.com/labsyspharm/sms-website",
           target = "_blank",
@@ -83,8 +69,6 @@ function(req) {
             columns(
               column(
                 tags$a(
-                  #class = "navbar-brand",
-                  #href="http://sorger.med.harvard.edu/",
                   tags$img(class = 'kinome-tree', src = "kinome/assets/img/kinome_tree.png")
                 ),
               ),
@@ -94,9 +78,7 @@ function(req) {
                 p("Welcome to Kinome.org!"),
                 p("Kinome.org is designed by the Laboratory of Systems Pharmacology to help researchers",
                   "understand which proteins are members of the kinome under varying criteria."
-                ), #%>%
-                  #font(align = "justify") %>%
-                  #margin(l = "auto", r = "auto", b = 5)
+                ),
                 div(
                   onclick = "$('.navbar-nav > li:eq(1)').click()",
                   tags$a(
