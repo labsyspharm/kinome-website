@@ -130,7 +130,7 @@ mod_filters_server <- function(input, output, session, r) {
   observe(r$na_resources <-input$na_resources)
   observe(r$conventional_classification <-input$flt_conv_class)
   observe(r$pseudokinase <-input$flt_pseudokinase)
-  observe(r$essential_cell_lines <-input$essentialcellline)
+  observe(r$essential_cell_lines <-input$essentialcelllines)
   observe(r$na_essential_cell_lines <-input$na_essentialcelllines)
   observe(r$custom <-input$flt_custom)
   

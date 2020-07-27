@@ -135,6 +135,7 @@ filter_biological_relevance <- function(.data, fltinfo){
 
   
 filter_essential_cell_lines <- function(.data, fltinfo, na_info){
+
   if(is.null(fltinfo)) return(.data)
   
   if(is.null(na_info)){

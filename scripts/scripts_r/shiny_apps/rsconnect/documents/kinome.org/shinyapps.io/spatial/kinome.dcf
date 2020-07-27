@@ -5,8 +5,8 @@ account: spatial
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2580553
-bundleId: 3418164
+bundleId: 3427987
 url: https://spatial.shinyapps.io/kinome/
-when: 1595358151.52002
+when: 1595538794.04098
 asMultiple: FALSE
 asStatic: FALSE
