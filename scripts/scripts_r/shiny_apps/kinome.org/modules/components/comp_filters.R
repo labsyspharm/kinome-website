@@ -104,7 +104,8 @@ mod_filters_ui <- function(id, open = FALSE) {
     ns("custom_collapse"),
     "Custom"
     ),
-    buttonInput(ns('reset_all'), label = "Reset all filters")
+    buttonInput(ns('reset_all'), label = "Reset filters"),
+    buttonInput(ns('collapse_all'), label = "Collapse all", onclick = "$('.panel-title a').attr('aria-expanded', false); $('.panel-collapse').removeClass('show')")
     
   ))
   
