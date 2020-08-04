@@ -16,6 +16,7 @@ Design/idea by [Changchang Liu](https://scholar.harvard.edu/ccliu/home) and
 [Nienke Moret](https://scholar.harvard.edu/nienkemoret/home)
 
 Shiny/R web application by [ZevRoss Spatial Analysis](https://www.zevross.com/)
+
 Supervision by [Peter Sorger](https://sorger.med.harvard.edu/)
 
 ## Funding
