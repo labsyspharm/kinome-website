@@ -59,6 +59,7 @@ mod_table_server <- function(input, output, session, r) {
       filtered_data() %>%
         dplyr::select(r$tablevars),
       rownames = FALSE,
+      selection = "none",
       options = list(
           scrollX = TRUE,
           columnDefs = list(
