@@ -70,7 +70,7 @@ mod_filters_ui <- function(id, open = FALSE) {
     get_check_collapse(
       NULL,
       ns("flt_resources"),
-      c("Structures", "Commercial assays"),
+      c("at least 1 crystal structures", "at least 1 commercial assays"),
       NULL,
       addNAcheck = TRUE,
       na_checkid = ns("na_resources")
