@@ -19,7 +19,7 @@ mod_table_ui <- function(id) {
         margin(top = 5),
       mod_tablevars_ui("tablevars_ui_1")
     ),
-    
+
     # Show a plot of the generated distribution
     mainPanel(
       width = 9,
@@ -35,11 +35,11 @@ mod_table_ui <- function(id) {
 #' @noRd
 mod_table_server <- function(input, output, session, r) {
   ns <- session$ns
-  
+
   req(kinomedat)
   data <- kinomedat
-  
-  
+
+
   filtered_data <- reactive({
 
       data <- filter_proteinfold(data, r$proteinfold)
@@ -51,20 +51,26 @@ mod_table_server <- function(input, output, session, r) {
       data <- filter_conv_class(data, r$conventional_classification)
       data <- filter_pseudokinase(data, r$pseudokinase)
       data <- filter_custom_HGNC(data, r$custom)
-      
+
       data
   })
-  
-    output$kinometable <- DT::renderDT(filtered_data() %>% dplyr::select(r$tablevars),
-                                       options = list(
-                                         scrollX = TRUE,
-                                         columnDefs = list(
-                                         list(className = 'dt-center', targets = 2)
-                                       )))
-  
-  
+
+    output$kinometable <- DT::renderDT(
+      filtered_data() %>%
+        dplyr::select(r$tablevars),
+      rownames = FALSE,
+      options = list(
+          scrollX = TRUE,
+          columnDefs = list(
+            list(className = 'dt-center', targets = 2)
+        ) %>%
+          add_column_title_defs(r$tablevars)
+      )
+    )
+
+
     callModule(mod_server_download_button, "output_table_xlsx_dl", filtered_data, "excel", "kinase_data")
     callModule(mod_server_download_button, "output_table_csv_dl", filtered_data, "csv", "kinase_data")
-  
+
 }
 
