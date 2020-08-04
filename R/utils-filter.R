@@ -1,20 +1,20 @@
 filter_proteinfold <- function(.data, fltinfo){
   if(is.null(fltinfo)) return(.data)
   fltinfo[fltinfo == "Unrelated to Protein Kinase Like"] <- "Unrelated to Protein Kinase"
-  .data %>% dplyr::filter(Fold_Annotation %in% fltinfo)
+  .data %>% dplyr::filter(fold_annotation %in% fltinfo)
 }
 
 filter_compounds <- function(.data, fltinfo, na_info){
   if(is.null(fltinfo)) return(.data)
-  
+
   if(is.null(na_info)){
-    .data <- .data %>% 
-      dplyr::filter(`Number of MS/SS cmpds` >= fltinfo)
+    .data <- .data %>%
+      dplyr::filter(n_selective_compounds >= fltinfo)
   } else {
-    .data <- .data %>% 
-      dplyr::filter(`Number of MS/SS cmpds` >= fltinfo | is.na(`Number of MS/SS cmpds`))
+    .data <- .data %>%
+      dplyr::filter(n_selective_compounds >= fltinfo | is.na(n_selective_compounds))
   }
-    
+
   .data
 }
 
@@ -22,51 +22,46 @@ filter_compounds <- function(.data, fltinfo, na_info){
 filter_knowledge_collapse <- function(.data, fltinfo){
   if(is.null(fltinfo) || fltinfo == "No filter") return(.data)
 
-  
-  idg <- c(0,1)
-  statdef <- c(0,1)
-  idg_or_statdef<-c(0,1,2)
-  
-  if(fltinfo == "IDG dark kinase") {idg <- 1;statdef<-0;idg_or_statdef <-1}
-  if(fltinfo == "Statistically defined dark kinase") {idg<-0;statdef <- 1;idg_or_statdef <-1}
-  if(fltinfo == "Both") {idg <- 1; statdef <- 1;idg_or_statdef <-2}
-  if(fltinfo == "Either") {idg<-c(0,1);statdef<-c(0,1);idg_or_statdef <-c(1,2)}
-  if(fltinfo == "Neither") {idg <- 0; statdef <- 0;idg_or_statdef <-0}
-
   .data %>%
-    dplyr::mutate(sum_idg_statdef= `IDG dark kinase` + `Statistically defined dark kinase`)%>%
-    dplyr::filter(`IDG dark kinase` %in% idg) %>%
-    dplyr::filter(`Statistically defined dark kinase` %in% statdef)%>%
-    dplyr::filter(sum_idg_statdef %in% idg_or_statdef)
-  
-  
-
+    dplyr::mutate(
+      knowledge_flag = as.integer(is_idg_dark_kinase + (is_statistically_defined_dark_kinase * 2))
+    ) %>%
+    dplyr::filter(
+      switch(
+        fltinfo,
+        "IDG dark kinase" = knowledge_flag == 1L,
+        "Statistically defined dark kinase" = knowledge_flag == 2L,
+        "Both" = knowledge_flag == 3L,
+        "Either" = xor(knowledge_flag == 1L, knowledge_flag == 2L),
+        "Neither" = knowledge_flag == 0L
+      )
+    )
 }
 
 
 filter_resources <- function(.data, fltinfo, na_info){
-  
-  # Note that this requires that the NA vals in num_pdb
-  # and commercial_assay are the same which seems to be
+
+  # Note that this requires that the NA vals in n_pdb_structures
+  # and has_commercial_assay are the same which seems to be
   # true
-  
+
   if(is.null(fltinfo)){
-    if(is.null(na_info)) .data <- .data %>% dplyr::filter(!is.na(num_pdb))
-  }
-  
-  if("Structures" %in% fltinfo){
-    if(is.null(na_info)) .data <- .data %>% dplyr::filter(num_pdb > 0)
-    .data <- .data %>% dplyr::filter(num_pdb > 0 | is.na(num_pdb))
-  }
-    
-    
-  
-  if("Commercial assays" %in% fltinfo){
-    if(is.null(na_info)) .data <- .data %>% dplyr::filter(commercial_assay == 1)
-    .data <- .data %>% dplyr::filter(commercial_assay == 1 | is.na(commercial_assay))
+    if(is.null(na_info)) .data <- .data %>% dplyr::filter(!is.na(n_pdb_structures))
   }
 
-  
+  if("Structures" %in% fltinfo){
+    if(is.null(na_info)) .data <- .data %>% dplyr::filter(n_pdb_structures > 0)
+    .data <- .data %>% dplyr::filter(n_pdb_structures > 0 | is.na(n_pdb_structures))
+  }
+
+
+
+  if("Commercial assays" %in% fltinfo){
+    if(is.null(na_info)) .data <- .data %>% dplyr::filter(has_commercial_assay == 1)
+    .data <- .data %>% dplyr::filter(has_commercial_assay == 1 | is.na(has_commercial_assay))
+  }
+
+
   .data
 }
 
@@ -74,89 +69,84 @@ filter_resources <- function(.data, fltinfo, na_info){
 
 
 filter_conv_class <- function(.data, fltinfo){
-  
+
   if(fltinfo == "No filter") return(.data)
 
-  
-  mk <- c(0,1)
-  kk <- c(0,1)
-  mk_or_kk<-c(0,1,2)
-  
-  if(fltinfo == "Manning kinases") {mk <- 1;kk<-0;mk_or_kk <-1}
-  if(fltinfo == "KinHub kinases") {mk<-0;kk <- 1;mk_or_kk <-1}
-  if(fltinfo == "Both") {mk <- 1; kk <- 1;mk_or_kk <-2}
-  if(fltinfo == "Either") {mk<-c(0,1);kk<-c(0,1);mk_or_kk <-c(1,2)}
-  if(fltinfo == "Neither") {mk <- 0; kk <- 0;mk_or_kk <-0}
-  #if(fltinfo == "No filter") {mk<-c(0,1);kk<-c(0,1);mk_or_kk <-c(0,1,2)}
-  
-
   .data %>%
-    dplyr::mutate(sum_mk_kk= `Manning Kinase` + `Kinhub Kinase`)%>%
-    dplyr::filter(`Manning Kinase` %in% mk) %>%
-    dplyr::filter(`Kinhub Kinase` %in% kk) %>%
-    dplyr::filter(sum_mk_kk %in% mk_or_kk)
-  
+    dplyr::mutate(
+      conv_class_flag = as.integer(is_manning_kinase + (is_kinhub_kinase * 2))
+    ) %>%
+    dplyr::filter(
+      switch(
+        fltinfo,
+        "Manning kinases" = conv_class_flag == 1L,
+        "KinHub kinases" = conv_class_flag == 2L,
+        "Both" = conv_class_flag == 3L,
+        "Either" = xor(conv_class_flag == 1L, conv_class_flag == 2L),
+        "Neither" = conv_class_flag == 0L
+      )
+    )
 }
 
 filter_pseudokinase <- function(.data, fltinfo){
-  
+
   if(fltinfo == "No filter") return(.data)
-  
+
   val <- 1
   if(fltinfo == "Exclude pseudokinases") val <- 0
-  
-  .data %>% 
-    dplyr::filter(`Pseudokinase` == val)
-  
+
+  .data %>%
+    dplyr::filter(`is_pseudokinase` == val)
+
 }
 
 
 filter_biological_relevance <- function(.data, fltinfo){
-  
+
   if(is.null(fltinfo)) return(.data)
-  
+
   cancer <- c(0,1)
   alzheimers <- c(0,1)
   copd <- c(0, 1)
   #nessential <- max(.data$`Number of Essential cell lines`)
-  
+
   if("Cancer" %in% fltinfo) cancer <- 1
   if("Alzheimer's disease" %in% fltinfo) alzheimers <- 1
   if("Chronic obstructive pulmonary disease" %in% fltinfo) copd <- 1
   #if("Essential in at least [100] cell lines" %in% fltinfo) nessential <- 100
-  
-  .data %>% 
-    dplyr::filter(Cancer %in% cancer) %>% 
-    dplyr::filter(`Alzeheimer’s disease` %in% alzheimers) %>% 
-    dplyr::filter(`Chronic obstructive pulmonary disease` %in% copd)
-  
+
+  .data %>%
+    dplyr::filter(significant_in_cancer %in% cancer) %>%
+    dplyr::filter(significant_in_alzheimers %in% alzheimers) %>%
+    dplyr::filter(significant_in_copd %in% copd)
+
 }
 
 
-  
+
 filter_essential_cell_lines <- function(.data, fltinfo, na_info){
 
   if(is.null(fltinfo)) return(.data)
-  
+
   if(is.null(na_info)){
-    .data <- .data %>% 
-      dplyr::filter(`Number of Essential cell lines` >= fltinfo)
+    .data <- .data %>%
+      dplyr::filter(n_essential_cell_lines >= fltinfo)
   } else {
-    .data <- .data %>% 
-      dplyr::filter(`Number of Essential cell lines` >= fltinfo | is.na(`Number of Essential cell lines`))
+    .data <- .data %>%
+      dplyr::filter(n_essential_cell_lines >= fltinfo | is.na(n_essential_cell_lines))
   }
-  
+
   .data
 }
 
 
 filter_custom_HGNC <- function(.data, fltinfo){
   if(is.null(fltinfo)) return(.data)
-  
+
   vals <- trimws(strsplit(fltinfo, ",")[[1]])
-  
-  .data %>% 
-    dplyr::filter(HGNC_Symbol %in% toupper(vals))
+
+  .data %>%
+    dplyr::filter(hgnc_symbol %in% toupper(vals))
 }
 
 

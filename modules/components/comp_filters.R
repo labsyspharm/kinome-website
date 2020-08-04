@@ -12,8 +12,8 @@ mod_filters_ui <- function(id, open = FALSE) {
 
   tagList(div(
     class = "panel-group",
-    
-    
+
+
     get_check_collapse(
       open = "false",
       ns("proteinfold_collapse"),
@@ -30,12 +30,12 @@ mod_filters_ui <- function(id, open = FALSE) {
       sliderInput(
         ns("flt_compounds"),
         "Maximum number of most-selective/semi-selective compounds:",
-        min = min(kinomedat$`Number of MS/SS cmpds`, na.rm=TRUE),
+        min = min(kinomedat$n_selective_compounds, na.rm=TRUE),
         value = INIT$flt_compounds,
-        max = max(kinomedat$`Number of MS/SS cmpds`, na.rm=TRUE)
+        max = max(kinomedat$n_selective_compounds, na.rm=TRUE)
       ),
       na_checkbox(ns("na_compounds"), includeNA = TRUE)
-    ), 
+    ),
       open = "false",
       ns("compounds_collapse"),
       "Compounds"
@@ -58,12 +58,12 @@ mod_filters_ui <- function(id, open = FALSE) {
       c("Cancer", "Alzheimer's disease", "Chronic obstructive pulmonary disease"),
       NULL,
       addl_html = sliderInput(ns("essentialcelllines"), "Essential in at least how many cell lines:",
-                              min = 0, 
+                              min = 0,
                               value = 0,
-                              max = max(kinomedat$`Number of Essential cell lines`, na.rm = TRUE)),
+                              max = max(kinomedat$n_essential_cell_lines, na.rm = TRUE)),
       addNAcheck = TRUE,
       na_checkid = ns("na_essentialcelllines")
-      
+
     ),
     get_check_collapse(
       open = "false",
@@ -94,7 +94,7 @@ mod_filters_ui <- function(id, open = FALSE) {
       choices1 = c("Exclude pseudokinases", "Show only pseudokinases", "No filter"),
       selected1 = "No filter"
     ),
-    collapse_wrapper(internal_html = 
+    collapse_wrapper(internal_html =
       formGroup(
         label = NULL,
         input = textInput(ns("flt_custom"), placeholder = "AAK1, PRKAA1"),
@@ -106,10 +106,10 @@ mod_filters_ui <- function(id, open = FALSE) {
     ),
     buttonInput(ns('reset_all'), label = "Reset filters"),
     buttonInput(ns('collapse_all'), label = "Collapse all", onclick = "$('.panel-title a').attr('aria-expanded', false); $('.panel-collapse').removeClass('show')")
-    
+
   ))
-  
-  
+
+
 }
 
 #' filters Server Function
@@ -117,12 +117,12 @@ mod_filters_ui <- function(id, open = FALSE) {
 #' @noRd
 mod_filters_server <- function(input, output, session, r) {
   ns <- session$ns
-  
-  observe({ 
+
+  observe({
     proteinfold <- c(input$flt_kinaselike, input$flt_nokinaselike)
     r$proteinfold <- proteinfold
     })
-  
+
   observe(r$compounds <-input$flt_compounds)
   observe(r$na_compounds <-input$na_compounds)
   observe(r$knowledge_collapse <-input$flt_knowledge)
@@ -134,32 +134,32 @@ mod_filters_server <- function(input, output, session, r) {
   observe(r$essential_cell_lines <-input$essentialcelllines)
   observe(r$na_essential_cell_lines <-input$na_essentialcelllines)
   observe(r$custom <-input$flt_custom)
-  
-  
+
+
   observeEvent(input$reset_all, {
-    
+
     # don't need session for yonder
     updateCheckboxInput("flt_kinaselike", selected = INIT$flt_kinaselike)
     updateCheckboxInput("flt_nokinaselike", selected = INIT$flt_nokinaselike)
-    
+
     updateSliderInput(session, "flt_compounds",  value = INIT$flt_compounds)
     updateCheckboxInput("na_compounds", selected = INIT$na_compounds)
     updateRadioInput("flt_knowledge", selected = INIT$flt_knowledge)
     yonder::updateCheckboxInput("flt_biorel", selected = "NULL")
     updateSliderInput(session, "essentialcelllines",  value = INIT$essentialcelllines)
-    
+
     updateCheckboxInput("na_essentialcelllines", selected = INIT$na_essentialcelllines)
-    
+
     updateCheckboxInput("flt_resources", selected = INIT$flt_resources)
     updateCheckboxInput("na_resources", selected = INIT$na_resources)
-    
+
     updateCheckboxInput("flt_conv_class", selected = INIT$flt_conv_class)
     updateCheckboxInput("flt_pseudokinase", selected = INIT$flt_pseudokinase)
-    
-    
+
+
     updateTextInput("flt_custom", value = INIT$flt_custom)
 
   })
-  
+
 }
 
