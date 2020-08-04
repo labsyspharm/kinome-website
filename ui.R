@@ -47,7 +47,7 @@ function(req) {
           background("black") %>%
           font("white"),
         tags$a(
-          href = "https://github.com/labsyspharm/sms-website",
+          href = "https://github.com/labsyspharm/kinome-website",
           target = "_blank",
           icon("github", class = "fa-lg")
         ) %>%
@@ -90,7 +90,7 @@ function(req) {
                   ) %>%
                     font(color = "black")
                 )
-      
+
               )
             )
           ),
