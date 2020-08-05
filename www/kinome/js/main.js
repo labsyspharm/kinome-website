@@ -19,12 +19,14 @@ $(function() {
     $(".logify-slider-10 .js-range-slider").each(function() {
       logifySlider(this, base=10, precision=null);
     });
+
+    $('[data-toggle="tooltip"]').tooltip();
   });
-  
+
   //$("#explore").click(function(){ $(".navbar-nav > li:eq(1) > button").click() });
 
 
-  
+
 });
 
 

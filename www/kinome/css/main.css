@@ -182,16 +182,16 @@ table.dataTable thead th {
     margin-bottom: 1rem;
   }
 
-  
+
  .well > h2 {
     margin-bottom: 1.2rem !important;
     font-weight: bold;
   }
-  
+
   .well > h2.mt-5, h2.my-5 {
     margin-top: 2rem !important;
   }
-  
+
   #filters_ui_1-reset_all, #filters_ui_1-collapse_all {
   background-color: #A41034;
   border: 1px solid #A41034;
@@ -199,7 +199,7 @@ table.dataTable thead th {
   transition: .05s;
   margin-top: 15px;
   font-size: 0.9em;
-  
+
 }
 filters_ui_1-collapse-all
 #filters_ui_1-reset_all:hover, #filters_ui_1-collapse_all:hover{
@@ -287,3 +287,6 @@ filters_ui_1-collapse-all
 
 .js-irs-1 .irs-min, .js-irs-1 .irs-single, .js-irs-1 .irs-max{color: white}
 
+.contains-tooltip {
+  text-decoration: underline dotted;
+}

@@ -30,6 +30,28 @@ mod_table_ui <- function(id) {
   ))
 }
 
+DT_HEADER_FORMAT_JS = paste0(
+'
+  function(thead, data, start, end, display) {
+    const tooltip_map = {',
+      with(
+        COLUMN_SPECS,
+        paste('"', column_title, '" : "', column_description, '"', sep = "", collapse = ",")
+      ),
+    '};
+    const headers = $(thead).find("th");
+    //$(thead).find("th").wrapInner("<span class=\'contains-tooltip\', data-toggle=\'tooltip\'></span>");
+    headers.attr({"class": "contains-tooltip", "data-toggle": "tooltip"});
+    headers.each(
+      function(i) {
+        const name = $(this).text();
+        $(this).attr("title", tooltip_map[name]);
+      }
+    );
+    headers.tooltip();
+  }
+')
+
 #' table Server Function
 #'
 #' @noRd
@@ -41,18 +63,16 @@ mod_table_server <- function(input, output, session, r) {
 
 
   filtered_data <- reactive({
-
-      data <- filter_proteinfold(data, r$proteinfold)
-      data <- filter_compounds(data, r$compounds, r$na_compounds)
-      data <- filter_knowledge_collapse(data, r$knowledge_collapse)
-      data <- filter_biological_relevance(data, r$biological_relevance)
-      data <- filter_essential_cell_lines(data, r$essential_cell_lines, r$na_essential_cell_lines)
-      data <- filter_resources(data, r$resources, r$na_resources)
-      data <- filter_conv_class(data, r$conventional_classification)
-      data <- filter_pseudokinase(data, r$pseudokinase)
-      data <- filter_custom_HGNC(data, r$custom)
-
-      data
+    data %>%
+      filter_proteinfold(r$proteinfold) %>%
+      filter_compounds(r$compounds, r$na_compounds) %>%
+      filter_knowledge_collapse(r$knowledge_collapse) %>%
+      filter_biological_relevance(r$biological_relevance) %>%
+      filter_essential_cell_lines(r$essential_cell_lines, r$na_essential_cell_lines) %>%
+      filter_resources(r$resources, r$na_resources) %>%
+      filter_conv_class(r$conventional_classification) %>%
+      filter_pseudokinase(r$pseudokinase) %>%
+      filter_custom_HGNC(r$custom)
   })
 
     output$kinometable <- DT::renderDT(
@@ -61,14 +81,14 @@ mod_table_server <- function(input, output, session, r) {
       rownames = FALSE,
       selection = "none",
       options = list(
-          scrollX = TRUE,
-          columnDefs = list(
-            list(className = 'dt-center', targets = 2)
+        scrollX = TRUE,
+        headerCallback = JS(DT_HEADER_FORMAT_JS),
+        columnDefs = list(
+          list(className = 'dt-center', targets = 2)
         ) %>%
           add_column_title_defs(r$tablevars)
       )
     )
-
 
     callModule(mod_server_download_button, "output_table_xlsx_dl", filtered_data, "excel", "kinase_data")
     callModule(mod_server_download_button, "output_table_csv_dl", filtered_data, "csv", "kinase_data")
