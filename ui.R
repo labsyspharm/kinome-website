@@ -87,10 +87,17 @@ function(req) {
                   "function of a protein, it can be one of many and not necessarily the most important one."),
                 p("In", a("our work", href = "https://www.biorxiv.org/content/10.1101/2020.04.02.022277v2", target = "_blank"),
                   "we therefore took an approach that describes the kinome from multiple viewpoints.",
-                  "We compare proteins with a kinase domain on i) their 3D fold and structure; ii) the knowledge",
-                  "on them in the public domain; iii) reagents available to study their function (biochemical",
-                  "reagents and small molecules); iv) evidence that they might be involved in pathophysiology.",
-                  "The Kinome.org portal lets users filter the list of kinases based on these criteria and as",
+                  "We compare proteins with a kinase domain on",
+                  tags$ol(
+                    type = "i",
+                    tags$li("their 3D fold and structure;"),
+                    tags$li("the knowledge on them in the public domain;"),
+                    tags$li("reagents available to study their function",
+                            "(biochemical reagents and small molecules);"),
+                    tags$li("evidence that they might be involved in pathophysiology.")
+                  )
+                ),
+                p("The Kinome.org portal lets users filter the list of kinases based on these criteria and as",
                   "such build a custom and context specific definition of the kinome."),
                 div(
                   onclick = "$('.navbar-nav > li:eq(1)').click()",
