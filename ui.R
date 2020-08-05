@@ -77,7 +77,22 @@ function(req) {
                   font(align = "left"),
                 p("Welcome to Kinome.org!"),
                 p("Kinome.org is designed by the Laboratory of Systems Pharmacology to help researchers",
-                  "understand which proteins are members of the kinome under varying criteria."
+                  "understand which proteins are members of the kinome under varying criteria.",
+                  "While the kinome is conceptually simple to understand as the full collection of human",
+                  "protein kinases, the practice of classifying a protein as protein kinase is not straightforward.",
+                  "Classifying a protein as protein kinase implies that its main function is the transfer",
+                  "of a phosphoryl group from ATP to a protein substrate or peptide. However, it is almost",
+                  "impossible to verify the main function of any protein because most proteins have multiple",
+                  "domains and could therefore have multiple functions. Even if phosphoryl transfer is one",
+                  "function of a protein, it can be one of many and not necessarily the most important one.",
+                  
+                  "In our work we therefore took an approach that describes the kinome from multiple viewpoints.", # can 'our work' link to the biorXiv MS? https://www.biorxiv.org/content/10.1101/2020.04.02.022277v2
+                  "We compare proteins with a kinase domain on i) their 3D fold and structure; ii) the knowledge",
+                  "on them in the public domain; iii) reagents available to study their function (biochemical",
+                  "reagents and small molecules); iv) evidence that they might be involved in pathophysiology.",
+                  "The Kinome.org portal lets users filter the list of kinases based on these criteria and as",
+                  "such build a custom and context specific definition of the kinome."
+
                 ),
                 div(
                   onclick = "$('.navbar-nav > li:eq(1)').click()",
