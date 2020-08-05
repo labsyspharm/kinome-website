@@ -68,7 +68,8 @@ function(req) {
             class = "active",
             columns(
               column(
-                tags$a(
+                linkInput(
+                  "kinome_tree_modal_activate",
                   tags$img(class = 'kinome-tree', src = "kinome/assets/img/kinome_tree.png")
                 ),
               ),
@@ -106,9 +107,9 @@ function(req) {
                     href = "JavaScript:void(0)",
                     onclick = '$(".navbar-nav > li:eq(1) > button").click()',
                     "Start exploring the human kinome",
-                    icon("arrow-circle-right", class = "fa-lg"),
+                    icon("arrow-circle-right"),
                   ) %>%
-                    font(color = "black")
+                    font(size = "lg", weight = "bold")
                 )
 
               )

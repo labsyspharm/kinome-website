@@ -1,5 +1,5 @@
 function(input, output, session) {
-  
+
   navToPage <- function(name, session = NULL) {
     if (is.null(session))
       session <- getDefaultReactiveDomain()
@@ -26,10 +26,10 @@ function(input, output, session) {
   callModule(mod_table_server, "table_ui_1", r)
   callModule(mod_filters_server, "filters_ui_1", r)
   callModule(mod_tablevars_server, "tablevars_ui_1", r)
-  
 
 
-  
+
+
   .modal_funding <- modal(
     id = NULL,
     size = "md",
@@ -39,6 +39,15 @@ function(input, output, session) {
   observeEvent(c(input$funding, input$funding2), {
     showModal(.modal_funding)
   })
-  
- 
+
+  modal_kinome_tree <- modal(
+    id = NULL,
+    size = "xl",
+    tags$img(src = "kinome/assets/img/kinome_tree.png", style = "width: 100%;")
+  )
+
+  observeEvent(input$kinome_tree_modal_activate, {
+    showModal(modal_kinome_tree)
+  })
+
 }
