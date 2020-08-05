@@ -288,5 +288,6 @@ filters_ui_1-collapse-all
 .js-irs-1 .irs-min, .js-irs-1 .irs-single, .js-irs-1 .irs-max{color: white}
 
 .contains-tooltip {
-  text-decoration: underline dotted;
+  text-decoration: underline;
+  text-decoration-style: dotted;
 }
