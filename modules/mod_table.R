@@ -39,16 +39,16 @@ DT_HEADER_FORMAT_JS = paste0(
         paste('"', column_title, '" : "', column_description, '"', sep = "", collapse = ",")
       ),
     '};
-    const headers = $(thead).find("th");
-    //$(thead).find("th").wrapInner("<span class=\'contains-tooltip\', data-toggle=\'tooltip\'></span>");
-    headers.attr({"class": "contains-tooltip", "data-toggle": "tooltip"});
-    headers.each(
+    $(thead).find("th:not(:has(span))").wrapInner("<span class=\'contains-tooltip\', data-toggle=\'tooltip\'></span>");
+    const spans = $(thead).find("span");
+    spans.attr({"class": "contains-tooltip", "data-toggle": "tooltip"});
+    spans.each(
       function(i) {
         const name = $(this).text();
         $(this).attr("title", tooltip_map[name]);
       }
     );
-    headers.tooltip();
+    spans.tooltip();
   }
 ')
 
