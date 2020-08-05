@@ -15,7 +15,7 @@ mod_table_ui <- function(id) {
       width = 3,
       h2("Filters"),
       mod_filters_ui("filters_ui_1", open = TRUE),
-      h2("Add information on") %>%
+      h2("Table columns") %>%
         margin(top = 5),
       mod_tablevars_ui("tablevars_ui_1")
     ),
@@ -44,8 +44,7 @@ DT_HEADER_FORMAT_JS = paste0(
     spans.attr({"class": "contains-tooltip", "data-toggle": "tooltip"});
     spans.each(
       function(i) {
-        const name = $(this).text();
-        $(this).attr("title", tooltip_map[name]);
+        $(this).attr("title", tooltip_map[$(this).text()]);
       }
     );
     spans.tooltip();
