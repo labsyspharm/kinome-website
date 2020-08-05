@@ -23,6 +23,7 @@ mod_filters_ui <- function(id, open = FALSE) {
       INIT$flt_kinaselike,
       INIT$flt_kinaselike,
       ns("flt_nokinaselike"),
+      label2 = "Non Protein Kinase Like",
       choices2 = INIT$flt_nokinaselike,
       selected2 = INIT$flt_nokinaselike
     ),
