@@ -23,17 +23,14 @@ filter_knowledge_collapse <- function(.data, fltinfo){
   if(is.null(fltinfo) || fltinfo == "No filter") return(.data)
 
   .data %>%
-    dplyr::mutate(
-      knowledge_flag = as.integer(is_idg_dark_kinase + (is_statistically_defined_dark_kinase * 2))
-    ) %>%
     dplyr::filter(
       switch(
         fltinfo,
-        "IDG dark kinase" = knowledge_flag == 1L,
-        "Statistically defined dark kinase" = knowledge_flag == 2L,
-        "Both" = knowledge_flag == 3L,
-        "Either" = xor(knowledge_flag == 1L, knowledge_flag == 2L),
-        "Neither" = knowledge_flag == 0L
+        "IDG dark kinase" = is_idg_dark_kinase == 1,
+        "Statistically defined dark kinase" = is_statistically_defined_dark_kinase == 1,
+        "Both" = is_idg_dark_kinase + is_statistically_defined_dark_kinase == 2,
+        "Either" = is_idg_dark_kinase + is_statistically_defined_dark_kinase > 0,
+        "Neither" = is_idg_dark_kinase + is_statistically_defined_dark_kinase == 0
       )
     )
 }
@@ -73,17 +70,14 @@ filter_conv_class <- function(.data, fltinfo){
   if(fltinfo == "No filter") return(.data)
 
   .data %>%
-    dplyr::mutate(
-      conv_class_flag = as.integer(is_manning_kinase + (is_kinhub_kinase * 2))
-    ) %>%
     dplyr::filter(
       switch(
         fltinfo,
-        "Manning kinases" = conv_class_flag == 1L,
-        "KinHub kinases" = conv_class_flag == 2L,
-        "Both" = conv_class_flag == 3L,
-        "Either" = xor(conv_class_flag == 1L, conv_class_flag == 2L),
-        "Neither" = conv_class_flag == 0L
+        "Manning kinases" = is_manning_kinase == 1,
+        "KinHub kinases" = is_kinhub_kinase == 1,
+        "Both" = is_manning_kinase + is_kinhub_kinase == 2,
+        "Either" = is_manning_kinase + is_kinhub_kinase > 0,
+        "Neither" = is_manning_kinase + is_kinhub_kinase == 0
       )
     )
 }
