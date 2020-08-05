@@ -60,7 +60,6 @@ mod_table_server <- function(input, output, session, r) {
   req(kinomedat)
   data <- kinomedat
 
-
   filtered_data <- reactive({
     data %>%
       filter_proteinfold(r$proteinfold) %>%
@@ -74,11 +73,20 @@ mod_table_server <- function(input, output, session, r) {
       filter_custom_HGNC(r$custom)
   })
 
-    output$kinometable <- DT::renderDT(
-      filtered_data() %>%
-        dplyr::select(r$tablevars),
+  r_table <- reactive({
+    .data <- filtered_data() %>%
+      dplyr::select(r$tablevars) %>%
+      mutate(
+        across(
+          any_of("indra_network"),
+          ~paste0("<a href=\"", .x, "\" target=\"_blank\">Network ", as.character(icon("link")), "</a>")
+        )
+      )
+    DT::datatable(
+      .data,
       rownames = FALSE,
       selection = "none",
+      escape = grep("^indra_network$", names(.data), invert = TRUE, value = TRUE),
       options = list(
         scrollX = TRUE,
         headerCallback = JS(DT_HEADER_FORMAT_JS),
@@ -88,9 +96,12 @@ mod_table_server <- function(input, output, session, r) {
           add_column_title_defs(r$tablevars)
       )
     )
+  })
 
-    callModule(mod_server_download_button, "output_table_xlsx_dl", filtered_data, "excel", "kinase_data")
-    callModule(mod_server_download_button, "output_table_csv_dl", filtered_data, "csv", "kinase_data")
+  output$kinometable <- DT::renderDT(r_table())
+
+  callModule(mod_server_download_button, "output_table_xlsx_dl", filtered_data, "excel", "kinase_data")
+  callModule(mod_server_download_button, "output_table_csv_dl", filtered_data, "csv", "kinase_data")
 
 }
 
