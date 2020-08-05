@@ -16,7 +16,8 @@ mod_tablevars_ui <- function(id){
       placeholder = "Make a selection",
       choices = COLUMN_TITLE_MAP,
       values = names(COLUMN_TITLE_MAP),
-      selected = DEFAULT_COLUMNS
+      selected = DEFAULT_COLUMNS,
+      sort = "fixed"
     ) %>%
       active("grey") %>%
       shadow()
