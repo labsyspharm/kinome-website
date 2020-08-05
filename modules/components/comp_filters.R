@@ -15,9 +15,6 @@ mod_filters_ui <- function(id, open = FALSE) {
 
 
     get_check_collapse(
-      open = "false",
-      ns("proteinfold_collapse"),
-      "Protein Fold",
       "Protein Kinase Like",
       ns("flt_kinaselike"),
       INIT$flt_kinaselike,
@@ -26,34 +23,35 @@ mod_filters_ui <- function(id, open = FALSE) {
       label2 = "Non Protein Kinase Like",
       choices2 = INIT$flt_nokinaselike,
       selected2 = INIT$flt_nokinaselike
-    ),
-    collapse_wrapper(internal_html = list(
+    ) %>%
+      collapse_wrapper(
+        open = "false", collapseid = ns("proteinfold_collapse"), title = "Protein Fold",
+        description = "Select kinases with one of the following protein folds"
+      ),
+    tagList(
       sliderInput(
         ns("flt_compounds"),
-        "Maximum number of most-selective/semi-selective compounds:",
+        "Select kinases with at least this many most-selective/semi-selective compounds",
         min = min(kinomedat$n_selective_compounds, na.rm=TRUE),
         value = INIT$flt_compounds,
         max = max(kinomedat$n_selective_compounds, na.rm=TRUE)
       ),
       na_checkbox(ns("na_compounds"), includeNA = TRUE)
-    ),
-      open = "false",
-      ns("compounds_collapse"),
-      "Compounds"
-    ),
+    ) %>%
+      collapse_wrapper(
+        open = "false", collapseid = ns("compounds_collapse"), title = "Compounds"
+      ),
     get_radio_collapse(
-      open = "false",
-      collapseid = ns("knowledge_collapse"),
-      title = "Knowledge",
       label = NULL,
       flt_id1 = ns("flt_knowledge"),
       choices = c("IDG dark kinase", "Statistically defined dark kinase", "Both", "Either", "Neither", "No filter"),
       selected = INIT$flt_knowledge
-    ),
+    ) %>%
+      collapse_wrapper(
+        open = "false", collapseid = ns("knowledge_collapse"), title = "Knowledge",
+        description = "Select kinases if they were considered to be understudied by the following metrics"
+      ),
     get_check_collapse(
-      open = "false",
-      ns("biological_relevance"),
-      "Biological Relevance",
       NULL,
       ns("flt_biorel"),
       c("Cancer", "Alzheimer's disease", "Chronic obstructive pulmonary disease"),
@@ -64,47 +62,52 @@ mod_filters_ui <- function(id, open = FALSE) {
                               max = max(kinomedat$n_essential_cell_lines, na.rm = TRUE)),
       addNAcheck = TRUE,
       na_checkid = ns("na_essentialcelllines")
-
-    ),
+    ) %>%
+      collapse_wrapper(
+        open = "false", collapseid = ns("biological_relevance"), title = "Biological Relevance",
+        description = "Select kinases if they have been implicated in the following diseases"
+      ),
     get_check_collapse(
-      open = "false",
-      ns("resources"),
-      "Resources",
       NULL,
       ns("flt_resources"),
       c("Structures", "Commercial assays"),
       NULL,
       addNAcheck = TRUE,
       na_checkid = ns("na_resources")
-    ),
+    ) %>%
+      collapse_wrapper(
+        open = "false", collapseid = ns("resources"), title = "Resources",
+        description = "Select kinases if it has the following resources"
+      ),
     get_radio_collapse(
-      open = "false",
-      ns("conventional_classification"),
-      "Conventional Classification",
       NULL,
       ns("flt_conv_class"),
       c("Manning kinases", "KinHub kinases", "Both", "Either", "Neither", "No filter"),
       c("No filter")
-    ),
+    ) %>%
+      collapse_wrapper(
+        open = "false", collapseid = ns("conventional_classification"), title = "Conventional Classification",
+        description = "Select kinases if they are included in the following kinase lists"
+      ),
     get_radio_collapse(
-      open = "false",
-      collapseid = ns("pseudokinase"),
-      title = "Pseudokinase",
       label = NULL,
       flt_id1 = ns("flt_pseudokinase"),
       choices1 = c("Exclude pseudokinases", "Show only pseudokinases", "No filter"),
       selected1 = "No filter"
-    ),
-    collapse_wrapper(internal_html =
-      formGroup(
-        label = NULL,
-        input = textInput(ns("flt_custom"), placeholder = "AAK1, PRKAA1"),
-        help = "Add HGNC symbols separated by commas"
+    ) %>%
+      collapse_wrapper(
+        open = "false", collapseid = ns("pseudokinase"), title = "Pseudokinase",
+        description = "Select kinases by their classification as pseudokinases"
       ),
-    open = "false",
-    ns("custom_collapse"),
-    "Custom"
-    ),
+    formGroup(
+      label = NULL,
+      input = textInput(ns("flt_custom"), placeholder = "AAK1, PRKAA1"),
+      help = "Add HGNC symbols separated by commas"
+    ) %>%
+      collapse_wrapper(
+        open = "false", collapseid = ns("custom_collapse"), title = "Custom",
+        description = "Please input your list of kinases of interest"
+      ),
     buttonInput(ns('reset_all'), label = "Reset filters"),
     buttonInput(ns('collapse_all'), label = "Collapse all", onclick = "$('.panel-title a').attr('aria-expanded', false); $('.panel-collapse').removeClass('show')")
 

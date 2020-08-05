@@ -1,4 +1,4 @@
-collapse_wrapper <- function(internal_html, open, collapseid, title) {
+collapse_wrapper <- function(internal_html, open, collapseid, title, description = NULL) {
 
 
   div(class = "panel-group",
@@ -16,27 +16,23 @@ collapse_wrapper <- function(internal_html, open, collapseid, title) {
       div(
         id = collapseid,
         class = glue::glue("panel-collapse collapse {ifelse(open, 'in', '')}"),
+        if (!is.null(description)) p(description, class = "font-weight-bold"),
         internal_html
       ))
 }
 
 na_checkbox <- function(id, includeNA = TRUE){
-
-
-checkboxInput(
-  inline = FALSE,
-  id = id,
-  class="include-missing-checkbox",
-  choices = "Include missing values",
-  selected = ifelse(includeNA,"Include missing values", NULL)
-) %>%
-  active("crimson")
+  checkboxInput(
+    inline = FALSE,
+    id = id,
+    class="include-missing-checkbox",
+    choices = "Include missing values",
+    selected = ifelse(includeNA,"Include missing values", NULL)
+  ) %>%
+    active("crimson")
 }
 
-get_radio_collapse <- function(open = "false",
-                               collapseid,
-                               title,
-                               label,
+get_radio_collapse <- function(label,
                                flt_id1,
                                choices1,
                                selected1,
@@ -56,21 +52,14 @@ get_radio_collapse <- function(open = "false",
   if(addNAcheck)
     frm <- list(frm, na_checkbox(na_checkid))
 
-
-    frm %>%
-      collapse_wrapper(open, collapseid, title)
-
+    frm
 }
 
 
 
 
 
-get_check_collapse <- function(open = "false",
-
-                               collapseid,
-                               title,
-                               label,
+get_check_collapse <- function(label,
                                flt_id1,
                                choices1,
                                selected1,
@@ -115,10 +104,7 @@ get_check_collapse <- function(open = "false",
     items <- list(items, na_checkbox(na_checkid))
 
 
-  items %>%
-    collapse_wrapper(open, collapseid, title)
-
-
+  items
 }
 
 
