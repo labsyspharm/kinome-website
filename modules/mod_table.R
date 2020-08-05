@@ -86,6 +86,7 @@ mod_table_server <- function(input, output, session, r) {
       .data,
       rownames = FALSE,
       selection = "none",
+      style = "bootstrap4",
       escape = grep("^indra_network$", names(.data), invert = TRUE, value = TRUE),
       options = list(
         scrollX = TRUE,
