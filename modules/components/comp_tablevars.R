@@ -36,7 +36,7 @@ mod_tablevars_server <- function(input, output, session, r){
     if (length(multivars) > 0) {
       tablevars <- tablevars %>%
         setdiff(multivars) %>%
-        c(MULTISELECT_COLUMNS[multivars])
+        c(MULTISELECT_COLUMNS[[multivars]])
     }
     r$tablevars <- tablevars
   }, ignoreNULL = FALSE)
