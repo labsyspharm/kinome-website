@@ -8,15 +8,17 @@ hgnc_id,HGNC ID,A unique ID provided by the HGNC for each gene with an approved 
 hgnc_symbol,HGNC symbol,the official gene symbol approved by HUGO Gene Nomenclature Committee,CDK13
 hgnc_name,HGNC Name,the full gene name approved by HGNC,cyclin dependent kinase 13
 is_idg_dark_kinase,IDG dark kinase,whether the kinase domain is in the original NIH 162 dark kinase list,1
+is_statistically_defined_dark_kinase,Statistically defined,whether the kinase is dark based on number of INDRA statements and TIN-X_score,1
 is_kinhub_kinase,Kinhub kinase,whether the kinase domain is in the kinhub list,1
 is_manning_kinase,Manning kinase,whether the kinase domain is in the Manning list,1
-group,Group,to which kinase group this kinase belong,CMGC
-family,Family,to which kinase family this kinase belong,CDK
+is_pseudokinase,Pseudokinase,whether the kinase is a pseudokinase according to ProKinO,0
+is_prokino_kinase,ProKinO kinase,whether the domain is in ProKinO,1
+group,Group,"to which kinase group this kinase belongs, see kinase tree for details",CMGC
+family,Family,to which kinase family this kinase belongs,CDK
 has_annotated_kinase_activity,Kinase activity,"1 if the domain is in the curated UniProt kinase list, 0 otherwise",1
 pfam_domain,Pfam domain,classification of domain on Pfam,Pkinase
 domain_start,Domain start,first residue number of the kinase domain,705
 domain_end,Doman end,last residue number of the kinase domain,998
-is_prokino_kinase,ProKinO kinase,whether the domain is in ProKinO,1
 fold_annotation,Fold annotation,"further classification of the protein fold: ePK, eLK, Atypical, Unrelated to Protein Kinase or Unknown",Eukaryotic Protein Kinase (ePK)
 fold,Fold,"primary classification of the protein fold: protein kinase like (PKL), unrelated, UPK or unknown",Protein Kinase Like
 annotation_score,Annotation score,number to reflect the amount of aggregated information from multiple databases,0.989192
@@ -36,5 +38,3 @@ n_essential_cell_lines,Essential cell lines,number of dependent cell lines on De
 significant_in_alzheimers,Alzheimer's disease,whether the kinase is differentially expressed in Alzheimer patients,0
 significant_in_cancer,Cancer,"whether the kinase is differentially expressed in any cancer type, among the top 10 most frequently mutated kinases in any cancer type, or among the top 20 most frequently mutated kinases of all cancers",0
 significant_in_copd,COPD,whether the kinase is differentially expressed in COPD patients,0
-is_pseudokinase,Pseudokinase,whether the kinase is a pseudokinase according to ProKinO,0
-is_statistically_defined_dark_kinase,Statistically defined,whether the kinase is dark based on number of INDRA statements and TIN-X_score,1
