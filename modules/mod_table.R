@@ -73,7 +73,7 @@ mod_table_server <- function(input, output, session, r) {
       filter_custom_HGNC(r$custom)
   })
 
-  r_table <- reactive({
+  r_table_data <- reactive({
     .data <- filtered_data() %>%
       dplyr::select(r$tablevars) %>%
       mutate(
@@ -82,24 +82,30 @@ mod_table_server <- function(input, output, session, r) {
           ~paste0("<a href=\"", .x, "\" target=\"_blank\">Network ", as.character(icon("link")), "</a>")
         )
       )
-    DT::datatable(
-      .data,
-      rownames = FALSE,
-      selection = "none",
-      style = "bootstrap4",
-      escape = grep("^indra_network$", names(.data), invert = TRUE, value = TRUE),
-      options = list(
-        scrollX = TRUE,
-        headerCallback = JS(DT_HEADER_FORMAT_JS),
-        columnDefs = list(
-          list(className = 'dt-center', targets = 2)
-        ) %>%
-          add_column_title_defs(r$tablevars)
-      )
-    )
+
+    if ("pdb_structure_ids" %in% names(.data)) {
+      r_data <- callModule(mod_server_reference_modal, "", reactive(.data), reference_col = "pdb_structure_ids")
+      .data <- r_data()
+    }
+
+    .data
   })
 
-  output$kinometable <- DT::renderDT(r_table())
+  output$kinometable <- DT::renderDT(
+    r_table_data(),
+    rownames = FALSE,
+    selection = "none",
+    style = "bootstrap4",
+    escape = grep("^indra_network|pdb_structure_ids$", names(r_table_data()), invert = TRUE, value = TRUE),
+    options = list(
+      scrollX = TRUE,
+      headerCallback = JS(DT_HEADER_FORMAT_JS),
+      columnDefs = list(
+        list(className = 'dt-center', targets = 2)
+      ) %>%
+        add_column_title_defs(r$tablevars)
+    )
+  )
 
   callModule(mod_server_download_button, "output_table_xlsx_dl", filtered_data, "excel", "kinase_data")
   callModule(mod_server_download_button, "output_table_csv_dl", filtered_data, "csv", "kinase_data")
