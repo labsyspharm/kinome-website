@@ -101,8 +101,8 @@ mod_filters_ui <- function(id, open = FALSE) {
       ),
     formGroup(
       label = NULL,
-      input = textInput(ns("flt_custom"), placeholder = "AAK1, PRKAA1"),
-      help = "Add HGNC symbols separated by commas"
+      input = textAreaInput(ns("flt_custom"), label = NULL, placeholder = "AAK1, PRKAA1", rows = 5),
+      help = "Add HGNC symbols separated by commas or lines"
     ) %>%
       collapse_wrapper(
         open = "false", collapseid = ns("custom_collapse"), title = "Custom",

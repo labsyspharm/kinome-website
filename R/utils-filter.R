@@ -135,9 +135,9 @@ filter_essential_cell_lines <- function(.data, fltinfo, na_info){
 
 
 filter_custom_HGNC <- function(.data, fltinfo){
-  if(is.null(fltinfo)) return(.data)
+  if(is.null(fltinfo) || fltinfo == "") return(.data)
 
-  vals <- trimws(strsplit(fltinfo, ",")[[1]])
+  vals <- trimws(strsplit(fltinfo, "(,|;| |\t|\n)+")[[1]])
 
   .data %>%
     dplyr::filter(hgnc_symbol %in% toupper(vals))
