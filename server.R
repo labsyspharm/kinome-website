@@ -43,7 +43,7 @@ function(input, output, session) {
   modal_kinome_tree <- modal(
     id = NULL,
     size = "xl",
-    tags$img(src = "kinome/assets/img/kinome_tree.png", style = "width: 100%;")
+    tags$img(src = "kinome/assets/img/kinome_tree-2.png", style = "width: 100%;")
   )
 
   observeEvent(input$kinome_tree_modal_activate, {
