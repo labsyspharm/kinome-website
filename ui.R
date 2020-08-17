@@ -70,7 +70,7 @@ function(req) {
               column(
                 linkInput(
                   "kinome_tree_modal_activate",
-                  tags$img(class = 'kinome-tree', src = "kinome/assets/img/kinome_tree.png")
+                  tags$img(class = 'kinome-tree', src = "kinome/assets/img/kinome_tree-2.png")
                 ),
               ),
               column(
