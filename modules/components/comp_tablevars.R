@@ -10,15 +10,19 @@
 mod_tablevars_ui <- function(id){
   ns <- NS(id)
 
-  groupedCheckbarInput(
-    id = ns("tablevars"),
-    choices = COLUMN_SPECS,
-    selected = DEFAULT_COLUMNS,
-    col_id = "column_id",
-    col_title = "column_title",
-    col_description = "column_description",
-    col_group = "button_group"
-  )
+  tags$div(
+    tags$h2("Select columns"),
+    groupedCheckbarInput(
+      id = ns("tablevars"),
+      choices = COLUMN_SPECS,
+      selected = DEFAULT_COLUMNS,
+      col_id = "column_id",
+      col_title = "column_title",
+      col_description = "column_description",
+      col_group = "button_group"
+    )
+  ) %>%
+    margin(b = 4)
 }
 
 map_checkbuttons_tooltip <- function (choices, values, selected, tooltips) {
@@ -30,7 +34,7 @@ map_checkbuttons_tooltip <- function (choices, values, selected, tooltips) {
       function(choice, value, select, tooltip) {
         tags$label(
           class = yonder:::str_collate(
-            "btn btn-primary",
+            "btn",
             if (select) "active"
           ),
           `data-toggle` = "tooltip",
@@ -72,7 +76,7 @@ groupedCheckbarInput <- function (
           tooltips = .x[[col_description]]
         ) %>%
           tags$div(
-            class = "btn-group btn-group-toggle btn-group-primary mb-2"
+            class = "btn-group btn-group-toggle btn-group-secondary btn-group-sm mb-2"
           )
       }
     )

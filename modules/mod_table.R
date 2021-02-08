@@ -14,9 +14,7 @@ mod_table_ui <- function(id) {
     sidebarPanel(
       width = 3,
       h2("Filters"),
-      mod_filters_ui("filters_ui_1", open = TRUE),
-      h2("Table columns") %>%
-        margin(top = 5)
+      mod_filters_ui("filters_ui_1", open = TRUE)
     ),
 
     # Show a plot of the generated distribution
