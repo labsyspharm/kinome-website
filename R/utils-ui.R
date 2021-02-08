@@ -38,7 +38,6 @@ get_radio_collapse <- function(label,
                                selected1,
                                addNAcheck = FALSE,
                                na_checkid = NULL){
-
   frm <- formGroup(
     label = tags$h6(label) %>% margin(b = 0),
     input = radioInput(

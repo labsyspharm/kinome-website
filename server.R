@@ -3,7 +3,6 @@ function(input, output, session) {
   navToPage <- function(name, session = NULL) {
     if (is.null(session))
       session <- getDefaultReactiveDomain()
-    updateNavInput("nav", selected = name, session = session)
     showNavPane(paste0("page_", name), session = session)
   }
 

@@ -18,46 +18,51 @@ function(req) {
         tags$a(
           class = "navbar-brand",
           href="http://sorger.med.harvard.edu/",
-          tags$img(class = "h-2", src = "kinome/assets/img/logo.png")
-        ),
+          tags$img(style = "height: 2rem;", src = "kinome/assets/img/logo.png")
+        ) %>%
+          padding(0),
         navInput(
           appearance = "pills",
           id = "nav",
           choices = list(
             list(icon("home"), "Home"),
-            list( "Data")
+            list("Data")
           ),
           values = c(
             "home",
-            "selectivity"
+            "data"
           )
         ) %>%
           margin(left = "auto"),
-        buttonInput(
-          id = "about",
-          label = "About"
-        ) %>%
-          background("black") %>%
-          font(color = "white"),
-
-        buttonInput(
-          id = "funding",
-          label = "Funding"
-        ) %>%
-          background("black") %>%
-          font("white"),
+        tags$ul(
+          buttonInput(
+            id = "about",
+            label = "About",
+            class = "nav-link"
+          ) %>%
+            padding(0) %>%
+            tags$li(class = "nav-link"),
+          buttonInput(
+            id = "funding",
+            label = "Funding",
+            class = "nav-link"
+          ) %>%
+            padding(0) %>%
+            tags$li(class = "nav-link"),
+          class = "nav navbar-nav"
+        ),
         tags$a(
           href = "https://github.com/labsyspharm/kinome-website",
           target = "_blank",
           icon("github", class = "fa-lg")
         ) %>%
-          font(color = "white") %>%
           margin(l = 3)
       ) %>%
-        active("red") %>%
+        # active("red") %>%
+        background("dark") %>%
+        tagAppendAttributes(class = "navbar-dark") %>%
         padding(0, r = 3, l = 3) %>%
         margin(b = 4) %>%
-        background("black") %>%
         shadow(),
       container(
         navContent(
@@ -69,7 +74,8 @@ function(req) {
             columns(
               column(
                 linkInput(
-                  "kinome_tree_modal_activate",
+                  id = "kinome_tree_modal_activate",
+                  label = "",
                   tags$img(class = 'kinome-tree', src = "kinome/assets/img/kinome_tree-2.png")
                 ),
               ),
@@ -116,7 +122,7 @@ function(req) {
             )
           ),
           navPane(
-            id = "page_selectivity",
+            id = "page_data",
                 mod_table_ui("table_ui_1")
           ),
           navPane(

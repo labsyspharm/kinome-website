@@ -68,16 +68,11 @@ h3 > a,
 }
 
 .navbar .nav-link {
-  color: white !important;
-  border-radius: 0 !important;
+  border-radius: 0;
 }
 
 .navbar .active {
   background-color: #A41034 !important;
-}
-
-.navbar .active i {
-  color: white !important;
 }
 
 a[data-target] {
@@ -288,6 +283,4 @@ filters_ui_1-collapse-all
 .js-irs-1 .irs-min, .js-irs-1 .irs-single, .js-irs-1 .irs-max{color: white}
 
 .contains-tooltip {
-  text-decoration: underline;
-  text-decoration-style: dotted;
 }

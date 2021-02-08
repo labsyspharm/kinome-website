@@ -108,8 +108,8 @@ mod_filters_ui <- function(id, open = FALSE) {
         open = "false", collapseid = ns("custom_collapse"), title = "Custom",
         description = "Please input your list of kinases of interest"
       ),
-    buttonInput(ns('reset_all'), label = "Reset filters"),
-    buttonInput(ns('collapse_all'), label = "Collapse all", onclick = "$('.panel-title a').attr('aria-expanded', false); $('.panel-collapse').removeClass('show')")
+    buttonInput(id = ns('reset_all'), label = "Reset filters"),
+    buttonInput(id = ns('collapse_all'), label = "Collapse all", onclick = "$('.panel-title a').attr('aria-expanded', false); $('.panel-collapse').removeClass('show')")
 
   ))
 
@@ -141,7 +141,6 @@ mod_filters_server <- function(input, output, session, r) {
 
 
   observeEvent(input$reset_all, {
-
     # don't need session for yonder
     updateCheckboxInput("flt_kinaselike", selected = INIT$flt_kinaselike)
     updateCheckboxInput("flt_nokinaselike", selected = INIT$flt_nokinaselike)

@@ -13,7 +13,8 @@ DEFAULT_COLUMNS <- c(
   "hgnc_symbol",
   "hgnc_name",
   "fold_annotation",
-  "group"
+  "group",
+  "indra_network"
 )
 
 MULTISELECT_COLUMNS <- list(
