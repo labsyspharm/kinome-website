@@ -39,7 +39,13 @@ DT_HEADER_FORMAT_JS = paste0(
         paste('"', column_title, '" : "', column_description, '"', sep = "", collapse = ",")
       ),
     '};
-    $(thead).find("th:not(:has(span))").wrapInner("<span class=\'contains-tooltip\', data-toggle=\'tooltip\'></span>");
+    const headers = $(thead).find(
+      "th:not(:has(span.contains-tooltip))"
+    ).append(
+      "<i class=\'fa fa-info-circle\ ml-1\' role=\'presentation\' aria-label=\'info-circle icon\'></i>"
+    ).wrapInner(
+      "<span class=\'contains-tooltip\', data-toggle=\'tooltip\'></span>"
+    );
     const spans = $(thead).find("span");
     spans.attr({"class": "contains-tooltip", "data-toggle": "tooltip"});
     spans.each(
