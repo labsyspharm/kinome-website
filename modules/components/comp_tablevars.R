@@ -7,59 +7,55 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_tablevars_ui <- function(id, table_id){
+mod_tablevars_ui <- function(id){
   ns <- NS(id)
 
   tags$div(
     tags$h2("Select columns"),
     groupedCheckbarInput(
-      id = ns("tablevars"),
+      id = ns("checkboxes"),
       choices = COLUMN_SPECS,
       selected = DEFAULT_COLUMNS,
       col_id = "column_id",
       col_title = "column_title",
       col_description = "column_description",
-      col_group = "button_group",
-      ns = ns,
-      table_id = table_id
+      col_group = "button_group"
     )
   ) %>%
     margin(b = 4)
 }
 
-DT_COLUMN_SELECT_JS <- r"---(
-    $('.{-toggle_class-}').on( 'change', function (e) {
-        // e.preventDefault();
+mod_tablevars_server <- function(input, output, session, r_data, table_proxy){
+  ns <- session$ns
 
-        var table = $('#{-table_id-} div.dataTables_scrollBody table').DataTable();
+  observe({
+    showCols(
+      table_proxy,
+      match(input$checkboxes, colnames(r_data())) - 1L,
+      reset = TRUE
+    )
+  })
+}
 
-        // Get the column API object
-        var column = table.column( $(this).attr('data-value') + ':name' );
-
-        // Toggle the visibility
-        column.visible( this.checked );
-    } );
-)---"
-
-map_checkbuttons_tooltip <- function (choices, values, selected, tooltips, ns) {
+map_checkbuttons_tooltip <- function (choices, values, selected, tooltips) {
   if (is.null(choices) && is.null(values)) {
     return(NULL)
   }
   selected <- values %in% selected
   Map(choice = choices, value = values, select = selected, tooltip = tooltips,
       function(choice, value, select, tooltip) {
-        input_id <- ns(paste0("toggle-button", value))
         tags$label(
-          class = "btn",
+          class = yonder:::str_collate(
+            "btn",
+            if (select) "active"
+          ),
           `data-toggle` = "tooltip",
           title = tooltip,
-          `for` = input_id,
           tags$input(
             type = "checkbox",
-            class = paste("btn-check", ns("toggle-button")),
+            # class = "btn-check",
             autocomplete = "off",
-            `data-value` = value,
-            id = input_id,
+            value = value,
             checked = if (select) NA
           ),
           choice
@@ -74,9 +70,7 @@ groupedCheckbarInput <- function (
   col_id,
   col_title,
   col_description,
-  col_group,
-  ns,
-  table_id
+  col_group
 )
 {
   col_group_sym <- sym(col_group)
@@ -91,8 +85,7 @@ groupedCheckbarInput <- function (
           choices = .x[[col_title]],
           values = .x[[col_id]],
           selected = selected[selected %in% .x[[col_id]]],
-          tooltips = .x[[col_description]],
-          ns = ns
+          tooltips = .x[[col_description]]
         ) %>%
           tags$div(
             class = "btn-group btn-group-toggle btn-group-secondary btn-group-sm mb-2"
@@ -101,20 +94,17 @@ groupedCheckbarInput <- function (
     )
 
   tagList(
-    tags$div(
-      class = "btn-toolbar flex flex-wrap",
-      id = id, `data-toggle` = "buttons",
-      button_groups
-    ),
-    tags$script(HTML(
-      "$('[data-toggle=\"tooltip\"]').tooltip();",
-      glue(
-        DT_COLUMN_SELECT_JS,
-        table_id = table_id,
-        toggle_class = ns("toggle-button"),
-        .open = r"({-)",
-        .close = r"(-})"
+    yonder:::dep_attach({
+      tags$div(
+        class = "yonder-checkbar btn-toolbar flex flex-wrap",
+        id = id,
+        `data-toggle` = "buttons",
+        button_groups
       )
+    }) %>%
+      yonder:::s3_class_add(c("yonder_checkbar", "yonder_input")),
+    tags$script(HTML(
+      "$('[data-toggle=\"tooltip\"]').tooltip();"
     ))
   )
 }

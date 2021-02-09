@@ -20,8 +20,10 @@ function(input, output, session) {
     showModal(.modal_about)
   })
 
+  r_data <- reactive(kinomedat)
+
   r_filters <- callModule(mod_filters_server, "filters_ui_1")
-  callModule(mod_table_server, "table_ui_1", r_filters = r_filters)
+  table_proxy <- callModule(mod_table_server, "table_ui_1", r_data = r_data, r_filters = r_filters)
 
   .modal_funding <- modal(
     id = NULL,

@@ -18,7 +18,7 @@ mod_table_ui <- function(id) {
     ),
     mainPanel(
       width = 9,
-      mod_tablevars_ui("tablevars_ui_1", table_id = ns("kinometable")),
+      mod_tablevars_ui(ns("columns_ui_1")),
       DT::DTOutput(ns("kinometable"), width = "90%"),
       mod_ui_download_button(ns("output_table_csv_dl"), "Download CSV"),
       mod_ui_download_button(ns("output_table_xlsx_dl"), "Download Excel")
@@ -56,12 +56,8 @@ DT_HEADER_FORMAT_JS = paste0(
 #' table Server Function
 #'
 #' @noRd
-mod_table_server <- function(input, output, session, r_filters) {
+mod_table_server <- function(input, output, session, r_data, r_filters) {
   ns <- session$ns
-
-  req(kinomedat)
-
-  r_data <- reactive(kinomedat)
 
   r_data_processed <- reactive({
     callModule(mod_server_reference_modal, "", r_data, reference_col = "pdb_structure_ids")() %>%
@@ -118,9 +114,9 @@ mod_table_server <- function(input, output, session, r_filters) {
             visible = FALSE
           )
         ) %>%
-          c(
-            imap(names(.data), ~list(name = .x, targets = .y - 1L))
-          ) %>%
+          # c(
+          #   imap(names(.data), ~list(name = .x, targets = .y - 1L))
+          # ) %>%
           add_column_title_defs(colnames(.data))
       )
     )
@@ -142,7 +138,11 @@ mod_table_server <- function(input, output, session, r_filters) {
     )
   })
 
+  callModule(mod_tablevars_server, "columns_ui_1", r_data = r_data, table_proxy = table_proxy)
+
   callModule(mod_server_download_button, "output_table_xlsx_dl", r_download_data, "excel", "kinase_data")
   callModule(mod_server_download_button, "output_table_csv_dl", r_download_data, "csv", "kinase_data")
+
+  table_proxy
 }
 
