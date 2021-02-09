@@ -97,12 +97,14 @@ mod_table_server <- function(input, output, session, r_filters) {
   })
 
   r_table <- reactive({
+    .data <- isolate(r_table_data())
+
     DT::datatable(
-      r_table_data(),
+      .data,
       rownames = FALSE,
       selection = "none",
       style = "bootstrap4",
-      escape = grep("^indra_network|pdb_structure_ids$", names(r_table_data()), invert = TRUE, value = TRUE),
+      escape = grep("^indra_network|pdb_structure_ids$", names(.data), invert = TRUE, value = TRUE),
       options = list(
         scrollX = TRUE,
         headerCallback = JS(DT_HEADER_FORMAT_JS),
@@ -110,21 +112,35 @@ mod_table_server <- function(input, output, session, r_filters) {
           list(className = 'dt-center', targets = 2),
           list(
             targets = which(
-              !names(r_table_data()) %in% DEFAULT_COLUMNS
+              !names(.data) %in% DEFAULT_COLUMNS
             ) %>%
               magrittr::subtract(1),
             visible = FALSE
           )
         ) %>%
           c(
-            imap(names(r_table_data()), ~list(name = .x, targets = .y - 1L))
+            imap(names(.data), ~list(name = .x, targets = .y - 1L))
           ) %>%
-          add_column_title_defs(colnames(r_table_data()))
+          add_column_title_defs(colnames(.data))
       )
     )
   })
 
-  output$kinometable <- DT::renderDT(r_table())
+  output$kinometable <- DT::renderDT(
+    r_table(),
+    server = TRUE
+  )
+
+  table_proxy <- dataTableProxy("kinometable")
+
+  observe({
+    replaceData(
+      table_proxy,
+      r_table_data(),
+      resetPaging = FALSE,
+      rownames = FALSE
+    )
+  })
 
   callModule(mod_server_download_button, "output_table_xlsx_dl", r_download_data, "excel", "kinase_data")
   callModule(mod_server_download_button, "output_table_csv_dl", r_download_data, "csv", "kinase_data")
