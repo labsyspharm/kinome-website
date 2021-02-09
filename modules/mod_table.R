@@ -16,11 +16,9 @@ mod_table_ui <- function(id) {
       h2("Filters"),
       mod_filters_ui("filters_ui_1", open = TRUE)
     ),
-
-    # Show a plot of the generated distribution
     mainPanel(
       width = 9,
-      mod_tablevars_ui("tablevars_ui_1"),
+      mod_tablevars_ui("tablevars_ui_1", table_id = ns("kinometable")),
       DT::DTOutput(ns("kinometable"), width = "90%"),
       mod_ui_download_button(ns("output_table_csv_dl"), "Download CSV"),
       mod_ui_download_button(ns("output_table_xlsx_dl"), "Download Excel")
@@ -58,61 +56,77 @@ DT_HEADER_FORMAT_JS = paste0(
 #' table Server Function
 #'
 #' @noRd
-mod_table_server <- function(input, output, session, r) {
+mod_table_server <- function(input, output, session, r_filters) {
   ns <- session$ns
 
   req(kinomedat)
-  data <- kinomedat
 
-  filtered_data <- reactive({
-    data %>%
-      filter_proteinfold(r$proteinfold) %>%
-      filter_compounds(r$compounds, r$na_compounds) %>%
-      filter_knowledge_collapse(r$knowledge_collapse) %>%
-      filter_biological_relevance(r$biological_relevance) %>%
-      filter_essential_cell_lines(r$essential_cell_lines, r$na_essential_cell_lines) %>%
-      filter_resources(r$resources, r$na_resources) %>%
-      filter_conv_class(r$conventional_classification) %>%
-      filter_pseudokinase(r$pseudokinase) %>%
-      filter_custom_HGNC(r$custom)
-  })
+  r_data <- reactive(kinomedat)
 
-  r_table_data <- reactive({
-    .data <- filtered_data() %>%
-      dplyr::select(r$tablevars) %>%
+  r_data_processed <- reactive({
+    callModule(mod_server_reference_modal, "", r_data, reference_col = "pdb_structure_ids")() %>%
       mutate(
         across(
           any_of("indra_network"),
           ~paste0("<a href=\"", .x, "\" target=\"_blank\">Network ", as.character(icon("link")), "</a>")
         )
       )
-
-    if ("pdb_structure_ids" %in% names(.data)) {
-      r_data <- callModule(mod_server_reference_modal, "", reactive(.data), reference_col = "pdb_structure_ids")
-      .data <- r_data()
-    }
-
-    .data
   })
 
-  output$kinometable <- DT::renderDT(
-    r_table_data(),
-    rownames = FALSE,
-    selection = "none",
-    style = "bootstrap4",
-    escape = grep("^indra_network|pdb_structure_ids$", names(r_table_data()), invert = TRUE, value = TRUE),
-    options = list(
-      scrollX = TRUE,
-      headerCallback = JS(DT_HEADER_FORMAT_JS),
-      columnDefs = list(
-        list(className = 'dt-center', targets = 2)
-      ) %>%
-        add_column_title_defs(r$tablevars)
+  r_row_filter <- reactive({
+    r_data() %>%
+      mutate(idx = seq_len(n())) %>%
+      filter_proteinfold(r_filters$proteinfold) %>%
+      filter_compounds(r_filters$compounds, r_filters$na_compounds) %>%
+      filter_knowledge_collapse(r_filters$knowledge_collapse) %>%
+      filter_biological_relevance(r_filters$biological_relevance) %>%
+      filter_essential_cell_lines(r_filters$essential_cell_lines, r_filters$na_essential_cell_lines) %>%
+      filter_resources(r_filters$resources, r_filters$na_resources) %>%
+      filter_conv_class(r_filters$conventional_classification) %>%
+      filter_pseudokinase(r_filters$pseudokinase) %>%
+      filter_custom_HGNC(r_filters$custom) %>%
+      pull(idx)
+  })
+
+  r_table_data <- reactive({
+    r_data_processed()[r_row_filter(),]
+  })
+
+  r_download_data <- reactive({
+    r_data()[r_row_filter(),]
+  })
+
+  r_table <- reactive({
+    DT::datatable(
+      r_table_data(),
+      rownames = FALSE,
+      selection = "none",
+      style = "bootstrap4",
+      escape = grep("^indra_network|pdb_structure_ids$", names(r_table_data()), invert = TRUE, value = TRUE),
+      options = list(
+        scrollX = TRUE,
+        headerCallback = JS(DT_HEADER_FORMAT_JS),
+        columnDefs = list(
+          list(className = 'dt-center', targets = 2),
+          list(
+            targets = which(
+              !names(r_table_data()) %in% DEFAULT_COLUMNS
+            ) %>%
+              magrittr::subtract(1),
+            visible = FALSE
+          )
+        ) %>%
+          c(
+            imap(names(r_table_data()), ~list(name = .x, targets = .y - 1L))
+          ) %>%
+          add_column_title_defs(colnames(r_table_data()))
+      )
     )
-  )
+  })
 
-  callModule(mod_server_download_button, "output_table_xlsx_dl", filtered_data, "excel", "kinase_data")
-  callModule(mod_server_download_button, "output_table_csv_dl", filtered_data, "csv", "kinase_data")
+  output$kinometable <- DT::renderDT(r_table())
 
+  callModule(mod_server_download_button, "output_table_xlsx_dl", r_download_data, "excel", "kinase_data")
+  callModule(mod_server_download_button, "output_table_csv_dl", r_download_data, "csv", "kinase_data")
 }
 

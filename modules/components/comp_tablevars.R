@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_tablevars_ui <- function(id){
+mod_tablevars_ui <- function(id, table_id){
   ns <- NS(id)
 
   tags$div(
@@ -19,30 +19,47 @@ mod_tablevars_ui <- function(id){
       col_id = "column_id",
       col_title = "column_title",
       col_description = "column_description",
-      col_group = "button_group"
+      col_group = "button_group",
+      ns = ns,
+      table_id = table_id
     )
   ) %>%
     margin(b = 4)
 }
 
-map_checkbuttons_tooltip <- function (choices, values, selected, tooltips) {
+DT_COLUMN_SELECT_JS <- r"---(
+    $('.{-toggle_class-}').on( 'change', function (e) {
+        // e.preventDefault();
+
+        var table = $('#{-table_id-} div.dataTables_scrollBody table').DataTable();
+
+        // Get the column API object
+        var column = table.column( $(this).attr('data-value') + ':name' );
+
+        // Toggle the visibility
+        column.visible( this.checked );
+    } );
+)---"
+
+map_checkbuttons_tooltip <- function (choices, values, selected, tooltips, ns) {
   if (is.null(choices) && is.null(values)) {
     return(NULL)
   }
   selected <- values %in% selected
   Map(choice = choices, value = values, select = selected, tooltip = tooltips,
       function(choice, value, select, tooltip) {
+        input_id <- ns(paste0("toggle-button", value))
         tags$label(
-          class = yonder:::str_collate(
-            "btn",
-            if (select) "active"
-          ),
+          class = "btn",
           `data-toggle` = "tooltip",
           title = tooltip,
+          `for` = input_id,
           tags$input(
             type = "checkbox",
+            class = paste("btn-check", ns("toggle-button")),
             autocomplete = "off",
-            value = value,
+            `data-value` = value,
+            id = input_id,
             checked = if (select) NA
           ),
           choice
@@ -51,14 +68,15 @@ map_checkbuttons_tooltip <- function (choices, values, selected, tooltips) {
 }
 
 groupedCheckbarInput <- function (
-  ...,
   id,
   selected,
   choices,
   col_id,
   col_title,
   col_description,
-  col_group
+  col_group,
+  ns,
+  table_id
 )
 {
   col_group_sym <- sym(col_group)
@@ -73,47 +91,30 @@ groupedCheckbarInput <- function (
           choices = .x[[col_title]],
           values = .x[[col_id]],
           selected = selected[selected %in% .x[[col_id]]],
-          tooltips = .x[[col_description]]
+          tooltips = .x[[col_description]],
+          ns = ns
         ) %>%
           tags$div(
             class = "btn-group btn-group-toggle btn-group-secondary btn-group-sm mb-2"
           )
       }
     )
-  yonder:::dep_attach({
-    tags$div(class = "yonder-checkbar btn-toolbar flex flex-wrap",
-             id = id, `data-toggle` = "buttons", button_groups, ...)
-  }) %>%
-    yonder:::s3_class_add(c("yonder_checkbar", "yonder_input")) %>%
-    tagList(
-      tags$script(HTML(
-        "$('[data-toggle=\"tooltip\"]').tooltip();"
-      ))
-    )
+
+  tagList(
+    tags$div(
+      class = "btn-toolbar flex flex-wrap",
+      id = id, `data-toggle` = "buttons",
+      button_groups
+    ),
+    tags$script(HTML(
+      "$('[data-toggle=\"tooltip\"]').tooltip();",
+      glue(
+        DT_COLUMN_SELECT_JS,
+        table_id = table_id,
+        toggle_class = ns("toggle-button"),
+        .open = r"({-)",
+        .close = r"(-})"
+      )
+    ))
+  )
 }
-
-#' tablevars Server Function
-#'
-#' @noRd
-mod_tablevars_server <- function(input, output, session, r){
-  ns <- session$ns
-
-  observeEvent(input$tablevars, {
-    tablevars <- input$tablevars %||% DEFAULT_COLUMNS
-    multivars <- intersect(tablevars, names(MULTISELECT_COLUMNS))
-    if (length(multivars) > 0) {
-      tablevars <- tablevars %>%
-        setdiff(multivars) %>%
-        c(MULTISELECT_COLUMNS[[multivars]])
-    }
-    r$tablevars <- tablevars
-  }, ignoreNULL = FALSE)
-
-}
-
-## To be copied in the UI
-# mod_tablevars_ui("tablevars_ui_1")
-
-## To be copied in the server
-# callModule(mod_tablevars_server, "tablevars_ui_1")
-

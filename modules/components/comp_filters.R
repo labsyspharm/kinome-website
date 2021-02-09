@@ -119,25 +119,27 @@ mod_filters_ui <- function(id, open = FALSE) {
 #' filters Server Function
 #'
 #' @noRd
-mod_filters_server <- function(input, output, session, r) {
+mod_filters_server <- function(input, output, session) {
   ns <- session$ns
+
+  r_filters <- reactiveValues()
 
   observe({
     proteinfold <- c(input$flt_kinaselike, input$flt_nokinaselike)
-    r$proteinfold <- proteinfold
-    })
+    r_filters$proteinfold <- proteinfold
+  })
 
-  observe(r$compounds <-input$flt_compounds)
-  observe(r$na_compounds <-input$na_compounds)
-  observe(r$knowledge_collapse <-input$flt_knowledge)
-  observe(r$biological_relevance <-input$flt_biorel)
-  observe(r$resources <-input$flt_resources)
-  observe(r$na_resources <-input$na_resources)
-  observe(r$conventional_classification <-input$flt_conv_class)
-  observe(r$pseudokinase <-input$flt_pseudokinase)
-  observe(r$essential_cell_lines <-input$essentialcelllines)
-  observe(r$na_essential_cell_lines <-input$na_essentialcelllines)
-  observe(r$custom <-input$flt_custom)
+  observe(r_filters$compounds <-input$flt_compounds)
+  observe(r_filters$na_compounds <-input$na_compounds)
+  observe(r_filters$knowledge_collapse <-input$flt_knowledge)
+  observe(r_filters$biological_relevance <-input$flt_biorel)
+  observe(r_filters$resources <-input$flt_resources)
+  observe(r_filters$na_resources <-input$na_resources)
+  observe(r_filters$conventional_classification <-input$flt_conv_class)
+  observe(r_filters$pseudokinase <-input$flt_pseudokinase)
+  observe(r_filters$essential_cell_lines <-input$essentialcelllines)
+  observe(r_filters$na_essential_cell_lines <-input$na_essentialcelllines)
+  observe(r_filters$custom <-input$flt_custom)
 
 
   observeEvent(input$reset_all, {
@@ -164,5 +166,6 @@ mod_filters_server <- function(input, output, session, r) {
 
   })
 
+  r_filters
 }
 
