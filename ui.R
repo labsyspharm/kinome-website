@@ -76,7 +76,7 @@ function(req) {
                 linkInput(
                   id = "kinome_tree_modal_activate",
                   label = "",
-                  tags$img(class = 'kinome-tree', src = "kinome/assets/img/kinome_tree-2.png")
+                  tags$img(class = 'kinome-tree', src = "kinome/assets/img/kinome_tree_v9.png")
                 ),
               ),
               column(
