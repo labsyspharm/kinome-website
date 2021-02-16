@@ -1,40 +1,40 @@
 column_id,column_title,column_description,value_example,button_group
-gene_id,Gene ID,Entrez gene ID,8621,gene_ids
-uniprot_accession,UniProt accession,the unique and stable short-form Uniprot ID,Q14004,gene_ids
-uniprot_name,UniProt name,Mnemonic identifier to UniprotKB entry,CDK13_HUMAN,gene_ids
-gene_names,Gene symbols,names of genes encoding this protein,CDK13 CDC2L CDC2L5 CHED KIAA1791,gene_ids
-protein_names,Protein names,full name of the protein,Cyclin-dependent kinase 13 (EC 2.7.11.22) (EC 2.7.11.23) (CDC2-related protein kinase 5) (Cell division cycle 2-like protein kinase 5) (Cell division protein kinase 13) (hCDK13) (Cholinesterase-related cell division controller),gene_ids
-hgnc_id,HGNC ID,A unique ID provided by the HGNC for each gene with an approved symbol,HGNC:1733,gene_ids
-hgnc_symbol,HGNC symbol,the official gene symbol approved by HUGO Gene Nomenclature Committee,CDK13,gene_ids
-hgnc_name,HGNC Name,the full gene name approved by HGNC,cyclin dependent kinase 13,gene_ids
-is_idg_dark_kinase,IDG dark kinase,whether the kinase domain is in the original NIH 162 dark kinase list,1,membership
-is_statistically_defined_dark_kinase,Statistically defined,whether the kinase is dark based on number of INDRA statements and TIN-X_score,1,membership
-is_kinhub_kinase,Kinhub kinase,whether the kinase domain is in the kinhub list,1,membership
-is_manning_kinase,Manning kinase,whether the kinase domain is in the Manning list,1,membership
-is_pseudokinase,Pseudokinase,whether the kinase is a pseudokinase according to ProKinO,0,membership
-is_prokino_kinase,ProKinO kinase,whether the domain is in ProKinO,1,membership
-group,Group,"to which kinase group this kinase belongs, see kinase tree for details",CMGC,structure
-family,Family,to which kinase family this kinase belongs,CDK,structure
-has_annotated_kinase_activity,Kinase activity,"1 if the domain is in the curated UniProt kinase list, 0 otherwise",1,structure
-pfam_domain,Pfam domain,classification of domain on Pfam,Pkinase,structure
-domain_start,Domain start,first residue number of the kinase domain,705,structure
-domain_end,Doman end,last residue number of the kinase domain,998,structure
-fold_annotation,Fold annotation,"further classification of the protein fold: ePK, eLK, Atypical, Unrelated to Protein Kinase or Unknown",Eukaryotic Protein Kinase (ePK),structure
-fold,Fold,"primary classification of the protein fold: protein kinase like (PKL), unrelated, UPK or unknown",Protein Kinase Like,structure
-annotation_score,Annotation score,number to reflect the amount of aggregated information from multiple databases,0.989192,available_info
-indra_network,INDRA network,URL of the interactive INDRA network on NDEx,http://ndexbio.org/#/network/0c9bd73c-5da8-11ea-bfdc-0ac135e8bacf,available_info
-n_indra_statements,INDRA statements,number of INDRA statements,210,available_info
-tin_x_score,TIN-X score,TIN-X novelty score,24.0166,available_info
-pharos_development_level,PHAROS development level,target development level,Tchem,available_info
-pdb_structure_ids,PDB structure IDs,PDB IDs for any structures of the kinase,5EFQ,available_info
-n_pdb_structures,PDB structures,the total number of pdb structures of the kinase,1,available_info
-n_selective_compounds,Selective compounds,the number of compounds with at least MS or SS annotation for the given kinase in the Small Molecule Suite,3,available_info
-has_commercial_assay,Commercial assay,whether there is a commercial assay for measuring affinity to this kinase,0,available_info
-n_essential_cell_lines,Essential cell lines,number of dependent cell lines on DepMap,73,available_info
-rb_name,Reaction Biology name,the name used for reference on Reaction Biology http://www.reactionbiology.com,CDK13,external_info
-kinaseform_in_reaction_biology,Variant in Reaction Biology,the phosphorylated form or protein complex available for assay on Reaction Biology http://www.reactionbiology.com,CDK13/cyclin K,external_info
-kinomescan_name,KINOMEscan name,the name used for reference on DiscoverX kinase panel,CDK13,external_info
-kinaseform_in_discoverx,Variant in DiscoverX,the phosphorylated form or protein complex available for assay on the DiscoverX kinase panel,CDC2L5,external_info
-significant_in_alzheimers,Alzheimer's disease,whether the kinase is differentially expressed in Alzheimer patients,0,external_info
-significant_in_cancer,Cancer,"whether the kinase is differentially expressed in any cancer type, among the top 10 most frequently mutated kinases in any cancer type, or among the top 20 most frequently mutated kinases of all cancers",0,external_info
-significant_in_copd,COPD,whether the kinase is differentially expressed in COPD patients,0,external_info
+gene_id,Gene ID,Entrez gene ID,8621,Identifiers
+uniprot_accession,UniProt accession,the unique and stable short-form Uniprot ID,Q14004,Identifiers
+uniprot_name,UniProt name,Mnemonic identifier to UniprotKB entry,CDK13_HUMAN,Identifiers
+gene_names,Gene symbols,names of genes encoding this protein,CDK13 CDC2L CDC2L5 CHED KIAA1791,Identifiers
+protein_names,Protein names,full name of the protein,Cyclin-dependent kinase 13 (EC 2.7.11.22) (EC 2.7.11.23) (CDC2-related protein kinase 5) (Cell division cycle 2-like protein kinase 5) (Cell division protein kinase 13) (hCDK13) (Cholinesterase-related cell division controller),Identifiers
+hgnc_id,HGNC ID,A unique ID provided by the HGNC for each gene with an approved symbol,HGNC:1733,Identifiers
+hgnc_symbol,HGNC symbol,the official gene symbol approved by HUGO Gene Nomenclature Committee,CDK13,Identifiers
+hgnc_name,HGNC Name,the full gene name approved by HGNC,cyclin dependent kinase 13,Identifiers
+is_idg_dark_kinase,IDG dark kinase,whether the kinase domain is in the original NIH 162 dark kinase list,1,Types
+is_statistically_defined_dark_kinase,Statistically defined,whether the kinase is dark based on number of INDRA statements and TIN-X_score,1,Types
+is_kinhub_kinase,Kinhub kinase,whether the kinase domain is in the kinhub list,1,Types
+is_manning_kinase,Manning kinase,whether the kinase domain is in the Manning list,1,Types
+is_pseudokinase,Pseudokinase,whether the kinase is a pseudokinase according to ProKinO,0,Types
+is_prokino_kinase,ProKinO kinase,whether the domain is in ProKinO,1,Types
+group,Group,"to which kinase group this kinase belongs, see kinase tree for details",CMGC,Structure
+family,Family,to which kinase family this kinase belongs,CDK,Structure
+has_annotated_kinase_activity,Kinase activity,"1 if the domain is in the curated UniProt kinase list, 0 otherwise",1,Structure
+pfam_domain,Pfam domain,classification of domain on Pfam,Pkinase,Structure
+domain_start,Domain start,first residue number of the kinase domain,705,Structure
+domain_end,Doman end,last residue number of the kinase domain,998,Structure
+fold_annotation,Fold annotation,"further classification of the protein fold: ePK, eLK, Atypical, Unrelated to Protein Kinase or Unknown",Eukaryotic Protein Kinase (ePK),Structure
+fold,Fold,"primary classification of the protein fold: protein kinase like (PKL), unrelated, UPK or unknown",Protein Kinase Like,Structure
+annotation_score,Annotation score,number to reflect the amount of aggregated information from multiple databases,0.989192,Knowledge
+indra_network,INDRA network,URL of the interactive INDRA network on NDEx,http://ndexbio.org/#/network/0c9bd73c-5da8-11ea-bfdc-0ac135e8bacf,Knowledge
+n_indra_statements,INDRA statements,number of INDRA statements,210,Knowledge
+tin_x_score,TIN-X score,TIN-X novelty score,24.0166,Knowledge
+pharos_development_level,PHAROS development level,target development level,Tchem,Knowledge
+pdb_structure_ids,PDB structure IDs,PDB IDs for any structures of the kinase,5EFQ,Structure
+n_pdb_structures,PDB structures,the total number of pdb structures of the kinase,1,Knowledge
+n_selective_compounds,Selective compounds,the number of compounds with at least MS or SS annotation for the given kinase in the Small Molecule Suite,3,Knowledge
+has_commercial_assay,Commercial assay,whether there is a commercial assay for measuring affinity to this kinase,0,Knowledge
+n_essential_cell_lines,Essential cell lines,number of dependent cell lines on DepMap,73,Knowledge
+rb_name,Reaction Biology name,the name used for reference on Reaction Biology http://www.reactionbiology.com,CDK13,Identifiers
+kinaseform_in_reaction_biology,Variant in Reaction Biology,the phosphorylated form or protein complex available for assay on Reaction Biology http://www.reactionbiology.com,CDK13/cyclin K,Identifiers
+kinomescan_name,KINOMEscan name,the name used for reference on DiscoverX kinase panel,CDK13,Identifiers
+kinaseform_in_discoverx,Variant in DiscoverX,the phosphorylated form or protein complex available for assay on the DiscoverX kinase panel,CDC2L5,Identifiers
+significant_in_alzheimers,Alzheimer's disease,whether the kinase is differentially expressed in Alzheimer patients,0,Knowledge
+significant_in_cancer,Cancer,"whether the kinase is differentially expressed in any cancer type, among the top 10 most frequently mutated kinases in any cancer type, or among the top 20 most frequently mutated kinases of all cancers",0,Knowledge
+significant_in_copd,COPD,whether the kinase is differentially expressed in COPD patients,0,Knowledge

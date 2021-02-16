@@ -18,13 +18,14 @@ mod_table_ui <- function(id) {
     ),
     mainPanel(
       width = 9,
-      mod_tablevars_ui(ns("columns_ui_1")),
       DT::DTOutput(ns("kinometable"), width = "90%"),
       mod_ui_download_button(ns("output_table_csv_dl"), "Download CSV"),
       mod_ui_download_button(ns("output_table_xlsx_dl"), "Download Excel")
       )
   ))
 }
+
+DT_DOM <- '<"row justify-content-between"<"col-sm-12 col-md-auto"B><"col-sm-12 col-md-auto"l><"col-sm-12 col-md-auto ml-md-auto"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>'
 
 DT_HEADER_FORMAT_JS = paste0(
 '
@@ -70,6 +71,7 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
   })
 
   r_row_filter <- reactive({
+    # browser()
     r_data() %>%
       mutate(idx = seq_len(n())) %>%
       filter_proteinfold(r_filters$proteinfold) %>%
@@ -100,17 +102,33 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
       rownames = FALSE,
       selection = "none",
       style = "bootstrap4",
+      extensions = c("Buttons"),
       escape = grep("^indra_network|pdb_structure_ids$", names(.data), invert = TRUE, value = TRUE),
       options = list(
         scrollX = TRUE,
+        dom = DT_DOM,
+        buttons = make_column_selection_buttons(
+          choices = COLUMN_SPECS,
+          cols = names(.data),
+          col_id = "column_id",
+          col_title = "column_title",
+          col_description = "column_description",
+          col_group = "button_group"
+        ),
+        # buttons = list(
+        #   list(
+        #     extend = "colvis",
+        #     text = "Additional columns",
+        #     className = "btn-outline-black"
+        #   )
+        # ),
         headerCallback = JS(DT_HEADER_FORMAT_JS),
         columnDefs = list(
           list(className = 'dt-center', targets = 2),
           list(
             targets = which(
               !names(.data) %in% DEFAULT_COLUMNS
-            ) %>%
-              magrittr::subtract(1),
+            ) - 1L,
             visible = FALSE
           )
         ) %>%
@@ -137,8 +155,6 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
       rownames = FALSE
     )
   })
-
-  callModule(mod_tablevars_server, "columns_ui_1", r_data = r_data, table_proxy = table_proxy)
 
   callModule(mod_server_download_button, "output_table_xlsx_dl", r_download_data, "excel", "kinase_data")
   callModule(mod_server_download_button, "output_table_csv_dl", r_download_data, "csv", "kinase_data")

@@ -37,25 +37,22 @@ filter_knowledge_collapse <- function(.data, fltinfo){
 
 
 filter_resources <- function(.data, fltinfo, na_info){
-
   # Note that this requires that the NA vals in n_pdb_structures
   # and has_commercial_assay are the same which seems to be
   # true
 
-  if(is.null(fltinfo)){
-    if(is.null(na_info)) .data <- .data %>% dplyr::filter(!is.na(n_pdb_structures))
+  if(is.null(fltinfo)) return(.data)
+
+  if("at least 1 crystal structures" %in% fltinfo){
+    .data <- .data %>% dplyr::filter(
+      n_pdb_structures > 0 | (!is.null(na_info) & is.na(n_pdb_structures))
+    )
   }
 
-  if("Structures" %in% fltinfo){
-    if(is.null(na_info)) .data <- .data %>% dplyr::filter(n_pdb_structures > 0)
-    .data <- .data %>% dplyr::filter(n_pdb_structures > 0 | is.na(n_pdb_structures))
-  }
-
-
-
-  if("Commercial assays" %in% fltinfo){
-    if(is.null(na_info)) .data <- .data %>% dplyr::filter(has_commercial_assay == 1)
-    .data <- .data %>% dplyr::filter(has_commercial_assay == 1 | is.na(has_commercial_assay))
+  if("at least 1 commercial assays" %in% fltinfo){
+    .data <- .data %>% dplyr::filter(
+      has_commercial_assay == 1 | (!is.null(na_info) & is.na(has_commercial_assay))
+    )
   }
 
 
@@ -67,7 +64,7 @@ filter_resources <- function(.data, fltinfo, na_info){
 
 filter_conv_class <- function(.data, fltinfo){
 
-  if(fltinfo == "No filter") return(.data)
+  if((fltinfo %||% "No filter") == "No filter") return(.data)
 
   .data %>%
     dplyr::filter(
@@ -84,7 +81,7 @@ filter_conv_class <- function(.data, fltinfo){
 
 filter_pseudokinase <- function(.data, fltinfo){
 
-  if(fltinfo == "No filter") return(.data)
+  if((fltinfo %||% "No filter")  == "No filter") return(.data)
 
   val <- 1
   if(fltinfo == "Exclude pseudokinases") val <- 0

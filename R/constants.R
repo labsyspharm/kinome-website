@@ -14,8 +14,7 @@ DEFAULT_COLUMNS <- c(
   "hgnc_name",
   "fold_annotation",
   "group",
-  "indra_network",
-  "pdb_structure_ids"
+  "indra_network"
 )
 
 MULTISELECT_COLUMNS <- list(
