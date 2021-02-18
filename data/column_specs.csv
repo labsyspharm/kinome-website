@@ -31,6 +31,7 @@ n_pdb_structures,PDB structures,the total number of pdb structures of the kinase
 n_selective_compounds,Selective compounds,the number of compounds with at least MS or SS annotation for the given kinase in the Small Molecule Suite,3,Knowledge
 has_commercial_assay,Commercial assay,whether there is a commercial assay for measuring affinity to this kinase,0,Knowledge
 n_essential_cell_lines,Essential cell lines,number of dependent cell lines on DepMap,73,Knowledge
+compounds,Compounds,URL to a list of compounds binding the kinase at smallmoleculesuite.org,https://labsyspharm.shinyapps.io/smallmoleculesuite/?_inputs_&tab=%22binding%22&symbol=AKT,Knowledge
 rb_name,Reaction Biology name,the name used for reference on Reaction Biology http://www.reactionbiology.com,CDK13,Identifiers
 kinaseform_in_reaction_biology,Variant in Reaction Biology,the phosphorylated form or protein complex available for assay on Reaction Biology http://www.reactionbiology.com,CDK13/cyclin K,Identifiers
 kinomescan_name,KINOMEscan name,the name used for reference on DiscoverX kinase panel,CDK13,Identifiers

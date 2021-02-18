@@ -21,7 +21,7 @@ mod_table_ui <- function(id) {
       DT::DTOutput(ns("kinometable"), width = "90%"),
       mod_ui_download_button(ns("output_table_csv_dl"), "Download CSV"),
       mod_ui_download_button(ns("output_table_xlsx_dl"), "Download Excel"),
-      mod_ui_modal_column("pdb_structures")
+      mod_ui_modal_column(ns("pdb_structures"))
       )
   ))
 }
@@ -61,12 +61,12 @@ DT_HEADER_FORMAT_JS = paste0(
 mod_table_server <- function(input, output, session, r_data, r_filters) {
   ns <- session$ns
 
-  pdb_modal_render_js <- callModule(
+  pdb_modal_display_js <- callModule(
     mod_server_modal_column,
     "pdb_structures",
     button_text = tagList(
       icon("link"),
-      "PDB structures"
+      " PDB structures"
     ) %>%
       as.character()
   )
@@ -78,19 +78,28 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
           str_split(fixed(";")) %>%
           map2_chr(
             hgnc_symbol,
-            ~paste(
-              .y,
+            ~if (is.na(.x[1]))
+              ""
+            else
               paste(
-                "<a href=\"https://www.rcsb.org/structure/", .x,
-                "\" target=\"_blank\">", .x, "</a>",
-                sep = "", collapse = "<br>"
-              ),
-              sep = ";"
-            )
+                .y,
+                paste(
+                  "<a href='https://www.rcsb.org/structure/", .x,
+                  "' target='_blank'>", .x, "</a>",
+                  sep = "", collapse = "<br>"
+                ),
+                sep = ";"
+              )
           ),
+        compounds = paste0(
+          "<a href = '",
+          'https://labsyspharm.shinyapps.io/smallmoleculesuite/?_inputs_&tab=%22binding%22&binding-select_target=%22',
+          hgnc_symbol, "%22' target='_blank'>",
+          as.character(icon("link")), " Compounds</a>"
+        ),
         across(
           any_of("indra_network"),
-          ~paste0("<a href=\"", .x, "\" target=\"_blank\">Network ", as.character(icon("link")), "</a>")
+          ~paste0("<a href=\"", .x, "\" target=\"_blank\">", as.character(icon("link")), " Network</a>")
         )
       )
   })
@@ -128,7 +137,7 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
       selection = "none",
       style = "bootstrap4",
       extensions = c("Buttons"),
-      escape = grep("^indra_network|pdb_structure_ids$", names(.data), invert = TRUE, value = TRUE),
+      escape = grep("^indra_network|pdb_structure_ids|compounds$", names(.data), invert = TRUE, value = TRUE),
       options = list(
         scrollX = TRUE,
         dom = DT_DOM,
@@ -161,7 +170,7 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
             targets = which(
               names(.data) == "pdb_structure_ids"
             ) - 1L,
-            render = JS(pdb_modal_render_js)
+            createdCell = JS(pdb_modal_display_js)
           )
         ) %>%
           # c(

@@ -4,10 +4,7 @@ mod_ui_modal_column <- function(id) {
   ns <- NS(id)
 
   tags$div(
-    id = ns("modal"),
-    `aria-labelledby` = ns("modal-title"),
-    `aria-hidden` = "true",
-    class = "modal", role = "dialog",
+    class = "modal-dialog modal-lg",
     tags$div(
       class = "modal-content",
       tags$div(
@@ -24,7 +21,7 @@ mod_ui_modal_column <- function(id) {
           `aria-label` = "Close",
           tags$span(
             `aria-hidden` = "true",
-            "&times;"
+            icon("window-close")
           )
         )
       ),
@@ -44,6 +41,13 @@ mod_ui_modal_column <- function(id) {
       )
     )
   ) %>%
+    tags$div(
+      id = ns("modal"),
+      `aria-labelledby` = ns("modal-title"),
+      `aria-hidden` = "true",
+      class = "modal",
+      role = "dialog"
+    ) %>%
     tagList(
       htmltools::htmlDependency(
         "modal_column_js", "1.0",
@@ -53,18 +57,21 @@ mod_ui_modal_column <- function(id) {
     )
 }
 
-RENDER_COLUMN_JS <- r"--{
-  function(data, type, row, meta) {
-    const row_split = data.split(";");
-    const button = $("<button type=\"button\" class=\"btn btn-link\" \
-      data-toggle=\"modal\" data-target=\"#`modal_id`\" onClick >`button_text`</button>"
+DISPLAY_COLUMN_JS <- r"--{
+  function(cell, cellData, rowData, rowIndex, colIndex) {
+    if (cellData === "") {
+      return;
+    }
+    const row_split = cellData.split(";");
+    const button = $("<button type=\"button\" class=\"btn btn-link p-0\" \
+      data-toggle=\"modal\" data-target=\"#`modal_id`\">`button_text`</button>"
     ).on("click", {
       modal_id: "`modal_id`",
       header_content: row_split[0],
       body_content: row_split[1]
-    }, column_modal_click_callback);
-    asdf();
-    return button.outerHTML;
+      }, column_modal_click_callback
+    );
+    $(cell).empty().append(button);
   }
 }--"
 
@@ -74,7 +81,7 @@ mod_server_modal_column <- function(
   ns <- session$ns
 
   glue(
-    RENDER_COLUMN_JS,
+    DISPLAY_COLUMN_JS,
     modal_id = ns("modal"),
     button_text = button_text %>%
       str_replace_all(fixed('"'), '\\"') %>%
