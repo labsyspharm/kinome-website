@@ -25,7 +25,7 @@ source("modules/components/comp_filters.R", local = TRUE)
 source("modules/components/comp_tablevars.R", local = TRUE)
 #source("modules/components/comp_tableview.R", local = TRUE)
 source("modules/components/download_buttons.R", local = TRUE)
-source("modules/components/reference_modal.R", local = TRUE)
+source("modules/components/modal_column.R", local = TRUE)
 
 # # Modules
 source("modules/mod_table.R", local = TRUE)

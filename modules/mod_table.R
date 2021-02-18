@@ -20,7 +20,8 @@ mod_table_ui <- function(id) {
       width = 9,
       DT::DTOutput(ns("kinometable"), width = "90%"),
       mod_ui_download_button(ns("output_table_csv_dl"), "Download CSV"),
-      mod_ui_download_button(ns("output_table_xlsx_dl"), "Download Excel")
+      mod_ui_download_button(ns("output_table_xlsx_dl"), "Download Excel"),
+      mod_ui_modal_column("pdb_structures")
       )
   ))
 }
@@ -60,9 +61,33 @@ DT_HEADER_FORMAT_JS = paste0(
 mod_table_server <- function(input, output, session, r_data, r_filters) {
   ns <- session$ns
 
+  pdb_modal_render_js <- callModule(
+    mod_server_modal_column,
+    "pdb_structures",
+    button_text = tagList(
+      icon("link"),
+      "PDB structures"
+    ) %>%
+      as.character()
+  )
+
   r_data_processed <- reactive({
-    callModule(mod_server_reference_modal, "", r_data, reference_col = "pdb_structure_ids")() %>%
+    r_data() %>%
       mutate(
+        pdb_structure_ids = pdb_structure_ids %>%
+          str_split(fixed(";")) %>%
+          map2_chr(
+            hgnc_symbol,
+            ~paste(
+              .y,
+              paste(
+                "<a href=\"https://www.rcsb.org/structure/", .x,
+                "\" target=\"_blank\">", .x, "</a>",
+                sep = "", collapse = "<br>"
+              ),
+              sep = ";"
+            )
+          ),
         across(
           any_of("indra_network"),
           ~paste0("<a href=\"", .x, "\" target=\"_blank\">Network ", as.character(icon("link")), "</a>")
@@ -107,6 +132,7 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
       options = list(
         scrollX = TRUE,
         dom = DT_DOM,
+        autoWidth = TRUE,
         buttons = make_column_selection_buttons(
           choices = COLUMN_SPECS,
           cols = names(.data),
@@ -130,6 +156,12 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
               !names(.data) %in% DEFAULT_COLUMNS
             ) - 1L,
             visible = FALSE
+          ),
+          list(
+            targets = which(
+              names(.data) == "pdb_structure_ids"
+            ) - 1L,
+            render = JS(pdb_modal_render_js)
           )
         ) %>%
           # c(
