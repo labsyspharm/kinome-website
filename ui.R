@@ -73,7 +73,7 @@ function(req) {
             class = "active",
             columns(
               column(
-                width = 8,
+                width = 6,
                 tags$a(
                   href = "kinome/assets/img/kinome_tree_v10.png",
                   target = "_blank",
@@ -84,12 +84,21 @@ function(req) {
                 )
               ),
               column(
-                width = 4,
+                width = 6,
                 h3("Kinome.org") %>%
                   font(align = "left"),
                 p("Welcome to Kinome.org!"),
                 p("This site is maintained by scientists in the HMS Laboratory of Systems Pharmacology",
-                "It is intended to assist in studying the human kinome based on data-driven criteria and information that can be accessed from curated databases or using machine reading and knowledge assembly systems."),
+                "It is intended to assist in studying the human kinome based on data-driven criteria and information that can be accessed from curated databases or using machine reading and knowledge assembly systems.",
+                a(
+                  class = "btn-link",
+                  `data-toggle` = "collapse",
+                  href = "#more_info",
+                  role = "button",
+                  `aria-expanded` = "false",
+                  `aria-controls` = "more_info",
+                  "More information..."
+                )),
                 p(
                   tags$a(
                     id = "explore",
@@ -100,16 +109,6 @@ function(req) {
                   ) %>%
                     font(size = "lg", weight = "bold")
                 ),
-                a(
-                  class = "btn btn-secondary",
-                  `data-toggle` = "collapse",
-                  href = "#more_info",
-                  role = "button",
-                  `aria-expanded` = "false",
-                  `aria-controls` = "more_info",
-                  "More information..."
-                ) %>%
-                  p(),
                 div(
                   class = "collapse",
                   id = "more_info",
@@ -172,7 +171,7 @@ function(req) {
                     a(href = "https://bioinfo.uth.edu/kmd/index.html?csrt=3252186118630041327", "KinaseMD", target = "_blank")
                   ),
                   tags$li(
-                    a(href = "https://klifs.net/", "KLIFs (VU Amsterdam)", target = "_blank")
+                    a(href = "https://klifs.net/", "KLIFs", target = "_blank")
                   ),
                   tags$li(
                     a(href = "http://www.kinasenet.ca/", "KinaseNet", target = "_blank")
