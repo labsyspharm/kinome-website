@@ -11,11 +11,11 @@ COLUMN_TITLE_MAP <- with(COLUMN_SPECS, set_names(column_title, column_id))
 
 DEFAULT_COLUMNS <- c(
   "hgnc_symbol",
-  "hgnc_name",
   "fold_annotation",
   "group",
   "indra_network",
-  "pdb_structure_ids"
+  "pdb_structure_ids",
+  "compounds"
 )
 
 MULTISELECT_COLUMNS <- list(

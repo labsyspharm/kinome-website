@@ -13,11 +13,12 @@ mod_table_ui <- function(id) {
     # Sidebar with a slider input
     sidebarPanel(
       width = 3,
-      h2("Filters"),
+      h2("Row filters"),
       mod_filters_ui("filters_ui_1", open = TRUE)
     ),
     mainPanel(
       width = 9,
+      h2("Column filters"),
       DT::DTOutput(ns("kinometable"), width = "90%"),
       mod_ui_download_button(ns("output_table_csv_dl"), "Download CSV"),
       mod_ui_download_button(ns("output_table_xlsx_dl"), "Download Excel"),

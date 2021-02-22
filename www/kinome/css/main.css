@@ -146,12 +146,6 @@ table.dataTable thead th {
   transition: all 0.5s;
 }
 
-
-.kinome-tree{
-  margin-top: 50px;
-  width: 700px;
-}
-
 .include-missing-checkbox {
   margin-bottom: 1rem;
 }

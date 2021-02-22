@@ -35,14 +35,4 @@ function(input, output, session) {
     showModal(.modal_funding)
   })
 
-  modal_kinome_tree <- modal(
-    id = NULL,
-    size = "xl",
-    tags$img(src = "kinome/assets/img/kinome_tree_v9.png", style = "width: 100%;")
-  )
-
-  observeEvent(input$kinome_tree_modal_activate, {
-    showModal(modal_kinome_tree)
-  })
-
 }

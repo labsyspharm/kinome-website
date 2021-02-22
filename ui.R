@@ -73,13 +73,18 @@ function(req) {
             class = "active",
             columns(
               column(
-                linkInput(
-                  id = "kinome_tree_modal_activate",
-                  label = "",
-                  tags$img(class = 'kinome-tree', src = "kinome/assets/img/kinome_tree_v9.png")
-                ),
+                width = 8,
+                tags$a(
+                  href = "kinome/assets/img/kinome_tree_v9.png",
+                  target = "_blank",
+                  tags$img(
+                    class = 'img-fluid mt-2',
+                    src = "kinome/assets/img/kinome_tree_v9.png"
+                  )
+                )
               ),
               column(
+                width = 4,
                 d3("Kinome.org") %>%
                   font(align = "left"),
                 p("Welcome to Kinome.org!"),
@@ -117,7 +122,6 @@ function(req) {
                   ) %>%
                     font(size = "lg", weight = "bold")
                 )
-
               )
             )
           ),
