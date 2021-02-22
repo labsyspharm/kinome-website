@@ -75,11 +75,11 @@ function(req) {
               column(
                 width = 8,
                 tags$a(
-                  href = "kinome/assets/img/kinome_tree_v9.png",
+                  href = "kinome/assets/img/kinome_tree_v10.png",
                   target = "_blank",
                   tags$img(
                     class = 'img-fluid mt-2',
-                    src = "kinome/assets/img/kinome_tree_v9.png"
+                    src = "kinome/assets/img/kinome_tree_v10.png"
                   )
                 )
               ),
