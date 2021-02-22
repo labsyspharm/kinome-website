@@ -93,9 +93,8 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
               )
           ),
         compounds = paste0(
-          "<a href = '",
-          'https://labsyspharm.shinyapps.io/smallmoleculesuite/?_inputs_&tab=%22binding%22&binding-select_target=%22',
-          hgnc_symbol, "%22' target='_blank'>",
+          "<a href = \"https://labsyspharm.shinyapps.io/smallmoleculesuite/?_inputs_&tab=%22binding%22&binding-select_target=%22",
+          hgnc_symbol, "%22&binding-query-select_compound=%22%22\" target=\"_blank\">",
           as.character(icon("link")), " Compounds</a>"
         ),
         across(
