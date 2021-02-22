@@ -133,8 +133,8 @@ function(req) {
                     )
                   )
                 ),
-                p("The site is in active development with funding from NIH grants U24-DK116204 and DARPA grants W911NF-15-1-0544 and W911NF018-1-0124.",
-                "LICENSE: Attribution 4.0 International (CC BY 4.0)"),
+                p("The site is in active development with funding from NIH grants U24-DK116204 and DARPA grants W911NF-15-1-0544 and W911NF018-1-0124."),
+                p("LICENSE:", a(href = "https://creativecommons.org/licenses/by/4.0/", "Creative Commons Attribution 4.0 International (CC BY 4.0)", target = "_blank")),
                 h4("Newly developed web tools"),
                 tags$dl(
                   tags$dt("Membership in the human kinome"),
