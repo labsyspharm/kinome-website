@@ -85,34 +85,12 @@ function(req) {
               ),
               column(
                 width = 4,
-                d3("Kinome.org") %>%
+                h3("Kinome.org") %>%
                   font(align = "left"),
                 p("Welcome to Kinome.org!"),
-                p("Kinome.org is designed by the Laboratory of Systems Pharmacology to help researchers",
-                  "understand which proteins are members of the kinome under varying criteria."),
-                p("While the kinome is conceptually simple to understand as the full collection of human",
-                  "protein kinases, the practice of classifying a protein as protein kinase is not straightforward.",
-                  "Classifying a protein as protein kinase implies that its main function is the transfer",
-                  "of a phosphoryl group from ATP to a protein substrate or peptide. However, it is almost",
-                  "impossible to verify the main function of any protein because most proteins have multiple",
-                  "domains and could therefore have multiple functions. Even if phosphoryl transfer is one",
-                  "function of a protein, it can be one of many and not necessarily the most important one."),
-                p("In", a("our work", href = "https://www.biorxiv.org/content/10.1101/2020.04.02.022277v2", target = "_blank"),
-                  "we therefore took an approach that describes the kinome from multiple viewpoints.",
-                  "We compare proteins with a kinase domain on",
-                  tags$ol(
-                    type = "i",
-                    tags$li("their 3D fold and structure;"),
-                    tags$li("the knowledge on them in the public domain;"),
-                    tags$li("reagents available to study their function",
-                            "(biochemical reagents and small molecules);"),
-                    tags$li("evidence that they might be involved in pathophysiology.")
-                  )
-                ),
-                p("The Kinome.org portal lets users filter the list of kinases based on these criteria and as",
-                  "such build a custom and context specific definition of the kinome."),
-                div(
-                  onclick = "$('.navbar-nav > li:eq(1)').click()",
+                p("This site is maintained by scientists in the HMS Laboratory of Systems Pharmacology",
+                "It is intended to assist in studying the human kinome based on data-driven criteria and information that can be accessed from curated databases or using machine reading and knowledge assembly systems."),
+                p(
                   tags$a(
                     id = "explore",
                     href = "JavaScript:void(0)",
@@ -121,6 +99,84 @@ function(req) {
                     icon("arrow-circle-right"),
                   ) %>%
                     font(size = "lg", weight = "bold")
+                ),
+                a(
+                  class = "btn btn-secondary",
+                  `data-toggle` = "collapse",
+                  href = "#more_info",
+                  role = "button",
+                  `aria-expanded` = "false",
+                  `aria-controls` = "more_info",
+                  "More information..."
+                ) %>%
+                  p(),
+                div(
+                  class = "collapse",
+                  id = "more_info",
+                  p("While the kinome is conceptually simple to understand as the full collection of human",
+                    "protein kinases, the practice of classifying a protein as protein kinase is not straightforward.",
+                    "Classifying a protein as protein kinase implies that its main function is the transfer",
+                    "of a phosphoryl group from ATP to a protein substrate or peptide. However, it is almost",
+                    "impossible to verify the main function of any protein because most proteins have multiple",
+                    "domains and could therefore have multiple functions. Even if phosphoryl transfer is one",
+                    "function of a protein, it can be one of many and not necessarily the most important one."),
+                  p("In", a("our work", href = "https://www.biorxiv.org/content/10.1101/2020.04.02.022277v2", target = "_blank"),
+                    "we therefore took an approach that describes the kinome from multiple viewpoints.",
+                    "We compare proteins with a kinase domain on",
+                    tags$ol(
+                      type = "i",
+                      tags$li("their 3D fold and structure;"),
+                      tags$li("the knowledge on them in the public domain;"),
+                      tags$li("reagents available to study their function",
+                              "(biochemical reagents and small molecules);"),
+                      tags$li("evidence that they might be involved in pathophysiology.")
+                    )
+                  )
+                ),
+                p("The site is in active development with funding from NIH grants U24-DK116204 and DARPA grants W911NF-15-1-0544 and W911NF018-1-0124.",
+                "LICENSE: Attribution 4.0 International (CC BY 4.0)"),
+                h4("Newly developed web tools"),
+                tags$dl(
+                  tags$dt("Membership in the human kinome"),
+                  tags$dd(
+                    "This tool provides tools for sorting human kinases",
+                    tags$a(
+                      href = "JavaScript:void(0)",
+                      onclick = '$(".navbar-nav > li:eq(1) > button").click()',
+                      "based on multiple criteria."
+                    )
+                  ),
+                  tags$dt("Dark Kinase Knowledgebase"),
+                  tags$dd("This portal curates information on the understudied kinome as part of the NIH Illuminating the Druggable Genome project.",
+                          tags$a(href = "https://www.darkkinome.org", "darkkinome.org", target = "_blank")),
+                  tags$dt("Small Molecule Suite"),
+                  tags$dd("This tool makes it possible to identify selective inhibitors of kinases and other ligandable proteins using data-driven criteria.",
+                          tags$a(href = "https://www.smallmoleculesuite.org", "smallmoleculesuite.org", target = "_blank"))
+                ),
+                h3("Existing Resources"),
+                tags$ul(
+                  style = "line-style-type:'-'",
+                  tags$li(
+                    a(href = "http://vulcan.cs.uga.edu/prokino/about/browser", "ProKino", target = "_blank")
+                  ),
+                  tags$li(
+                    a(href = "http://www.kinhub.org/", "Kinhub", target = "_blank")
+                  ),
+                  tags$li(
+                    a(href = "https://pharos.nih.gov/", "Pharos", target = "_blank")
+                  ),
+                  tags$li(
+                    a(href = "http://www.kinase-screen.mrc.ac.uk/kinase-inhibitors", "Dundee Kinase Resource", target = "_blank")
+                  ),
+                  tags$li(
+                    a(href = "https://bioinfo.uth.edu/kmd/index.html?csrt=3252186118630041327", "KinaseMD", target = "_blank")
+                  ),
+                  tags$li(
+                    a(href = "https://klifs.net/", "KLIFs (VU Amsterdam)", target = "_blank")
+                  ),
+                  tags$li(
+                    a(href = "http://www.kinasenet.ca/", "KinaseNet", target = "_blank")
+                  )
                 )
               )
             )
