@@ -165,6 +165,9 @@ function(req) {
                     a(href = "https://pharos.nih.gov/", "Pharos", target = "_blank")
                   ),
                   tags$li(
+                    a(href = "https://schurerlab.shinyapps.io/CKIApp/", "Clinical Kinase Index", target = "_blank")
+                  ),
+                  tags$li(
                     a(href = "http://www.kinase-screen.mrc.ac.uk/kinase-inhibitors", "Dundee Kinase Resource", target = "_blank")
                   ),
                   tags$li(
@@ -175,6 +178,9 @@ function(req) {
                   ),
                   tags$li(
                     a(href = "http://www.kinasenet.ca/", "KinaseNet", target = "_blank")
+                  ),
+                  tags$li(
+                    a(href = "http://phanstiel-lab.med.unc.edu/CORAL/", "CORAL", target = "_blank")
                   )
                 )
               )
