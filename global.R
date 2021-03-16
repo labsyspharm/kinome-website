@@ -11,6 +11,7 @@ library(yonder)
 library(stringr)
 library(DT)
 library(writexl)
+library(fst)
 
 
 source("data/load.R", local = TRUE)

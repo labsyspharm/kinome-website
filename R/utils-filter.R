@@ -1,7 +1,7 @@
 filter_proteinfold <- function(.data, fltinfo){
   if(is.null(fltinfo)) return(.data)
   fltinfo[fltinfo == "Unrelated to Protein Kinase Like"] <- "Unrelated to Protein Kinase"
-  .data %>% dplyr::filter(fold_annotation %in% fltinfo)
+  .data %>% dplyr::filter(fold_code %in% fltinfo)
 }
 
 filter_compounds <- function(.data, fltinfo, na_info){

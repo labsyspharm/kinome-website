@@ -11,8 +11,7 @@ COLUMN_TITLE_MAP <- with(COLUMN_SPECS, set_names(column_title, column_id))
 
 DEFAULT_COLUMNS <- c(
   "hgnc_symbol",
-  "fold_annotation",
-  "group",
+  "fold_code",
   "indra_network",
   "pdb_structure_ids",
   "compounds"

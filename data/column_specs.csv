@@ -5,7 +5,7 @@ uniprot_name,UniProt name,Mnemonic identifier to UniprotKB entry,CDK13_HUMAN,Ide
 gene_names,Gene symbols,names of genes encoding this protein,CDK13 CDC2L CDC2L5 CHED KIAA1791,Identifiers
 protein_names,Protein names,full name of the protein,Cyclin-dependent kinase 13 (EC 2.7.11.22) (EC 2.7.11.23) (CDC2-related protein kinase 5) (Cell division cycle 2-like protein kinase 5) (Cell division protein kinase 13) (hCDK13) (Cholinesterase-related cell division controller),Identifiers
 hgnc_id,HGNC ID,A unique ID provided by the HGNC for each gene with an approved symbol,HGNC:1733,Identifiers
-hgnc_symbol,HGNC symbol,the official gene symbol approved by HUGO Gene Nomenclature Committee,CDK13,Identifiers
+hgnc_symbol,Symbol,the official gene symbol approved by HUGO Gene Nomenclature Committee,CDK13,Identifiers
 hgnc_name,HGNC Name,the full gene name approved by HGNC,cyclin dependent kinase 13,Identifiers
 is_idg_dark_kinase,IDG dark kinase,whether the kinase domain is in the original NIH 162 dark kinase list,1,Types
 is_statistically_defined_dark_kinase,Statistically defined,whether the kinase is dark based on number of INDRA statements and TIN-X_score,1,Types
@@ -19,7 +19,7 @@ has_annotated_kinase_activity,Kinase activity,"1 if the domain is in the curated
 pfam_domain,Pfam domain,classification of domain on Pfam,Pkinase,Structure
 domain_start,Domain start,first residue number of the kinase domain,705,Structure
 domain_end,Doman end,last residue number of the kinase domain,998,Structure
-fold_annotation,Fold annotation,"further classification of the protein fold: ePK, eLK, Atypical, Unrelated to Protein Kinase or Unknown",Eukaryotic Protein Kinase (ePK),Structure
+fold_code,Fold code,"further classification of the protein fold: ePK, eLK, Atypical, Unrelated to Protein Kinase or Unknown",Eukaryotic Protein Kinase (ePK),Structure
 fold,Fold,"primary classification of the protein fold: protein kinase like (PKL), unrelated, UPK or unknown",Protein Kinase Like,Structure
 annotation_score,Annotation score,number to reflect the amount of aggregated information from multiple databases,0.989192,Knowledge
 indra_network,INDRA network,URL of the interactive INDRA network on NDEx,http://ndexbio.org/#/network/0c9bd73c-5da8-11ea-bfdc-0ac135e8bacf,Knowledge
