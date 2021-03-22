@@ -23,16 +23,20 @@ MULTISELECT_COLUMNS <- list(
 
 INIT <- list(
   flt_kinaselike = c(
-    "Eukaryotic Protein Kinase (ePK)",
-    "Eukaryotic Like Kinase (eLK)",
-    "Atypical"),
-  flt_nokinaselike = c("Unrelated to Protein Kinase Like", "Unknown"),
+    "Eukaryotic Protein Kinase (ePK)" = "ePK",
+    "Eukaryotic Like Kinase (eLK)" = "eLK",
+    "Atypical" = "Atypical"
+  ),
+  flt_nokinaselike = c(
+    "Unrelated to Protein Kinase Like" = "uPK",
+    "Unknown" = "Unknown"
+  ),
   flt_compounds = 0,
   na_compounds = "Include missing values",
   flt_knowledge = "No filter",
   flt_biorel = "NULL",
   essentialcelllines = 0,
-  na_essentialcelllines = "Include missing values",
+  na_biorel = "Include missing values",
   flt_resources = "NULL",
   na_resources = "Include missing values",
   flt_conv_class = "No filter",

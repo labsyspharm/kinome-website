@@ -26,12 +26,12 @@ mod_filters_ui <- function(id, open = FALSE) {
     ) %>%
       collapse_wrapper(
         open = "false", collapseid = ns("proteinfold_collapse"), title = "Protein Fold",
-        description = "Select kinases with one of the following protein folds"
+        description = "Include kinases with the following protein folds"
       ),
     tagList(
       sliderInput(
         ns("flt_compounds"),
-        "Select kinases with at least this many most-selective/semi-selective compounds",
+        "Only include kinases with at least this many most-selective/semi-selective compounds",
         min = min(kinomedat$n_selective_compounds, na.rm=TRUE),
         value = INIT$flt_compounds,
         max = max(kinomedat$n_selective_compounds, na.rm=TRUE)
@@ -61,11 +61,11 @@ mod_filters_ui <- function(id, open = FALSE) {
                               value = 0,
                               max = max(kinomedat$n_essential_cell_lines, na.rm = TRUE)),
       addNAcheck = TRUE,
-      na_checkid = ns("na_essentialcelllines")
+      na_checkid = ns("na_biorel")
     ) %>%
       collapse_wrapper(
         open = "false", collapseid = ns("biological_relevance"), title = "Biological Relevance",
-        description = "Select kinases if they have been implicated in the following diseases"
+        description = "Only include kinases that have been implicated in the following diseases"
       ),
     get_check_collapse(
       NULL,
@@ -77,7 +77,7 @@ mod_filters_ui <- function(id, open = FALSE) {
     ) %>%
       collapse_wrapper(
         open = "false", collapseid = ns("resources"), title = "Resources",
-        description = "Select kinases if it has the following resources"
+        description = "Only include kinases with the following resources"
       ),
     get_radio_collapse(
       NULL,
@@ -138,7 +138,7 @@ mod_filters_server <- function(input, output, session) {
   observe(r_filters$conventional_classification <-input$flt_conv_class)
   observe(r_filters$pseudokinase <-input$flt_pseudokinase)
   observe(r_filters$essential_cell_lines <-input$essentialcelllines)
-  observe(r_filters$na_essential_cell_lines <-input$na_essentialcelllines)
+  observe(r_filters$na_biorel <-input$na_biorel)
   observe(r_filters$custom <-input$flt_custom)
 
 
@@ -153,7 +153,7 @@ mod_filters_server <- function(input, output, session) {
     yonder::updateCheckboxInput("flt_biorel", selected = "NULL")
     updateSliderInput(session, "essentialcelllines",  value = INIT$essentialcelllines)
 
-    updateCheckboxInput("na_essentialcelllines", selected = INIT$na_essentialcelllines)
+    updateCheckboxInput("na_biorel", selected = INIT$na_biorel)
 
     updateCheckboxInput("flt_resources", selected = INIT$flt_resources)
     updateCheckboxInput("na_resources", selected = INIT$na_resources)

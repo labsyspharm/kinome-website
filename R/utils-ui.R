@@ -49,7 +49,7 @@ get_radio_collapse <- function(label,
   if(addNAcheck)
     frm <- list(frm, na_checkbox(na_checkid))
 
-    frm
+  frm
 }
 
 
@@ -67,14 +67,18 @@ get_check_collapse <- function(label,
                                addl_html = NULL,
                                addNAcheck = FALSE,
                                na_checkid = NULL) {
-  second <- div()
+  second <- NULL
+  # Check if chioces and values are different
+  ch <- names(choices2) %||% choices2
+  vals <- if (is.null(names(choices2))) ch else unname(choices2)
   if (!is.null(flt_id2)) {
     second <- formGroup(
       label = if (!is.null(label2)) tags$h6(label2) %>% margin(b = 0),
       input = checkboxInput(
         inline = FALSE,
         id = flt_id2,
-        choices = choices2,
+        choices = ch,
+        values = vals,
         selected = selected2
       ) %>%
         active("crimson")
@@ -82,13 +86,16 @@ get_check_collapse <- function(label,
   }
 
 
-
-  items <- list(formGroup(
+  # Check if chioces and values are different
+  ch <- names(choices1) %||% choices1
+  vals <- if (is.null(names(choices1))) ch else unname(choices1)
+  items <- tagList(formGroup(
     label = tags$h6(label) %>% margin(b = 0),
     input = checkboxInput(
       inline = FALSE,
       id = flt_id1,
-      choices = choices1,
+      choices = ch,
+      values = vals,
       selected = selected1
     ) %>%
       active("crimson")

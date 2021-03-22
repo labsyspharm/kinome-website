@@ -105,15 +105,14 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
   })
 
   r_row_filter <- reactive({
-    # browser()
     r_data() %>%
       mutate(idx = seq_len(n())) %>%
       filter_proteinfold(r_filters$proteinfold) %>%
-      filter_compounds(r_filters$compounds, r_filters$na_compounds) %>%
+      filter_compounds(r_filters$compounds, isTruthy(r_filters$na_compounds)) %>%
       filter_knowledge_collapse(r_filters$knowledge_collapse) %>%
-      filter_biological_relevance(r_filters$biological_relevance) %>%
-      filter_essential_cell_lines(r_filters$essential_cell_lines, r_filters$na_essential_cell_lines) %>%
-      filter_resources(r_filters$resources, r_filters$na_resources) %>%
+      filter_biological_relevance(r_filters$biological_relevance, isTruthy(r_filters$na_biorel)) %>%
+      filter_essential_cell_lines(r_filters$essential_cell_lines, isTruthy(r_filters$na_biorel)) %>%
+      filter_resources(r_filters$resources, isTruthy(r_filters$na_resources)) %>%
       filter_conv_class(r_filters$conventional_classification) %>%
       filter_pseudokinase(r_filters$pseudokinase) %>%
       filter_custom_HGNC(r_filters$custom) %>%

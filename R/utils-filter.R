@@ -1,13 +1,12 @@
 filter_proteinfold <- function(.data, fltinfo){
   if(is.null(fltinfo)) return(.data)
-  fltinfo[fltinfo == "Unrelated to Protein Kinase Like"] <- "Unrelated to Protein Kinase"
   .data %>% dplyr::filter(fold_code %in% fltinfo)
 }
 
 filter_compounds <- function(.data, fltinfo, na_info){
   if(is.null(fltinfo)) return(.data)
 
-  if(is.null(na_info)){
+  if(!na_info){
     .data <- .data %>%
       dplyr::filter(n_selective_compounds >= fltinfo)
   } else {
@@ -45,13 +44,13 @@ filter_resources <- function(.data, fltinfo, na_info){
 
   if("at least 1 crystal structures" %in% fltinfo){
     .data <- .data %>% dplyr::filter(
-      n_pdb_structures > 0 | (!is.null(na_info) & is.na(n_pdb_structures))
+      n_pdb_structures > 0 | (na_info & is.na(n_pdb_structures))
     )
   }
 
   if("at least 1 commercial assays" %in% fltinfo){
     .data <- .data %>% dplyr::filter(
-      has_commercial_assay == 1 | (!is.null(na_info) & is.na(has_commercial_assay))
+      has_commercial_assay == 1 | (na_info & is.na(has_commercial_assay))
     )
   }
 
@@ -92,7 +91,7 @@ filter_pseudokinase <- function(.data, fltinfo){
 }
 
 
-filter_biological_relevance <- function(.data, fltinfo){
+filter_biological_relevance <- function(.data, fltinfo, na_info){
 
   if(is.null(fltinfo)) return(.data)
 
@@ -107,9 +106,9 @@ filter_biological_relevance <- function(.data, fltinfo){
   #if("Essential in at least [100] cell lines" %in% fltinfo) nessential <- 100
 
   .data %>%
-    dplyr::filter(significant_in_cancer %in% cancer) %>%
-    dplyr::filter(significant_in_alzheimers %in% alzheimers) %>%
-    dplyr::filter(significant_in_copd %in% copd)
+    dplyr::filter(significant_in_cancer %in% cancer | if (na_info) is.na(significant_in_cancer) else FALSE) %>%
+    dplyr::filter(significant_in_alzheimers %in% alzheimers | if (na_info) is.na(significant_in_alzheimers) else FALSE) %>%
+    dplyr::filter(significant_in_copd %in% copd | if (na_info) is.na(significant_in_copd) else FALSE)
 
 }
 
@@ -119,7 +118,7 @@ filter_essential_cell_lines <- function(.data, fltinfo, na_info){
 
   if(is.null(fltinfo)) return(.data)
 
-  if(is.null(na_info)){
+  if(!na_info){
     .data <- .data %>%
       dplyr::filter(n_essential_cell_lines >= fltinfo)
   } else {
