@@ -18,8 +18,7 @@ mod_table_ui <- function(id) {
     ),
     mainPanel(
       width = 9,
-      h2("Column filters"),
-      textOutput(ns("selected_columns_text_out"), inline = FALSE),
+      div(id = ns("n_columns_text")),
       DT::DTOutput(ns("kinometable"), width = "90%"),
       mod_ui_download_button(ns("output_table_csv_dl"), "Download CSV"),
       mod_ui_download_button(ns("output_table_xlsx_dl"), "Download Excel"),
@@ -56,8 +55,7 @@ function send_n_cols(e, settings, column, state) {
   var cols = api.columns();
   var ncols = cols.count();
   var nvisible = cols.visible().filter(Boolean).count();
-  console.log(ncols);
-  console.log(nvisible);
+  $("#<<output_id>>").text(`Showing ${nvisible} of ${ncols} columns`);
   Shiny.setInputValue("<<table_id>>_ncols", ncols);
   Shiny.setInputValue("<<table_id>>_nvisible", nvisible);
 }
@@ -152,10 +150,10 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
         COLUMN_SPECS,
         paste('"', column_title, '" : "', column_description, '"', sep = "", collapse = ",")
       ),
+      output_id = ns("n_columns_text"),
       .open = "<<",
       .close = ">>"
     )
-    cat(draw_callback_js)
 
     DT::datatable(
       .data,
