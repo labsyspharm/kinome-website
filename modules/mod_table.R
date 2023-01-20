@@ -49,6 +49,7 @@ function show_tooltip_header(e, settings, column, state) {
     }
   );
   spans.tooltip();
+  api.columns.adjust().draw();
 }
 function send_n_cols(e, settings, column, state) {
   const api = $(this).DataTable();
