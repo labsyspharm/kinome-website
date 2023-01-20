@@ -36,10 +36,10 @@
     },
     "Rcpp": {
       "Package": "Rcpp",
-      "Version": "1.0.6",
+      "Version": "1.0.9",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "dbb5e436998a7eba5a9d682060533338"
+      "Hash": "e9c08b94391e9f3f97355841229124f2"
     },
     "askpass": {
       "Package": "askpass",
@@ -169,10 +169,17 @@
     },
     "fst": {
       "Package": "fst",
-      "Version": "0.9.4",
+      "Version": "0.9.8",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "66c2d5dffed8d181b9555617beb2d0f9"
+      "Hash": "34637e000c63c3de8d8aafceb82fd082"
+    },
+    "fstcore": {
+      "Package": "fstcore",
+      "Version": "0.9.14",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "4b8819aaa8d1ce9b0f999d23ad24f96b"
     },
     "generics": {
       "Package": "generics",
