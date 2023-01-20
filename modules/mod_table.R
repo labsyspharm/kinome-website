@@ -18,7 +18,8 @@ mod_table_ui <- function(id) {
     ),
     mainPanel(
       width = 9,
-      h2("Column filters"),
+      h2("Column filters "),
+      textOutput(ns("selected_columns_text_out"), inline = FALSE),
       DT::DTOutput(ns("kinometable"), width = "90%"),
       mod_ui_download_button(ns("output_table_csv_dl"), "Download CSV"),
       mod_ui_download_button(ns("output_table_xlsx_dl"), "Download Excel"),
@@ -28,6 +29,21 @@ mod_table_ui <- function(id) {
 }
 
 DT_DOM <- '<"row justify-content-between"<"col-sm-12 col-md-auto"B><"col-sm-12 col-md-auto ml-md-auto"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12 col-md-3"l><"col-sm-12 col-md-3"i><"col-sm-12 col-md-6"p>>'
+
+DT_DRAW_CALLBACK_JS = r'[
+function(settings, json) {
+  function send_n_cols(e, settings, column, state) {
+    var api = $(this).DataTable();
+    var cols = api.columns();
+    var ncols = cols.count();
+    var nvisible = cols.visible().filter(Boolean).count();
+    Shiny.setInputValue("[input_id_ncols]", ncols);
+    Shiny.setInputValue("[input_id_nvisible]", nvisible);
+  }
+  this.api().on('column-visibility.dt', send_n_cols);
+  this.api().on('init.dt', send_n_cols)
+}
+]'
 
 DT_HEADER_FORMAT_JS = paste0(
 '
@@ -157,6 +173,7 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
         #   )
         # ),
         headerCallback = JS(DT_HEADER_FORMAT_JS),
+        drawCallback = JS(glue(DT_DRAW_CALLBACK_JS, input_id_ncols = ns("ncols"), input_id_nvisible = ns("nvisible"), .open = "[", .close = "]")),
         columnDefs = list(
           list(className = 'dt-center', targets = 2),
           list(
@@ -184,6 +201,10 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
     r_table(),
     server = TRUE
   )
+
+  output$selected_columns_text_out <- renderText({
+    paste("Showing", input$nvisible, "out of", input$ncols, "columns", sep = " ")
+  })
 
   table_proxy <- dataTableProxy("kinometable")
 
