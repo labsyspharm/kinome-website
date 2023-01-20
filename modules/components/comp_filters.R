@@ -28,19 +28,6 @@ mod_filters_ui <- function(id, open = FALSE) {
         open = "false", collapseid = ns("proteinfold_collapse"), title = "Protein Fold",
         description = "Include kinases with the following protein folds"
       ),
-    tagList(
-      sliderInput(
-        ns("flt_compounds"),
-        "Only include kinases with at least this many most-selective/semi-selective compounds",
-        min = min(kinomedat$n_selective_compounds, na.rm=TRUE),
-        value = INIT$flt_compounds,
-        max = max(kinomedat$n_selective_compounds, na.rm=TRUE)
-      ),
-      na_checkbox(ns("na_compounds"), includeNA = TRUE)
-    ) %>%
-      collapse_wrapper(
-        open = "false", collapseid = ns("compounds_collapse"), title = "Compounds"
-      ),
     get_radio_collapse(
       label = NULL,
       flt_id1 = ns("flt_knowledge"),
@@ -129,8 +116,6 @@ mod_filters_server <- function(input, output, session) {
     r_filters$proteinfold <- proteinfold
   })
 
-  observe(r_filters$compounds <-input$flt_compounds)
-  observe(r_filters$na_compounds <-input$na_compounds)
   observe(r_filters$knowledge_collapse <-input$flt_knowledge)
   observe(r_filters$biological_relevance <-input$flt_biorel)
   observe(r_filters$resources <-input$flt_resources)
@@ -147,8 +132,6 @@ mod_filters_server <- function(input, output, session) {
     updateCheckboxInput("flt_kinaselike", selected = INIT$flt_kinaselike)
     updateCheckboxInput("flt_nokinaselike", selected = INIT$flt_nokinaselike)
 
-    updateSliderInput(session, "flt_compounds",  value = INIT$flt_compounds)
-    updateCheckboxInput("na_compounds", selected = INIT$na_compounds)
     updateRadioInput("flt_knowledge", selected = INIT$flt_knowledge)
     yonder::updateCheckboxInput("flt_biorel", selected = "NULL")
     updateSliderInput(session, "essentialcelllines",  value = INIT$essentialcelllines)

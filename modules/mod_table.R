@@ -121,7 +121,6 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
     r_data() %>%
       mutate(idx = seq_len(n())) %>%
       filter_proteinfold(r_filters$proteinfold) %>%
-      filter_compounds(r_filters$compounds, isTruthy(r_filters$na_compounds)) %>%
       filter_knowledge_collapse(r_filters$knowledge_collapse) %>%
       filter_biological_relevance(r_filters$biological_relevance, isTruthy(r_filters$na_biorel)) %>%
       filter_essential_cell_lines(r_filters$essential_cell_lines, isTruthy(r_filters$na_biorel)) %>%
