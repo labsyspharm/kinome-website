@@ -13,8 +13,7 @@ DEFAULT_COLUMNS <- c(
   "hgnc_symbol",
   "fold_code",
   "indra_network",
-  "pdb_structure_ids",
-  "compounds"
+  "pdb_structure_ids"
 )
 
 MULTISELECT_COLUMNS <- list(
