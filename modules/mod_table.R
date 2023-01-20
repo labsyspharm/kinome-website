@@ -32,36 +32,18 @@ DT_DOM <- '<"row justify-content-between"<"col-sm-12 col-md-auto"B><"col-sm-12 c
 
 DT_DRAW_CALLBACK_JS = r'[
 function(settings, json) {
-  function send_n_cols(e, settings, column, state) {
-    var api = $(this).DataTable();
-    var cols = api.columns();
-    var ncols = cols.count();
-    var nvisible = cols.visible().filter(Boolean).count();
-    Shiny.setInputValue("[input_id_ncols]", ncols);
-    Shiny.setInputValue("[input_id_nvisible]", nvisible);
-  }
-  this.api().on('column-visibility.dt', send_n_cols);
-  this.api().on('init.dt', send_n_cols)
-}
-]'
-
-DT_HEADER_FORMAT_JS = paste0(
-'
-  function(thead, data, start, end, display) {
-    const tooltip_map = {',
-      with(
-        COLUMN_SPECS,
-        paste('"', column_title, '" : "', column_description, '"', sep = "", collapse = ",")
-      ),
-    '};
-    const headers = $(thead).find(
-      "th:not(:has(span.contains-tooltip))"
+  function show_tooltip_header(e, settings, column, state) {
+    const tooltip_map = {<<tooltip_map>>};
+    const api = $(this).DataTable();
+    const header = $(api.table().header());
+    header.find(
+    "th:not(:has(span.contains-tooltip))"
     ).append(
-      "<i class=\'fa fa-info-circle\ ml-1\' role=\'presentation\' aria-label=\'info-circle icon\'></i>"
+    "<i class=\'fa fa-info-circle\ ml-1\' role=\'presentation\' aria-label=\'info-circle icon\'></i>"
     ).wrapInner(
-      "<span class=\'contains-tooltip\', data-toggle=\'tooltip\'></span>"
+    "<span class=\'contains-tooltip\', data-toggle=\'tooltip\'></span>"
     );
-    const spans = $(thead).find("span");
+    const spans = header.find("span");
     spans.attr({"class": "contains-tooltip", "data-toggle": "tooltip"});
     spans.each(
       function(i) {
@@ -70,7 +52,22 @@ DT_HEADER_FORMAT_JS = paste0(
     );
     spans.tooltip();
   }
-')
+  function send_n_cols(e, settings, column, state) {
+    const api = $(this).DataTable();
+    var cols = api.columns();
+    var ncols = cols.count();
+    var nvisible = cols.visible().filter(Boolean).count();
+    console.log(ncols);
+    console.log(nvisible);
+    Shiny.setInputValue("<<table_id>>_ncols", ncols);
+    Shiny.setInputValue("<<table_id>>_nvisible]", nvisible);
+  }
+  this.api().on('column-visibility.dt', send_n_cols);
+  this.api().on('init.dt', send_n_cols)
+  this.api().on('column-visibility.dt', show_tooltip_header);
+  this.api().on('init.dt', show_tooltip_header)
+}
+]'
 
 #' table Server Function
 #'
@@ -146,6 +143,18 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
   r_table <- reactive({
     .data <- isolate(r_table_data())
 
+    draw_callback_js <- glue(
+      DT_DRAW_CALLBACK_JS,
+      table_id = ns("kinometable"),
+      tooltip_map= with(
+        COLUMN_SPECS,
+        paste('"', column_title, '" : "', column_description, '"', sep = "", collapse = ",")
+      ),
+      .open = "<<",
+      .close = ">>"
+    )
+    cat(draw_callback_js)
+
     DT::datatable(
       .data,
       rownames = FALSE,
@@ -172,8 +181,7 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
         #     className = "btn-outline-black"
         #   )
         # ),
-        headerCallback = JS(DT_HEADER_FORMAT_JS),
-        drawCallback = JS(glue(DT_DRAW_CALLBACK_JS, input_id_ncols = ns("ncols"), input_id_nvisible = ns("nvisible"), .open = "[", .close = "]")),
+        initComplete = JS(draw_callback_js),
         columnDefs = list(
           list(className = 'dt-center', targets = 2),
           list(
@@ -203,7 +211,7 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
   )
 
   output$selected_columns_text_out <- renderText({
-    paste("Showing", input$nvisible, "out of", input$ncols, "columns", sep = " ")
+    paste("Showing", input$kinometable_nvisible, "out of", input$kinometable_ncols, "columns", sep = " ")
   })
 
   table_proxy <- dataTableProxy("kinometable")
