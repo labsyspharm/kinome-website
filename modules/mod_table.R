@@ -18,7 +18,7 @@ mod_table_ui <- function(id) {
     ),
     mainPanel(
       width = 9,
-      h2("Column filters "),
+      h2("Column filters"),
       textOutput(ns("selected_columns_text_out"), inline = FALSE),
       DT::DTOutput(ns("kinometable"), width = "90%"),
       mod_ui_download_button(ns("output_table_csv_dl"), "Download CSV"),
@@ -31,42 +31,40 @@ mod_table_ui <- function(id) {
 DT_DOM <- '<"row justify-content-between"<"col-sm-12 col-md-auto"B><"col-sm-12 col-md-auto ml-md-auto"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12 col-md-3"l><"col-sm-12 col-md-3"i><"col-sm-12 col-md-6"p>>'
 
 DT_DRAW_CALLBACK_JS = r'[
-function(settings, json) {
-  function show_tooltip_header(e, settings, column, state) {
-    const tooltip_map = {<<tooltip_map>>};
-    const api = $(this).DataTable();
-    const header = $(api.table().header());
-    header.find(
-    "th:not(:has(span.contains-tooltip))"
-    ).append(
-    "<i class=\'fa fa-info-circle\ ml-1\' role=\'presentation\' aria-label=\'info-circle icon\'></i>"
-    ).wrapInner(
-    "<span class=\'contains-tooltip\', data-toggle=\'tooltip\'></span>"
-    );
-    const spans = header.find("span");
-    spans.attr({"class": "contains-tooltip", "data-toggle": "tooltip"});
-    spans.each(
-      function(i) {
-        $(this).attr("title", tooltip_map[$(this).text()]);
-      }
-    );
-    spans.tooltip();
-  }
-  function send_n_cols(e, settings, column, state) {
-    const api = $(this).DataTable();
-    var cols = api.columns();
-    var ncols = cols.count();
-    var nvisible = cols.visible().filter(Boolean).count();
-    console.log(ncols);
-    console.log(nvisible);
-    Shiny.setInputValue("<<table_id>>_ncols", ncols);
-    Shiny.setInputValue("<<table_id>>_nvisible]", nvisible);
-  }
-  this.api().on('column-visibility.dt', send_n_cols);
-  this.api().on('init.dt', send_n_cols)
-  this.api().on('column-visibility.dt', show_tooltip_header);
-  this.api().on('init.dt', show_tooltip_header)
+function show_tooltip_header(e, settings, column, state) {
+  const tooltip_map = {<<tooltip_map>>};
+  const api = $(this).DataTable();
+  const header = $(api.table().header());
+  header.find(
+  "th:not(:has(span.contains-tooltip))"
+  ).append(
+  "<i class=\'fa fa-info-circle\ ml-1\' role=\'presentation\' aria-label=\'info-circle icon\'></i>"
+  ).wrapInner(
+  "<span class=\'contains-tooltip\', data-toggle=\'tooltip\'></span>"
+  );
+  const spans = header.find("span");
+  spans.attr({"class": "contains-tooltip", "data-toggle": "tooltip"});
+  spans.each(
+    function(i) {
+      $(this).attr("title", tooltip_map[$(this).text()]);
+    }
+  );
+  spans.tooltip();
 }
+function send_n_cols(e, settings, column, state) {
+  const api = $(this).DataTable();
+  var cols = api.columns();
+  var ncols = cols.count();
+  var nvisible = cols.visible().filter(Boolean).count();
+  console.log(ncols);
+  console.log(nvisible);
+  Shiny.setInputValue("<<table_id>>_ncols", ncols);
+  Shiny.setInputValue("<<table_id>>_nvisible", nvisible);
+}
+table.on('column-visibility.dt', send_n_cols);
+table.on('init.dt', send_n_cols)
+table.on('column-visibility.dt', show_tooltip_header);
+table.on('init.dt', show_tooltip_header)
 ]'
 
 #' table Server Function
@@ -166,6 +164,7 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
       style = "bootstrap4",
       extensions = c("Buttons"),
       escape = grep("^indra_network|pdb_structure_ids|compounds$", names(.data), invert = TRUE, value = TRUE),
+      callback = JS(draw_callback_js),
       options = list(
         scrollX = TRUE,
         dom = DT_DOM,
@@ -178,14 +177,6 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
           col_description = "column_description",
           col_group = "button_group"
         ),
-        # buttons = list(
-        #   list(
-        #     extend = "colvis",
-        #     text = "Additional columns",
-        #     className = "btn-outline-black"
-        #   )
-        # ),
-        initComplete = JS(draw_callback_js),
         columnDefs = list(
           list(className = 'dt-center', targets = 2),
           list(
@@ -201,9 +192,6 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
             createdCell = JS(pdb_modal_display_js)
           )
         ) %>%
-          # c(
-          #   imap(names(.data), ~list(name = .x, targets = .y - 1L))
-          # ) %>%
           add_column_title_defs(colnames(.data))
       )
     )
@@ -215,7 +203,7 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
   )
 
   output$selected_columns_text_out <- renderText({
-    paste("Showing", input$kinometable_nvisible, "out of", input$kinometable_ncols, "columns", sep = " ")
+    paste("Showing", input$kinometable_nvisible, "out of", input$kinometable_ncols, sep = " ")
   })
 
   table_proxy <- dataTableProxy("kinometable")
