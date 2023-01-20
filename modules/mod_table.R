@@ -113,6 +113,10 @@ mod_table_server <- function(input, output, session, r_data, r_filters) {
         across(
           any_of("indra_network"),
           ~paste0("<a href=\"", .x, "\" target=\"_blank\">", as.character(icon("link")), " Network</a>")
+        ),
+        across(
+          c(tin_x_score, annotation_score),
+          signif, digits = 3
         )
       )
   })
