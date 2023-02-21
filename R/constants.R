@@ -11,34 +11,8 @@ COLUMN_TITLE_MAP <- with(COLUMN_SPECS, set_names(column_title, column_id))
 
 DEFAULT_COLUMNS <- c(
   "hgnc_symbol",
+  "hgnc_name",
   "fold_code",
   "indra_network",
   "pdb_structure_ids"
-)
-
-MULTISELECT_COLUMNS <- list(
-  has_commercial_assay = c("kinaseform_in_reaction_biology", "kinaseform_in_discoverx")
-)
-
-INIT <- list(
-  flt_kinaselike = c(
-    "Eukaryotic Protein Kinase (ePK)" = "ePK",
-    "Eukaryotic Like Kinase (eLK)" = "eLK",
-    "Atypical" = "Atypical"
-  ),
-  flt_nokinaselike = c(
-    "Unrelated to Protein Kinase Like" = "uPK",
-    "Unknown" = "Unknown"
-  ),
-  flt_compounds = 0,
-  na_compounds = "Include missing values",
-  flt_knowledge = "No filter",
-  flt_biorel = "NULL",
-  essentialcelllines = 0,
-  na_biorel = "Include missing values",
-  flt_resources = "NULL",
-  na_resources = "Include missing values",
-  flt_conv_class = "No filter",
-  flt_pseudokinase = "No filter",
-  flt_custom = ""
 )

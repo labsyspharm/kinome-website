@@ -1,3 +1,167 @@
+# Add DT column title defs to existing list of defs
+add_column_title_defs <- function(defs, cols, col_map = COLUMN_TITLE_MAP) {
+  COLUMN_TITLE_MAP %>%
+    enframe(name = "col_id", value = "col_title") %>%
+    mutate(
+      idx = match(col_id, cols) - 1L
+    ) %>%
+    drop_na() %>%
+    pmap(
+      function(col_id, col_title, idx) {
+        list(
+          list(targets = idx, title = col_title),
+          list(targets = idx, name = col_id)
+        )
+      }
+    ) %>%
+    unlist(recursive = FALSE) %>%
+    unname() %>%
+    c(defs)
+}
+
+
+filter_proteinfold <- function(.data, fltinfo){
+  if(is.null(fltinfo)) return(.data)
+  .data %>% dplyr::filter(fold_code %in% fltinfo)
+}
+
+filter_compounds <- function(.data, fltinfo, na_info){
+  if(is.null(fltinfo)) return(.data)
+
+  if(!na_info){
+    .data <- .data %>%
+      dplyr::filter(n_selective_compounds >= fltinfo)
+  } else {
+    .data <- .data %>%
+      dplyr::filter(n_selective_compounds >= fltinfo | is.na(n_selective_compounds))
+  }
+
+  .data
+}
+
+
+filter_knowledge_collapse <- function(.data, fltinfo){
+  if(is.null(fltinfo) || fltinfo == "No filter") return(.data)
+
+  .data %>%
+    dplyr::filter(
+      switch(
+        fltinfo,
+        "IDG dark kinase" = is_idg_dark_kinase == 1,
+        "Statistically defined dark kinase" = is_statistically_defined_dark_kinase == 1,
+        "Both" = is_idg_dark_kinase + is_statistically_defined_dark_kinase == 2,
+        "Either" = is_idg_dark_kinase + is_statistically_defined_dark_kinase > 0,
+        "Neither" = is_idg_dark_kinase + is_statistically_defined_dark_kinase == 0
+      )
+    )
+}
+
+
+filter_resources <- function(.data, fltinfo, na_info){
+  # Note that this requires that the NA vals in n_pdb_structures
+  # and has_commercial_assay are the same which seems to be
+  # true
+
+  if(is.null(fltinfo)) return(.data)
+
+  if("at least 1 crystal structures" %in% fltinfo){
+    .data <- .data %>% dplyr::filter(
+      n_pdb_structures > 0 | (na_info & is.na(n_pdb_structures))
+    )
+  }
+
+  if("at least 1 commercial assays" %in% fltinfo){
+    .data <- .data %>% dplyr::filter(
+      has_commercial_assay == 1 | (na_info & is.na(has_commercial_assay))
+    )
+  }
+
+
+  .data
+}
+
+
+
+
+filter_conv_class <- function(.data, fltinfo){
+
+  if((fltinfo %||% "No filter") == "No filter") return(.data)
+
+  .data %>%
+    dplyr::filter(
+      switch(
+        fltinfo,
+        "Manning kinases" = is_manning_kinase == 1,
+        "KinHub kinases" = is_kinhub_kinase == 1,
+        "Both" = is_manning_kinase + is_kinhub_kinase == 2,
+        "Either" = is_manning_kinase + is_kinhub_kinase > 0,
+        "Neither" = is_manning_kinase + is_kinhub_kinase == 0
+      )
+    )
+}
+
+filter_pseudokinase <- function(.data, fltinfo){
+
+  if((fltinfo %||% "No filter")  == "No filter") return(.data)
+
+  val <- 1
+  if(fltinfo == "Exclude pseudokinases") val <- 0
+
+  .data %>%
+    dplyr::filter(`is_pseudokinase` == val)
+
+}
+
+
+filter_biological_relevance <- function(.data, fltinfo, na_info){
+
+  if(is.null(fltinfo)) return(.data)
+
+  cancer <- c(0,1)
+  alzheimers <- c(0,1)
+  copd <- c(0, 1)
+  #nessential <- max(.data$`Number of Essential cell lines`)
+
+  if("Cancer" %in% fltinfo) cancer <- 1
+  if("Alzheimer's disease" %in% fltinfo) alzheimers <- 1
+  if("Chronic obstructive pulmonary disease" %in% fltinfo) copd <- 1
+  #if("Essential in at least [100] cell lines" %in% fltinfo) nessential <- 100
+
+  .data %>%
+    dplyr::filter(significant_in_cancer %in% cancer | if (na_info) is.na(significant_in_cancer) else FALSE) %>%
+    dplyr::filter(significant_in_alzheimers %in% alzheimers | if (na_info) is.na(significant_in_alzheimers) else FALSE) %>%
+    dplyr::filter(significant_in_copd %in% copd | if (na_info) is.na(significant_in_copd) else FALSE)
+
+}
+
+
+
+filter_essential_cell_lines <- function(.data, fltinfo, na_info){
+
+  if(is.null(fltinfo)) return(.data)
+
+  if(!na_info){
+    .data <- .data %>%
+      dplyr::filter(n_essential_cell_lines >= fltinfo)
+  } else {
+    .data <- .data %>%
+      dplyr::filter(n_essential_cell_lines >= fltinfo | is.na(n_essential_cell_lines))
+  }
+
+  .data
+}
+
+
+filter_custom_HGNC <- function(.data, fltinfo){
+  if(is.null(fltinfo) || fltinfo == "") return(.data)
+
+  vals <- trimws(strsplit(fltinfo, "(,|;| |\t|\n)+")[[1]])
+
+  .data %>%
+    dplyr::filter(hgnc_symbol %in% toupper(vals))
+}
+
+
 #' table UI Function
 #'
 #' @description A shiny Module.
