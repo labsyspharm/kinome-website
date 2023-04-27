@@ -29,7 +29,7 @@ function(input, output, session) {
     id = NULL,
     size = "md",
     header = h5("Funding"),
-    p("This work was supported by NIH grant U24-DK116204, U54-HL127624 and U54-CA225088.")
+    p("The site is in active development with funding from NIH grants U24-DK116204 and DARPA grants W911NF-15-1-0544 and W911NF018-1-0124.")
   )
   observeEvent(c(input$funding, input$funding2), {
     showModal(.modal_funding)
