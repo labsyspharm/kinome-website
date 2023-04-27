@@ -26,11 +26,13 @@ function(req) {
           id = "nav",
           choices = list(
             list(icon("home"), "Home"),
-            list("Data")
+            list("Table"),
+            list("Trees")
           ),
           values = c(
             "home",
-            "data"
+            "data",
+            "trees"
           )
         ) %>%
           margin(left = "auto"),
@@ -71,20 +73,10 @@ function(req) {
             id = "page_home",
             fade = FALSE,
             class = "active",
-            columns(
+            container(
+              centered = TRUE,
               column(
-                width = 6,
-                tags$a(
-                  href = "kinome/assets/img/kinome_tree_v10.png",
-                  target = "_blank",
-                  tags$img(
-                    class = 'img-fluid mt-2',
-                    src = "kinome/assets/img/kinome_tree_v10.png"
-                  )
-                )
-              ),
-              column(
-                width = 6,
+                width = 10,
                 h3("Kinome.org") %>%
                   font(align = "left"),
                 p("Welcome to Kinome.org!"),
@@ -147,7 +139,7 @@ function(req) {
                   ),
                   tags$dt("Dark Kinase Knowledgebase"),
                   tags$dd("This portal curates information on the understudied kinome as part of the NIH Illuminating the Druggable Genome project.",
-                          tags$a(href = "https://www.darkkinome.org", "darkkinome.org", target = "_blank")),
+                          tags$a(href = "https://darkkinome.org", "darkkinome.org", target = "_blank")),
                   tags$dt("Small Molecule Suite"),
                   tags$dd("This tool makes it possible to identify selective inhibitors of kinases and other ligandable proteins using data-driven criteria.",
                           tags$a(href = "https://www.smallmoleculesuite.org", "smallmoleculesuite.org", target = "_blank"))
@@ -189,6 +181,10 @@ function(req) {
           navPane(
             id = "page_data",
                 mod_table_ui("table_ui_1")
+          ),
+          navPane(
+            id = "page_trees",
+            mod_kinase_trees_ui("trees_1")
           ),
           navPane(
             id = "page_download",

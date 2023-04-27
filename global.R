@@ -28,5 +28,5 @@ source("modules/components/modal_column.R", local = TRUE)
 
 # # Modules
 source("modules/mod_table.R", local = TRUE)
-
+source("modules/mod_kinase_trees.R", local = TRUE)
 
