@@ -1,4 +1,4 @@
-Kinome.org is designed by the [Laboratory of Systems Pharmacology](https://hits.harvard.edu/about/) to help researchers understand which proteins are members of the kinome under varying criteria. 
+Kinome.org is designed by the [Laboratory of Systems Pharmacology](https://hits.harvard.edu/about/) to help researchers understand which proteins are members of the kinome under varying criteria.
 
 #### Publication
 
@@ -13,7 +13,7 @@ Nienke Moret*, Changchang Liu*, Benjamin M. Gyori, John A. Bachman, Albert Stepp
 
 #### Funding
 
-This work was supported by NIH grant U24-DK116204, U54-HL127624 and U54-CA225088.
+The site is in active development with funding from NIH grants U24-DK116204 and DARPA grants W911NF-15-1-0544 and W911NF018-1-0124
 
 #### License
 
